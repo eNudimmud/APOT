@@ -1,16 +1,29 @@
 # $APOT — Action Potential
 
-Site de présentation de $APOT, avec son identité noire et dorée, son illustration originale et le motif du potentiel d’action.
+Site de présentation de $APOT : laboratoire analogique, photographie immersive, typographie condensée et accents vert acide. Version publique : https://enudimmud.github.io/APOT/.
 
 ## Fichiers du site
 
 - `index.html` : page et contenus en français.
 - `styles.css` : styles adaptatifs pour mobile et ordinateur.
-- `script.js` : animation progressive du signal, respectant la préférence de réduction des animations.
+- `script.js` : expérience interactive du signal, réglages des effets, son facultatif et ouverture de l’archive visuelle.
 - `assets/apot-coin.jpg` : illustration du token (environ 418 Kio).
+- `assets/apot-lab.webp` : visuel de laboratoire fourni pour la refonte, optimisé en WebP (environ 415 Kio).
+- `assets/fonts/` : Barlow Condensed et Space Grotesk, auto-hébergées, avec leurs licences SIL Open Font License.
 - `.nojekyll` : publication statique directe avec GitHub Pages.
 
 Le site fonctionne sans dépendance, compilation, compte visiteur ou connexion de wallet. Les liens de navigation et le contenu restent disponibles sans JavaScript.
+
+## Expérience du signal
+
+- Le bouton d’accueil déclenche une impulsion visuelle et incrémente un compteur propre à la session.
+- Le stimulus varie de 0 à 100. Le seuil de 60 est arbitraire et illustratif, sans unité biologique. En dessous, une petite perturbation s’atténue ; à partir du seuil, l’amplitude de l’impulsion reste constante (« tout ou rien »).
+- Le curseur se manipule au clavier ; Entrée ou le bouton « Stimuler » déclenchent l’expérience. Les résultats disposent d’un retour textuel accessible.
+- Le son est désactivé par défaut et activable explicitement. Aucun son n’est chargé depuis un service externe.
+- Les animations respectent `prefers-reduced-motion` et peuvent être coupées manuellement. Le canvas n’anime que pendant une impulsion visible ; il reste statique hors écran et lorsque l’onglet est masqué.
+- Les chiffres du token se déplient au clic ou au clavier. L’image s’ouvre dans une boîte de dialogue native, refermable avec Échap.
+
+L’expérience n’affiche aucune donnée de marché. Référence pédagogique : [Neuroscience, Electrical Potentials Across Nerve Cell Membranes, NCBI Bookshelf](https://www.ncbi.nlm.nih.gov/books/NBK11069/).
 
 ## Configuration sélectionnée avant lancement
 
