@@ -1,131 +1,84 @@
-'use strict';
-
 (() => {
-  const root = document.documentElement;
-  const tabs = [...document.querySelectorAll('.journey-tab')];
-  const panels = [...document.querySelectorAll('.journey-panel')];
-  const tabList = document.querySelector('.journey-tabs');
-  const menuButton = document.querySelector('.menu-toggle');
-  const header = document.querySelector('.site-header');
-  const nav = document.querySelector('#main-nav');
-  const dialog = document.querySelector('#gallery-dialog');
-  const galleryImage = document.querySelector('#gallery-image');
-  const galleryCaption = document.querySelector('#gallery-caption');
-  const galleryTitle = document.querySelector('#gallery-title');
-  let selectedIndex = 0;
-  let galleryIndex = 0;
-  let galleryOpener;
-
-  // Every scientific step has its own text, image and primary source.
-  // Without JavaScript, the anchors lead to the three visible articles.
-  tabList.setAttribute('role', 'tablist');
-  tabs.forEach((tab, index) => {
-    tab.id = `step-tab-${index}`;
-    tab.setAttribute('role', 'tab');
-    tab.setAttribute('aria-controls', panels[index].id);
-    panels[index].setAttribute('role', 'tabpanel');
-    panels[index].setAttribute('aria-labelledby', tab.id);
-    panels[index].tabIndex = 0;
-  });
-
-  function selectStep(index, focus = false) {
-    selectedIndex = (index + tabs.length) % tabs.length;
-    tabs.forEach((tab, i) => {
-      const active = i === selectedIndex;
-      tab.setAttribute('aria-selected', String(active));
-      tab.tabIndex = active ? 0 : -1;
-      panels[i].toggleAttribute('data-active', active);
-    });
-    if (focus) tabs[selectedIndex].focus({ preventScroll: true });
-  }
-
-  tabs.forEach((tab, index) => {
-    tab.addEventListener('click', (event) => {
-      event.preventDefault();
-      selectStep(index);
-    });
-    tab.addEventListener('keydown', (event) => {
-      let next;
-      if (event.key === 'ArrowRight') next = selectedIndex + 1;
-      if (event.key === 'ArrowLeft') next = selectedIndex - 1;
-      if (event.key === 'Home') next = 0;
-      if (event.key === 'End') next = tabs.length - 1;
-      if (event.key === ' ') next = index;
-      if (next !== undefined) { event.preventDefault();selectStep(next, true); }
-    });
-  });
-  const initialStep = panels.findIndex(panel => `#${panel.id}` === location.hash);
-  selectStep(initialStep >= 0 ? initialStep : 0);
-  window.addEventListener('hashchange', () => {
-    const index = panels.findIndex(panel => `#${panel.id}` === location.hash);
-    if (index >= 0) selectStep(index);
-  });
-
-  function closeMenu(restoreFocus = false) {
-    header.classList.remove('menu-open');
-    menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.setAttribute('aria-label', 'Ouvrir le menu');
-    if (restoreFocus) menuButton.focus();
-  }
-  menuButton.hidden = false;
-  menuButton.addEventListener('click', () => {
-    const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
-    if (isOpen) closeMenu();
-    else {
-      header.classList.add('menu-open');
-      menuButton.setAttribute('aria-expanded', 'true');
-      menuButton.setAttribute('aria-label', 'Fermer le menu');
-    }
-  });
-  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => closeMenu()));
-  document.addEventListener('click', (event) => {
-    if (!header.contains(event.target)) closeMenu();
-  });
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && header.classList.contains('menu-open')) closeMenu(true);
-  });
-  window.matchMedia('(min-width: 761px)').addEventListener('change', (event) => {
-    if (event.matches) closeMenu();
-  });
-
-  const gallery = [
-    { src: 'assets/apot-lab.webp', title: 'Le laboratoire', alt: 'Écran cathodique APOT au milieu d’instruments et de documents, esthétique d’archive analogique.', width: 1536, height: 1024 },
-    { src: 'assets/apot-medallion.webp', title: 'L’empreinte', alt: 'Le médaillon APOT vu de face : or, bleu nuit et tracé du potentiel d’action.', width: 1050, height: 1050 },
-    { src: 'assets/apot-signal.webp', title: 'Le signal', alt: 'Onde ivoire sur bleu nuit, identité APOT et repère de seuil −55 mV.', width: 800, height: 1192 },
-    { src: 'assets/apot-profile.webp', title: 'Le médaillon', alt: 'Le médaillon Action Potential vu de trois quarts, métal doré sur fond sombre.', width: 850, height: 1266 }
-  ];
-  function showImage(index) {
-    galleryIndex = (index + gallery.length) % gallery.length;
-    const item = gallery[galleryIndex];
-    galleryImage.src = item.src;
-    galleryImage.alt = item.alt;
-    galleryImage.width = item.width;
-    galleryImage.height = item.height;
-    galleryTitle.textContent = item.title;
-    galleryCaption.textContent = `${String(galleryIndex + 1).padStart(2, '0')} / ${String(gallery.length).padStart(2, '0')} — ${item.title}`;
-  }
-  if (typeof dialog.showModal === 'function') {
-    document.querySelectorAll('[data-gallery]').forEach(link => {
-      link.addEventListener('click', (event) => {
-        event.preventDefault();
-        galleryOpener = link;
-        showImage(Number(link.dataset.gallery));
-        dialog.showModal();
-      });
-    });
-    document.querySelector('.gallery-close').addEventListener('click', () => dialog.close());
-    document.querySelector('.gallery-prev').addEventListener('click', () => showImage(galleryIndex - 1));
-    document.querySelector('.gallery-next').addEventListener('click', () => showImage(galleryIndex + 1));
-    dialog.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowRight') { event.preventDefault();showImage(galleryIndex + 1); }
-      if (event.key === 'ArrowLeft') { event.preventDefault();showImage(galleryIndex - 1); }
-    });
-    dialog.addEventListener('click', (event) => {
-      if (event.target !== dialog) return;
-      const rect = dialog.getBoundingClientRect();
-      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
-    });
-    dialog.addEventListener('close', () => galleryOpener?.focus({ preventScroll: true }));
-  }
+  'use strict';
+  const root=document.documentElement;
   root.classList.add('js');
+  const motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
+  const mobile=matchMedia('(max-width: 760px)');
+  const menu=document.querySelector('.menu-toggle'), nav=document.querySelector('#main-nav');
+  function closeMenu(){nav.classList.remove('is-open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open menu');}
+  function syncMenu(){menu.hidden=!mobile.matches;closeMenu();}
+  menu.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';nav.classList.toggle('is-open',open);menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Close menu':'Open menu');});
+  nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMenu));
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&menu.getAttribute('aria-expanded')==='true'){closeMenu();menu.focus();}});
+  mobile.addEventListener('change',syncMenu);syncMenu();
+
+  const track=document.querySelector('.hero-track'),stage=document.querySelector('.hero-stage'),intro=document.querySelector('.hero-intro'),reveal=document.querySelector('.hero-reveal'),progressBar=document.querySelector('.hero-progress span'),motionButton=document.querySelector('.motion-toggle');
+  let paused=motionPreference.matches,scrollFrame=0;
+  const clamp=value=>Math.min(1,Math.max(0,value));
+  function updateStory(){
+    scrollFrame=0;
+    const active=root.classList.contains('has-motion');
+    const distance=Math.max(1,track.offsetHeight-stage.offsetHeight);
+    const progress=active?clamp(-track.getBoundingClientRect().top/distance):0;
+    const fade=active?clamp((progress-.2)/.31):0;
+    const incoming=active?clamp((progress-.47)/.27):0;
+    intro.style.opacity=String(1-fade);intro.style.transform='translateY('+(-fade*28)+'px)';
+    reveal.style.opacity=String(incoming);reveal.style.transform='translateY('+((1-incoming)*26)+'px)';
+    const secondActive=incoming>.3;
+    reveal.classList.toggle('is-active',secondActive);reveal.inert=!secondActive;reveal.setAttribute('aria-hidden',String(!secondActive));
+    intro.inert=fade>.8;intro.setAttribute('aria-hidden',String(fade>.8));
+    progressBar.style.width=(progress*100)+'%';
+    if(window.APOTSignal)window.APOTSignal.setProgress(progress);
+  }
+  function queueStory(){if(!scrollFrame)scrollFrame=requestAnimationFrame(updateStory);}
+  function syncMotion(){
+    root.classList.toggle('has-motion',Boolean(window.APOTSignal)&&!motionPreference.matches);
+    motionButton.hidden=!window.APOTSignal||motionPreference.matches;
+    motionButton.setAttribute('aria-pressed',String(paused));
+    motionButton.querySelector('.motion-label').textContent=paused?'Resume motion':'Pause motion';
+    motionButton.querySelector('.pause-symbol').textContent=paused?'▷':'Ⅱ';
+    window.APOTSignal?.setPaused(paused);queueStory();
+  }
+  motionButton.addEventListener('click',()=>{paused=!paused;syncMotion();});
+  motionPreference.addEventListener('change',()=>{paused=motionPreference.matches;syncMotion();});
+  window.addEventListener('scroll',queueStory,{passive:true});window.addEventListener('resize',queueStory,{passive:true});syncMotion();
+
+  const film=document.querySelector('#film-dialog'),filmFrame=film.querySelector('.film-frame');
+  const gallery=document.querySelector('#gallery-dialog'),galleryImage=gallery.querySelector('#gallery-image'),galleryCaption=gallery.querySelector('#gallery-caption');
+  const images=[
+    ['assets/apot-lab.webp','The laboratory','APOT’s signal emblem on an analog laboratory monitor.'],
+    ['assets/apot-medallion.webp','The imprint','Front view of the gold and midnight-blue APOT medallion.'],
+    ['assets/apot-signal.webp','The signal','The ivory APOT signal on midnight blue. The −55 mV label is an illustrative reference, not a universal threshold.'],
+    ['assets/apot-profile.webp','The medallion','Three-quarter view of the APOT medallion.']
+  ];
+  let galleryIndex=0,dialogTrigger=null;
+  function openDialog(dialog,trigger){dialogTrigger=trigger;dialog.showModal();document.body.classList.add('modal-open');}
+  function updateGallery(){const [src,label,alt]=images[galleryIndex];galleryImage.src=src;galleryImage.alt=alt;galleryCaption.textContent=String(galleryIndex+1).padStart(2,'0')+' / 04 — '+label;}
+  function stepGallery(delta){galleryIndex=(galleryIndex+delta+images.length)%images.length;updateGallery();}
+  if(typeof film.showModal==='function'){
+    document.querySelectorAll('[data-film]').forEach(link=>link.addEventListener('click',event=>{
+      if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+      event.preventDefault();
+      const player=document.createElement('iframe');
+      player.src='https://www.youtube-nocookie.com/embed/5hYg3rUfLiQ?autoplay=1&rel=0';
+      player.title='Creating Art With The Mind — Neuralink';player.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';player.allowFullscreen=true;player.referrerPolicy='strict-origin-when-cross-origin';
+      filmFrame.replaceChildren(player);openDialog(film,link);
+    }));
+    document.querySelectorAll('[data-gallery]').forEach(link=>link.addEventListener('click',event=>{
+      if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+      event.preventDefault();galleryIndex=Number(link.dataset.gallery);updateGallery();openDialog(gallery,link);
+    }));
+    [film,gallery].forEach(dialog=>{
+      dialog.querySelector('.dialog-close').addEventListener('click',()=>dialog.close());
+      dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const rect=dialog.getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)dialog.close();});
+      dialog.addEventListener('close',()=>{if(dialog===film)filmFrame.replaceChildren();document.body.classList.remove('modal-open');dialogTrigger?.focus({preventScroll:true});});
+    });
+    gallery.querySelector('.gallery-prev').addEventListener('click',()=>stepGallery(-1));gallery.querySelector('.gallery-next').addEventListener('click',()=>stepGallery(1));
+    gallery.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();stepGallery(event.key==='ArrowLeft'?-1:1);}});
+  }
+  // Preserve an editorial image if a video host cannot supply its thumbnail.
+  const poster=document.querySelector('.film-poster img');
+  function posterFallback(){poster.src='assets/apot-lab.webp';poster.alt='APOT visual archive. Open the official Neuralink film featuring Audrey.';}
+  poster.addEventListener('error',posterFallback,{once:true});
+  if(poster.complete&&poster.naturalWidth===0)posterFallback();
 })();

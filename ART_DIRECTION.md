@@ -12,11 +12,14 @@ Prompt de génération :
 
 > Use case: stylized-concept. Asset type: cinematic background image for a premium neuroscience-inspired APOT website, NOT a finished webpage. Create an original, exquisite scientific-art 3D visual of a human cerebral hemisphere, seen in a three-quarter lateral view, quietly emerging from deep midnight navy darkness. Recognizable realistic folded cortex, translucent frosted ivory porcelain/glass surface with extremely delicate pale-gold internal filament accents, subtle cross-sectional layering suggesting an anatomical atlas. Restrained laboratory visual, softly illuminated like a museum specimen, serious and mysterious, precise materials, photographic macro detail, not fantasy. Palette: very dark ink navy #051429, cool ivory #ecece2, tiny muted antique gold highlights. Composition: panoramic 1536x1024 or wider landscape; isolated brain occupies the RIGHT HALF at large scale, left 45 percent is nearly empty continuous midnight navy negative space for later HTML type. The full top and right contour stay in frame; a lower edge can dissolve subtly into darkness. Clean unbroken background that blends to #051429 near every border. No text, no labels, no numbers, no logo, no user interface, no wireframe grid, no neon blue, no purple, no lens flare, no planet or space imagery, no smoky effects, no skull, no implant. This is clearly conceptual brand artwork, not a clinical scan or anatomically annotated diagram.
 
-## Intentions des interactions
+## Signal edition — 28 September 2026
 
-- Les trois onglets expliquent chacun une étape du passage entre signal et action, avec sa référence scientifique ou technologique.
-- Les détails de l’atlas expliquent ce que le visiteur peut observer dans Sylvius avant d’ouvrir le lecteur officiel d’Oxford.
-- La galerie permet de consulter les références APOT en détail et de les parcourir au clavier.
-- Les questions du token explicitent son indépendance et la distinction entre frais de trading et taxe de transfert.
+The new direction is English only and centers on possibility, creative experimentation and the open community at @APOTsignal. Public copy is deliberately short. Scientific references are editorial content; the site does not announce any partnership or pretend to know future collaborations.
 
-Aucun compteur de clics, stimulus arbitraire, son, données de marché simulées, récompense ou connexion de wallet.
+The hero is an original procedural filament sculpture written in native WebGL. Its crest and trough refer to the APOT symbol; it is not a calibrated action-potential plot. No new raster artwork was generated for this edition. The existing conceptual brain is now an editorial illustration for the atlas story, rather than the main hero.
+
+Motion reveals the continuity from signal to expression. It follows normal scroll; the visitor can jump directly to any section. Pointer movement subtly changes perspective. Pause and reduced-motion modes are supported. No arbitrary simulator, counters, sound effects, fake live data or wallet gate is included.
+
+The poster for the official Neuralink film is the YouTube thumbnail for 5hYg3rUfLiQ, with publisher attribution. The original cube illustration introducing Alex's CAD work is labelled a conceptual study; it does not depict his actual charger mount. The Oxford resource opens at the publisher's site.
+
+All four supplied brand references are retained in the archive. The token medallion is used as a signature object. The user-provided community URL is https://x.com/APOTsignal.

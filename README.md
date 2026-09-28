@@ -1,41 +1,38 @@
-# $APOT — À l’origine du signal
+# APOT — Potential, in motion.
 
-Site public : https://enudimmud.github.io/APOT/.
+Public site: https://enudimmud.github.io/APOT/  
+Community: https://x.com/APOTsignal
 
-## Direction artistique et parcours
+## Direction agreed with the creator
 
-Refonte suivant les références du créateur : bleu nuit, ivoire, or discret, imagerie cérébrale et laboratoire analogique. Neuralink constitue la référence technologique et visuelle. APOT reste un projet indépendant, sans affiliation avec Neuralink ou Oxford University Press.
+English only. A concise scientific and creative identity, with the token as the main conversion goal. Community participation is open to everyone; holding APOT is optional. Future steps and collaborations are left open. Neuralink is an editorial reference, not the identity of APOT or an announced partner.
 
-Le simulateur, le compteur d’impulsions, les sons et le vert acide ont été retirés. Le parcours propose :
+## Experience
 
-- Un accueil avec une illustration cérébrale conceptuelle, explicitement identifiée comme telle.
-- Trois étapes documentées : émettre un potentiel d’action, enregistrer l’activité neuronale, traduire l’intention en commande. Les onglets répondent au clic, à Entrée/Espace et aux flèches ; Home/End accèdent aux extrémités.
-- Une section neuroanatomique avec un lien vers la démonstration officielle Sylvius 4 Online, présentée par Len White, environ 10 minutes, en anglais. La vidéo reste sur le lecteur de son éditeur ; elle n’est ni téléchargée ni réhébergée.
-- Une galerie des quatre références APOT du créateur. Navigation précédente/suivante, flèches du clavier, fermeture avec Échap, retour du focus au lien d’origine.
-- La configuration du token et des réponses sur le lien avec Neuralink et les frais.
+- An original WebGL filament sculpture based on the action-potential motif. The camera and composition evolve with ordinary scrolling. This is abstract brand artwork, not a physiological simulation or recorded neural data.
+- Ambient motion can be paused. Reduced-motion preference is respected; rendering stops outside the viewport or when the tab is hidden. A vector fallback remains available without WebGL.
+- Three short editorial explorations: Audrey creating art with a brain–computer interface; Alex designing in CAD; the Sylvius neuroanatomy atlas.
+- The official Neuralink YouTube film opens in a keyboard-accessible dialog and loads only after a click. The dialog includes a direct YouTube link. Closing it removes the player and stops playback.
+- Community links use the creator-confirmed @APOTsignal account. The four supplied visual references remain in an accessible archive with arrow-key navigation and focus restoration.
+- Token configuration is available in an expandable section. No contract address, token-specific trading URL, partnership, token price, holder count or community contribution is invented.
 
-Le menu s’adapte au mobile. Aucun défilement forcé, aucune animation répétitive, aucun son automatique. Les transitions respectent `prefers-reduced-motion`. Sans JavaScript, tous les articles restent visibles et les liens des images ouvrent leurs fichiers.
+## Sources
 
-## Sources et ressources
-
-| Ressource | Provenance / rôle |
+| Editorial reference | Source |
 | --- | --- |
-| Technologie Neuralink | https://neuralink.com/technology/ — source principale sur l’enregistrement des potentiels d’action et le décodage des intentions motrices |
-| Potentiels électriques | https://www.ncbi.nlm.nih.gov/books/NBK11069/ — Neuroscience, Electrical Potentials Across Nerve Cell Membranes |
-| Sylvius 4 Online | https://learninglink.oup.com/access/sylvius — description de l’atlas, vues, coupes et glossaire |
-| Démonstration Sylvius | https://learninglink.oup.com/access/content/sylvius-instructor/sylvius-4-online-demo-video — lecteur officiel OUP |
-| `assets/apot-signal.webp` | Visuel 1000035568.jpg fourni par le créateur, conversion WebP |
-| `assets/apot-lab.webp` | Visuel 1000035567.png fourni par le créateur, conversion WebP |
-| `assets/apot-medallion.webp` | Visuel 1000035354.jpg fourni par le créateur, conversion WebP |
-| `assets/apot-profile.webp` | Visuel 1000035350.jpg fourni par le créateur, conversion WebP |
-| `assets/apot-cerebral.webp` | Illustration de marque générée avec l’outil de génération d’images intégré ; ce n’est pas une mesure clinique ni un atlas anatomique |
-| `assets/fonts/` | Space Grotesk auto-hébergée, licence SIL Open Font License fournie |
+| Audrey — Creating Art With The Mind, official Neuralink film | https://www.youtube.com/watch?v=5hYg3rUfLiQ |
+| Same film, official post and transcript | https://www.linkedin.com/posts/neuralink_creating-art-with-the-mind-activity-7461117355343982592-ZptQ |
+| Alex — PRIME Study second participant, CAD | https://neuralink.com/updates/prime-study-progress-update-second-participant/ |
+| Sylvius 4 Online demo | https://learninglink.oup.com/access/content/sylvius-instructor/sylvius-4-online-demo-video |
+| Official APOT community account, supplied by the creator | https://x.com/APOTsignal |
 
-Le seuil −55 mV appartient au visuel du créateur. La page précise qu’il s’agit d’un repère illustratif variable selon les cellules et les conditions.
+The Neuralink film is an account of clinical trial participants, not a general claim of clinical outcomes. Oxford's video stays on its official player. Images and figures introducing the CAD story and atlas are identified as conceptual illustrations; they are not represented as screenshots of either product.
 
-## Code
+## Build and hosting
 
-`index.html`, `styles.css` et `script.js` sont servis directement par GitHub Pages depuis `main`. Aucun framework, dépendance, build, wallet, compte visiteur ou collecte de données. Les assets utilisent des chemins relatifs. `.nojekyll` préserve la publication statique directe.
+Static HTML, CSS and JavaScript served by GitHub Pages from main. No package install or build step. `signal.js` contains the original WebGL rendering; `script.js` handles navigation, scroll composition, the film and the archive. Fonts are self-hosted under their existing SIL OFL licenses. No wallet connection, transaction, form submission or analytics. YouTube is loaded on request; its thumbnail is requested from the YouTube image host.
+
+Use relative paths to preserve compatibility with the /APOT/ base path. Keep `.nojekyll` in the root. Existing images are reused without modifying their artwork.
 
 ## Configuration sélectionnée avant lancement
 
@@ -62,17 +59,7 @@ L’interface annonce une distribution automatique de la taxe aux détenteurs, s
 
 La taxe de transfert de 1 % est distincte des frais de trading de 1,25 %. Leur présence n’implique aucun rendement fixe ou garanti. Le pairing NEURALINK ne constitue pas une affiliation officielle avec Neuralink.
 
-## Publication sur GitHub Pages
 
-Dans ce dépôt, ouvrir **Settings → Pages**, sélectionner **Deploy from a branch**, puis **main** et **/(root)**, et enregistrer. Utiliser l’URL confirmée par GitHub après le déploiement.
+## Token configuration updates
 
-Les chemins des ressources sont relatifs, afin de fonctionner dans un sous-répertoire GitHub Pages comme sur un domaine dédié. Aucun workflow Actions ou outil de compilation n’est nécessaire.
-
-## Après la création du token
-
-1. Relever l’adresse exacte du contrat et le lien de la fiche $APOT sur StonkFun.
-2. Vérifier les paramètres du contrat contre le tableau ci-dessus.
-3. Remplacer les liens génériques vers StonkFun par la fiche exacte du token et actualiser les mentions de configuration avant lancement.
-4. Ajouter seulement les réseaux sociaux réellement créés et confirmés.
-
-Le site ne crée aucun token, n’exécute aucune transaction et ne reçoit aucune clé privée.
+The setup below is a record of the creator's prelaunch screenshots. Verify the actual contract before turning the generic StonkFun link into a token-specific purchase link. The quote token from the screenshots is retained here for provenance, but is not presented as a confirmed current pairing or partnership on the public site.
