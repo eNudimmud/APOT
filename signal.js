@@ -6,7 +6,59 @@
   const stage = document.querySelector('.hero-stage');
   if (!canvas || !stage) return;
   const gl = canvas.getContext('webgl', { alpha: true, antialias: true, depth: false, powerPreference: 'low-power' });
-  if (!gl) return;
+  if (!gl) { startCanvasFallback(); return; }
+  // The same original three-dimensional motif remains available on browsers
+  // without WebGL. This renderer projects the filaments into a 2D canvas.
+  function startCanvasFallback() {
+    const ctx=canvas.getContext('2d',{alpha:true});
+    if(!ctx)return;
+    const small=matchMedia('(max-width:760px)'),reduced=matchMedia('(prefers-reduced-motion:reduce)');
+    const count=small.matches?80:128,steps=small.matches?130:190;
+    const strands=[];
+    for(let i=0;i<count;i++){
+      const phi=i/count*Math.PI*2,seed=(i*31%113)/113,r=.65+.35*((i*17%29)/29),points=[];
+      for(let j=0;j<steps;j++){
+        const t=j/(steps-1),twist=phi+t*5.7,spread=.38+Math.sin(t*Math.PI)*.49;
+        const wave=2.35*Math.exp(-Math.pow((t-.43)/.085,2))-1.65*Math.exp(-Math.pow((t-.61)/.093,2));
+        points.push([(t-.5)*8.4,wave+Math.cos(twist)*r*spread+Math.sin(t*16+seed*20)*.017,Math.sin(twist)*r*spread+Math.sin(t*7+seed*12)*.09,t]);
+      }
+      strands.push({points,phi,seed});
+    }
+    let width=1,height=1,ratio=1,progress=0,time=0,last=0,frame=0,visible=true,paused=reduced.matches,px=0,py=0;
+    function project(point){
+      const yaw=-.36+progress*.48+(paused?0:px*.10),pitch=.14+(paused?0:py*.06),tilt=(small.matches?.46:.12)-progress*.08;
+      const x=point[0]*Math.cos(yaw)+point[2]*Math.sin(yaw),z=-point[0]*Math.sin(yaw)+point[2]*Math.cos(yaw);
+      const y=point[1]*Math.cos(pitch)-z*Math.sin(pitch),zz=point[1]*Math.sin(pitch)+z*Math.cos(pitch);
+      const rx=x*Math.cos(tilt)+y*Math.sin(tilt),ry=-x*Math.sin(tilt)+y*Math.cos(tilt),scale=(small.matches?2:2.35)/(6.6-zz);
+      return [((rx*scale/(width/height)+(small.matches?.46:.52))* .5+.5)*width,(1-(ry*scale+(small.matches?-.08:-.04)))*height*.5];
+    }
+    function render(now){
+      frame=0;
+      if(!paused&&last&&now-last<32){frame=requestAnimationFrame(render);return;}
+      if(!paused)time+=last?Math.min(now-last,60)/1000:0;last=now;
+      ctx.clearRect(0,0,width,height);ctx.globalCompositeOperation='lighter';ctx.lineWidth=small.matches?.55:.65;
+      for(const strand of strands){
+        const gold=Math.max(0,Math.sin(strand.phi*2+strand.seed*2));
+        ctx.strokeStyle=gold>.8?'rgba(213,182,119,.29)':'rgba(166,192,202,.24)';
+        ctx.beginPath();
+        const projected=strand.points.map(project);
+        for(let j=8;j<projected.length-8;j++){const p=projected[j];if(j===8)ctx.moveTo(...p);else ctx.lineTo(...p);}
+        ctx.stroke();
+        const at=(time*.034+.24)%1,start=Math.max(8,Math.floor((at-.018)*steps)),end=Math.min(steps-9,Math.floor((at+.018)*steps));
+        if(start<end){ctx.beginPath();for(let j=start;j<=end;j++){const p=projected[j];if(j===start)ctx.moveTo(...p);else ctx.lineTo(...p);}ctx.strokeStyle='rgba(231,203,144,.53)';ctx.stroke();}
+      }
+      if(visible&&!paused&&!document.hidden)frame=requestAnimationFrame(render);
+    }
+    function requestDraw(){if(!frame)frame=requestAnimationFrame(render);}
+    function resize(){const b=stage.getBoundingClientRect();width=b.width;height=b.height;ratio=Math.min(devicePixelRatio||1,1.5);canvas.width=Math.round(width*ratio);canvas.height=Math.round(height*ratio);ctx.setTransform(ratio,0,0,ratio,0,0);requestDraw();}
+    new ResizeObserver(resize).observe(stage);
+    new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible){last=0;requestDraw();}else{cancelAnimationFrame(frame);frame=0;}},{threshold:0}).observe(stage);
+    stage.addEventListener('pointermove',event=>{if(paused||event.pointerType==='touch')return;px=(event.clientX/width-.5)*2;py=(event.clientY/height-.5)*2;requestDraw();},{passive:true});
+    stage.addEventListener('pointerleave',()=>{px=0;py=0;requestDraw();},{passive:true});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0;}else{last=0;requestDraw();}});
+    window.APOTSignal={setProgress(value){progress=reduced.matches?0:value;if(visible)requestDraw();},setPaused(value){paused=value;last=0;requestDraw();},isReady:true};
+    document.documentElement.classList.add('scene-ready');resize();
+  }
   const vertexSource = `
     precision highp float;
     attribute vec4 aStrand;
@@ -106,7 +158,6 @@
   stage.addEventListener('pointerleave',()=>{pointerX=0;pointerY=0;},{passive:true});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0;}else{previous=0;requestDraw();}});
   canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();contextLost=true;cancelAnimationFrame(frame);document.documentElement.classList.remove('scene-ready');});
-  canvas.addEventListener('webglcontextrestored',()=>{window.location.reload();});
   window.APOTSignal={setProgress(value){progress=value;if(inView)requestDraw();},setPaused(value){paused=value;previous=0;requestDraw();},isReady:true};
   document.documentElement.classList.add('scene-ready');resize();
 })();

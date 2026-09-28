@@ -10,7 +10,7 @@ English only. A concise scientific and creative identity, with the token as the 
 ## Experience
 
 - An original WebGL filament sculpture based on the action-potential motif. The camera and composition evolve with ordinary scrolling. This is abstract brand artwork, not a physiological simulation or recorded neural data.
-- Ambient motion can be paused. Reduced-motion preference is respected; rendering stops outside the viewport or when the tab is hidden. A vector fallback remains available without WebGL.
+- Ambient motion can be paused. Reduced-motion preference is respected; rendering stops outside the viewport or when the tab is hidden. A canvas projection of the same 3D motif remains available without WebGL; a vector fallback remains available without canvas or JavaScript.
 - Three short editorial explorations: Audrey creating art with a brain–computer interface; Alex designing in CAD; the Sylvius neuroanatomy atlas.
 - The official Neuralink YouTube film opens in a keyboard-accessible dialog and loads only after a click. The dialog includes a direct YouTube link. Closing it removes the player and stops playback.
 - Community links use the creator-confirmed @APOTsignal account. The four supplied visual references remain in an accessible archive with arrow-key navigation and focus restoration.
