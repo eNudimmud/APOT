@@ -191,14 +191,14 @@
     $('#lab-feedback').replaceChildren();
     const title = document.createElement('strong');
     title.textContent = success ? 'Seuil franchi.' : 'Sous le seuil.';
-    $('#lab-feedback').append(title, document.createElement('br'), success ? 'Une impulsion se propage.' : 'Le signal s’atténue. Essayez au-dessus de 60.');
+    $('#lab-feedback').append(title, document.createElement('br'), success ? 'Une impulsion se propage.' : 'Le signal s’atténue. Essayez à partir de 60.');
     canvas.setAttribute('aria-label', success ? `Stimulus ${strength} sur 100 : seuil franchi, une impulsion complète se propage.` : `Stimulus ${strength} sur 100 : sous le seuil, petite perturbation sans impulsion complète.`);
     cancelAnimationFrame(frame);
     if (canAnimate()) { startTime = performance.now();frame = requestAnimationFrame(animate); }
     else draw(1);
     playTone(success);
     if (fromHero) {
-      $('#hero-feedback').textContent = `IMPULSION ENVOYÉE / ${paddedCount} DANS CETTE SESSION`;
+      $('#hero-feedback').textContent = `IMPULSION #${paddedCount} ENVOYÉE`;
       clearTimeout(heroTimeout);
       hero.classList.remove('is-firing');
       if (hasMotion()) {
