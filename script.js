@@ -4,7 +4,7 @@
   root.classList.add('js');
   const motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
   const mobile=matchMedia('(max-width: 760px)');
-  const menu=document.querySelector('.menu-toggle'), nav=document.querySelector('#main-nav');
+  const menu=document.querySelector('.menu-toggle'), nav=document.querySelector('#main-nav'), header=document.querySelector('.site-header');
   function closeMenu(){nav.classList.remove('is-open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open menu');}
   function syncMenu(){menu.hidden=!mobile.matches;closeMenu();}
   menu.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';nav.classList.toggle('is-open',open);menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Close menu':'Open menu');});
@@ -17,6 +17,7 @@
   const clamp=value=>Math.min(1,Math.max(0,value));
   function updateStory(){
     scrollFrame=0;
+    header.classList.toggle('is-scrolled',window.scrollY>80);
     const active=root.classList.contains('has-motion');
     const distance=Math.max(1,track.offsetHeight-stage.offsetHeight);
     const progress=active?clamp(-track.getBoundingClientRect().top/distance):0;
@@ -60,7 +61,7 @@
       if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
       event.preventDefault();
       const player=document.createElement('iframe');
-      player.src='https://www.youtube-nocookie.com/embed/5hYg3rUfLiQ?autoplay=1&rel=0';
+      player.src='https://www.youtube-nocookie.com/embed/5hYg3rUfLiQ?autoplay=1&rel=0&hl=en&cc_lang_pref=en';
       player.title='Creating Art With The Mind — Neuralink';player.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';player.allowFullscreen=true;player.referrerPolicy='strict-origin-when-cross-origin';
       filmFrame.replaceChildren(player);openDialog(film,link);
     }));
@@ -76,9 +77,4 @@
     gallery.querySelector('.gallery-prev').addEventListener('click',()=>stepGallery(-1));gallery.querySelector('.gallery-next').addEventListener('click',()=>stepGallery(1));
     gallery.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();stepGallery(event.key==='ArrowLeft'?-1:1);}});
   }
-  // Preserve an editorial image if a video host cannot supply its thumbnail.
-  const poster=document.querySelector('.film-poster img');
-  function posterFallback(){poster.src='assets/apot-lab.webp';poster.alt='APOT visual archive. Open the official Neuralink film featuring Audrey.';}
-  poster.addEventListener('error',posterFallback,{once:true});
-  if(poster.complete&&poster.naturalWidth===0)posterFallback();
 })();

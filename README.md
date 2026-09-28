@@ -30,7 +30,7 @@ The Neuralink film is an account of clinical trial participants, not a general c
 
 ## Build and hosting
 
-Static HTML, CSS and JavaScript served by GitHub Pages from main. No package install or build step. `signal.js` contains the original WebGL rendering; `script.js` handles navigation, scroll composition, the film and the archive. Fonts are self-hosted under their existing SIL OFL licenses. No wallet connection, transaction, form submission or analytics. YouTube is loaded on request; its thumbnail is requested from the YouTube image host.
+Static HTML, CSS and JavaScript served by GitHub Pages from main. No package install or build step. `signal.js` contains the original WebGL rendering; `script.js` handles navigation, scroll composition, the film and the archive. Fonts are self-hosted under their existing SIL OFL licenses. No wallet connection, transaction, form submission or analytics. YouTube is loaded only on request. The film uses an original typographic editorial cover, so the page does not depend on a third-party thumbnail. The fixed navigation keeps the token accessible throughout the page.
 
 Use relative paths to preserve compatibility with the /APOT/ base path. Keep `.nojekyll` in the root. Existing images are reused without modifying their artwork.
 

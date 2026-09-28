@@ -20,6 +20,6 @@ The hero is an original procedural filament sculpture written in native WebGL. I
 
 Motion reveals the continuity from signal to expression. It follows normal scroll; the visitor can jump directly to any section. Pointer movement subtly changes perspective. Pause and reduced-motion modes are supported. No arbitrary simulator, counters, sound effects, fake live data or wallet gate is included.
 
-The poster for the official Neuralink film is the YouTube thumbnail for 5hYg3rUfLiQ, with publisher attribution. The original cube illustration introducing Alex's CAD work is labelled a conceptual study; it does not depict his actual charger mount. The Oxford resource opens at the publisher's site.
+The official Neuralink film uses an original typographic editorial cover with publisher attribution. The cover is native HTML/CSS and an abstract SVG line drawing; it is not a frame from the film or an image of Audrey. The original cube illustration introducing Alex's CAD work is labelled a conceptual study; it does not depict his actual charger mount. The Oxford resource opens at the publisher's site.
 
 All four supplied brand references are retained in the archive. The token medallion is used as a signature object. The user-provided community URL is https://x.com/APOTsignal.
