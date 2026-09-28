@@ -3,105 +3,108 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101511">
-  <meta name="description" content="$APOT — Action Potential. Une impulsion suffit. Explorez l’univers du projet, déclenchez le signal et découvrez sa configuration de lancement sur Solana.">
-  <meta property="og:title" content="$APOT — Le signal est vivant.">
-  <meta property="og:description" content="Du potentiel à l’action. Entrez dans l’univers d’Action Potential.">
+  <meta name="theme-color" content="#061426">
+  <meta name="description" content="$APOT — Action Potential. À l’origine du geste, un signal. Un univers inspiré des neurosciences et des interfaces cerveau-machine.">
+  <meta property="og:title" content="$APOT — À l’origine du signal">
+  <meta property="og:description" content="Explorer l’invisible. Du potentiel d’action aux interfaces cerveau-machine.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://enudimmud.github.io/APOT/">
-  <meta property="og:image" content="https://enudimmud.github.io/APOT/assets/apot-lab.webp">
+  <meta property="og:image" content="https://enudimmud.github.io/APOT/assets/apot-cerebral.webp">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://enudimmud.github.io/APOT/">
-  <link rel="icon" href="assets/apot-coin.jpg">
-  <link rel="preload" href="assets/fonts/barlow-condensed-bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="icon" href="assets/apot-medallion.webp">
   <link rel="preload" href="assets/fonts/space-grotesk-regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="assets/apot-lab.webp" as="image">
-  <link rel="stylesheet" href="styles.css?v=signal-2">
-  <title>$APOT — Le signal est vivant.</title>
-  <script src="script.js?v=signal-2" defer></script>
+  <link rel="preload" href="assets/apot-cerebral.webp" as="image">
+  <link rel="stylesheet" href="styles.css?v=neural-3">
+  <script src="script.js?v=neural-3" defer></script>
+  <title>$APOT — À l’origine du signal</title>
 </head>
 <body>
   <a class="skip-link" href="#main">Aller au contenu</a>
-  <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
-    <symbol id="i-up-right" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
-    <symbol id="i-wave" viewBox="0 0 40 28"><path d="M1 16h10l6-13 7 23 5-10h10"/></symbol>
+  <svg class="icons" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-out" viewBox="0 0 24 24"><path d="m6 18 12-12M6 6h12v12"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v15m-6-6 6 6 6-6"/></symbol>
     <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5m6 0h5v5M4 15v5h5m6 0h5v-5"/></symbol>
     <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-mark" viewBox="0 0 80 50"><path d="M1 29h26c6 0 6-26 10-26s6 45 11 45 6-23 11-23 4 6 8 6 4-3 7-3h5"/></symbol>
   </svg>
   <header class="site-header">
-    <a class="brand" href="#signal" aria-label="$APOT, accueil"><svg aria-hidden="true"><use href="#i-wave"/></svg><span>$APOT</span></a>
-    <nav class="desktop-nav" aria-label="Navigation principale">
-      <a href="#experience">L’expérience <span>01</span></a>
-      <a href="#token">Le token <span>02</span></a>
+    <a href="#accueil" class="brand" aria-label="APOT, accueil"><svg aria-hidden="true"><use href="#i-mark"/></svg><span>APOT</span></a>
+    <nav id="main-nav" aria-label="Navigation principale">
+      <a href="#origine">L’origine</a><a href="#atlas">L’atlas</a><a href="#archives">Les archives</a><a href="#token">Le token</a>
     </nav>
-    <div class="header-actions">
-      <button class="effects-toggle" type="button" aria-label="Animations visuelles" aria-pressed="true" hidden><span class="status-dot" aria-hidden="true"></span><span class="effects-label">Effets activés</span></button>
-      <a class="header-cta" href="https://www.stonkfun.xyz/" target="_blank" rel="noopener noreferrer">StonkFun <svg aria-hidden="true"><use href="#i-up-right"/></svg><span class="sr-only"> (nouvel onglet)</span></a>
-    </div>
+    <a class="header-link" href="https://www.stonkfun.xyz/" target="_blank" rel="noopener noreferrer">StonkFun <svg aria-hidden="true"><use href="#i-out"/></svg><span class="sr-only"> (nouvel onglet)</span></a>
+    <button class="menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="main-nav" hidden><span></span><span></span></button>
   </header>
   <main id="main">
-    <section class="hero" id="signal" aria-labelledby="hero-title">
-      <div class="hero-art" aria-hidden="true"><img src="assets/apot-lab.webp" width="1536" height="1024" alt="" fetchpriority="high"><div class="art-shade"></div></div>
-      <div class="hero-grain" aria-hidden="true"></div>
-      <div class="hero-topline"><span class="eyebrow"><span class="cross">+</span> ACTION POTENTIAL</span><span class="archive-label">ARCHIVE VISUELLE / 001</span></div>
+    <section class="hero" id="accueil" aria-labelledby="hero-title">
+      <div class="hero-art"><img src="assets/apot-cerebral.webp" width="1536" height="1024" fetchpriority="high" alt="Illustration conceptuelle d’un cerveau translucide ivoire, parcouru de fins filaments dorés sur fond bleu nuit."></div>
+      <div class="hero-rule" aria-hidden="true"></div>
       <div class="hero-content">
-        <p class="hero-pretitle"><span class="tiny-line"></span> DU POTENTIEL À L’ACTION.</p>
-        <h1 id="hero-title">LE SIGNAL.<br><span>EST VIVANT.</span></h1>
-        <p class="hero-description">Avant le mouvement, une impulsion.<br>Bienvenue dans l’univers de <strong>$APOT.</strong></p>
-        <div class="hero-buttons">
-          <button class="button button-acid fire-hero" type="button" hidden>Déclencher le signal <svg aria-hidden="true"><use href="#i-wave"/></svg></button>
-          <a class="text-link" href="#experience">Entrer dans l’expérience <span aria-hidden="true">↘</span></a>
-        </div>
-        <div class="pulse-feedback" role="status"><span class="pulse-indicator" aria-hidden="true"></span><span id="hero-feedback">LE SIGNAL ATTEND VOTRE IMPULSION</span></div>
+        <p class="eyebrow hero-eyebrow"><span class="little-cross">+</span> ACTION POTENTIAL</p>
+        <h1 id="hero-title">Avant le geste.<br><em>Le signal.</em></h1>
+        <p class="hero-description">À la frontière du vivant et de la machine,<br>tout commence par une impulsion.</p>
+        <a class="button button-light" href="#origine">Explorer l’origine <svg aria-hidden="true"><use href="#i-down"/></svg></a>
       </div>
-      <svg class="hero-pulse" viewBox="0 0 1440 300" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M0 170H510l34-22 29 22h51l36-126 53 230 37-104h690"/></svg>
-      <div class="hero-bottom"><a href="#experience" class="scroll-cue"><span class="scroll-mark" aria-hidden="true">↓</span> FAITES DÉFILER POUR EXPLORER</a><a class="archive-open" href="assets/apot-lab.webp"><svg aria-hidden="true"><use href="#i-expand"/></svg> Voir l’archive</a></div>
-      <span class="hero-side-note" aria-hidden="true">UNE IMPULSION SUFFIT.</span>
+      <div class="hero-side" aria-hidden="true"><span>LE MONDE VISIBLE</span><i></i><span>COMMENCE DANS L’INVISIBLE</span></div>
+      <div class="hero-bottom"><span class="hero-index"><b>01</b> / L’ORIGINE DU SIGNAL</span><span class="hero-caption">Vue conceptuelle · APOT</span><a href="https://neuralink.com/technology/" target="_blank" rel="noopener noreferrer">Référence : Neuralink <svg aria-hidden="true"><use href="#i-out"/></svg><span class="sr-only"> (nouvel onglet)</span></a></div>
     </section>
-    <div class="signal-strip" aria-hidden="true"><span>POTENTIAL</span><svg><use href="#i-wave"/></svg><span>ACTION</span><span class="strip-plus">+</span><span>POTENTIAL</span><svg><use href="#i-wave"/></svg><span>ACTION</span><span class="strip-plus">+</span></div>
-    <section class="experience section-shell" id="experience" aria-labelledby="experience-title">
-      <div class="section-kicker"><span><span class="cross">+</span> 01 / LE DÉCLIC</span><span>EXPÉRIENCE INTERACTIVE</span></div>
-      <div class="experience-intro"><h2 id="experience-title">ET SI TOUT PARTAIT<br>D’<span>UNE IMPULSION ?</span></h2><p>Réglez le stimulus. Déclenchez le signal.<br>Observez ce qui se passe quand<br class="desktop-break"> le potentiel devient action.</p></div>
-      <div class="signal-lab">
-        <div class="scope">
-          <div class="scope-topline"><span><i class="status-dot" aria-hidden="true"></i> SIGNAL EXPLORER</span><span id="scope-state">PRÊT À RECEVOIR</span></div>
-          <div class="scope-screen"><canvas id="signal-canvas" aria-label="Visualisation du signal : ajustez le stimulus puis appuyez sur Stimuler."></canvas><div class="scope-axis" aria-hidden="true"><span>+</span><span>0</span><span>−</span></div><span class="scope-watermark" aria-hidden="true">APOT</span><span class="scope-baseline" aria-hidden="true">POTENTIEL → TEMPS</span></div>
-          <div class="scope-bottomline"><span id="signal-readout">EN ATTENTE D’UN STIMULUS</span><span><span id="pulse-count">00</span> IMPULSIONS / SESSION</span></div>
+
+    <section class="origin section-shell" id="origine" aria-labelledby="origin-title">
+      <div class="section-head"><span class="eyebrow"><span class="chapter-number">01</span> L’ORIGINE</span><span class="eyebrow muted">DU VIVANT À L’INTERFACE</span></div>
+      <div class="origin-intro"><h2 id="origin-title">Un nom.<br><span>Un phénomène réel.</span></h2><div><p>Le potentiel d’action est une impulsion électrique qui se propage le long d’un neurone.</p><p>APOT en fait son nom et son emblème : un projet de token inspiré par les neurosciences et les interfaces cerveau-machine.</p></div></div>
+      <div class="journey" aria-label="Du signal à l’action">
+        <div class="journey-tabs" aria-label="Les trois étapes du signal">
+          <a class="journey-tab" href="#emettre" data-index="0"><span>01</span><strong>Émettre</strong><small>Le potentiel d’action</small><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="journey-tab" href="#lire" data-index="1"><span>02</span><strong>Lire</strong><small>L’activité neuronale</small><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="journey-tab" href="#agir" data-index="2"><span>03</span><strong>Agir</strong><small>L’interface cerveau-machine</small><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
-        <div class="lab-controls">
-          <div class="control-title"><span class="eyebrow">À VOUS DE JOUER</span><span class="control-index" aria-hidden="true">↗</span></div>
-          <label for="stimulus">Intensité du stimulus</label>
-          <div class="stimulus-number"><output for="stimulus" id="stimulus-value">68</output><span>/ 100</span></div>
-          <input id="stimulus" type="range" min="0" max="100" value="68" step="1" aria-describedby="threshold-note" disabled>
-          <div class="range-labels" aria-hidden="true"><span>FAIBLE</span><span>FORT</span></div>
-          <p class="threshold-note" id="threshold-note">Seuil illustratif : <strong>60 / 100</strong></p>
-          <button id="stimulate" class="button button-acid" type="button" disabled>Stimuler <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
-          <p class="lab-feedback" id="lab-feedback" role="status">Un geste. Une réaction.<br>À vous de déclencher la première.</p>
-          <button class="sound-toggle" type="button" aria-pressed="false" hidden><span class="sound-icon" aria-hidden="true">♪</span><span class="sound-label">Son désactivé</span></button>
+        <div class="journey-panels">
+          <article class="journey-panel" id="emettre" data-active>
+            <figure class="panel-visual signal-visual"><img src="assets/apot-signal.webp" width="800" height="1192" alt="Identité APOT : une impulsion ivoire sur fond bleu nuit, accompagnée de la mention threshold −55 mV." loading="lazy"><figcaption>Le signal, devenu symbole.</figcaption></figure>
+            <div class="panel-copy"><span class="eyebrow">ÉLECTROPHYSIOLOGIE / 01</span><h3>Une variation infime.<br>Une information transmise.</h3><p>La membrane d’un neurone maintient une différence de potentiel électrique. Lorsqu’un potentiel d’action se déclenche, ce changement se propage le long de l’axone.</p><p class="panel-note">Le seuil de −55 mV figurant sur l’emblème est un repère illustratif : il varie selon les cellules et les conditions.</p><a class="source-link" href="https://www.ncbi.nlm.nih.gov/books/NBK11069/" target="_blank" rel="noopener noreferrer">Lire la référence scientifique <svg aria-hidden="true"><use href="#i-out"/></svg><span class="sr-only"> (NCBI, en anglais, nouvel onglet)</span></a></div>
+          </article>
+          <article class="journey-panel" id="lire">
+            <figure class="panel-visual reading-visual"><img src="assets/apot-cerebral.webp" width="1536" height="1024" alt="Vue conceptuelle d’un cerveau et de ses connexions, sans données de mesure." loading="lazy"><div class="reading-reticle" aria-hidden="true"><i></i><i></i></div><figcaption>Observer l’activité. Extraire un signal.</figcaption></figure>
+            <div class="panel-copy"><span class="eyebrow">ENREGISTREMENT / 02</span><h3>Rendre l’invisible<br>lisible.</h3><p>Neuralink décrit des électrodes placées à proximité des neurones pour détecter leurs potentiels d’action. Enregistrer de nombreuses cellules permet d’accéder à des informations qui peuvent être décodées.</p><p class="panel-note">C’est cette rencontre entre biologie et ingénierie qui inspire l’univers APOT.</p><a class="source-link" href="https://neuralink.com/technology/" target="_blank" rel="noopener noreferrer">Explorer la technologie Neuralink <svg aria-hidden="true"><use href="#i-out"/></svg><span class="sr-only"> (nouvel onglet)</span></a></div>
+          </article>
+          <article class="journey-panel" id="agir">
+            <figure class="panel-visual interface-visual"><div class="interface-schema" role="img" aria-label="Schéma de principe : activité neuronale, décodage, commande numérique."><div class="schema-wave"><svg viewBox="0 0 320 70" aria-hidden="true"><path d="M0 38h55l5-5 5 5h40l8-30 10 55 9-25h30l4-6 5 6h28l10-18 7 28 5-10h99"/></svg><span>ACTIVITÉ NEURONALE</span></div><div class="schema-connector"></div><div class="schema-decoder"><span>01</span><b>DÉCODAGE</b><span>10</span></div><div class="schema-connector"></div><div class="schema-screen"><svg viewBox="0 0 90 60" aria-hidden="true"><rect x="3" y="3" width="84" height="48" rx="3"/><path d="M32 58h26M45 51v7M37 17l18 12-9 2-4 9z"/></svg><span>COMMANDE NUMÉRIQUE</span></div></div><figcaption>Schéma de principe d’une interface.</figcaption></figure>
+            <div class="panel-copy"><span class="eyebrow">INTERFACE / 03</span><h3>De l’intention<br>à l’action.</h3><p>Dans les régions du cerveau liées au mouvement, l’activité neuronale porte des informations sur les gestes envisagés. Une interface cerveau-machine peut les traduire en commandes pour un ordinateur.</p><p class="panel-note">Le signal devient un passage entre deux mondes.</p><a class="source-link" href="https://neuralink.com/technology/" target="_blank" rel="noopener noreferrer">Découvrir la référence Neuralink <svg aria-hidden="true"><use href="#i-out"/></svg><span class="sr-only"> (nouvel onglet)</span></a></div>
+          </article>
         </div>
       </div>
-      <noscript><p class="no-js-message">Activez JavaScript pour manipuler le signal. Le contenu du projet reste accessible ci-dessous.</p></noscript>
-      <div class="experiment-notes"><p>Simulation visuelle simplifiée. Aucune mesure biologique ni donnée de marché.</p><details class="science-note"><summary>Pourquoi une impulsion ? <span aria-hidden="true">+</span></summary><div>Le potentiel d’action est un signal électrique : au-delà d’un seuil, une impulsion complète se déclenche. C’est le principe du « tout ou rien ». Cette idée inspire le nom Action Potential.<br><a href="https://www.ncbi.nlm.nih.gov/books/NBK11069/" target="_blank" rel="noopener noreferrer">Explorer le principe <span aria-hidden="true">↗</span><span class="sr-only"> (NCBI, en anglais, nouvel onglet)</span></a></div></details></div>
+      <p class="independence-note">Neuralink est la référence technologique de cet univers. APOT est un projet indépendant, sans affiliation avec Neuralink.</p>
     </section>
-    <section class="token-section section-shell" id="token" aria-labelledby="token-title">
-      <div class="section-kicker"><span><span class="cross">+</span> 02 / SOUS LA SURFACE</span><span>CONFIGURATION DE LANCEMENT</span></div>
-      <div class="token-heading"><h2 id="token-title">LE SIGNAL.<br><span>LES CHIFFRES.</span></h2><div class="token-identity"><img src="assets/apot-coin.jpg" alt="Emblème doré APOT représentant une impulsion électrique" width="64" height="64" loading="lazy"><div><strong>$APOT</strong><span>Action Potential / Solana</span></div></div></div>
-      <div class="metrics">
-        <details class="metric"><summary><span class="metric-label">OFFRE TOTALE <span class="metric-plus" aria-hidden="true">+</span></span><span class="metric-number">1<span>Md</span></span><span class="metric-caption">tokens APOT</span></summary><p>Une offre de 1 000 000 000 tokens figure dans le récapitulatif de lancement fourni.</p></details>
-        <details class="metric"><summary><span class="metric-label">FRAIS DE TRADING <span class="metric-plus" aria-hidden="true">+</span></span><span class="metric-number">1,25<span>%</span></span><span class="metric-caption">sur les échanges</span></summary><p>Le récapitulatif affiche des frais de trading de 1,25 %. Ils sont distincts de la taxe de transfert destinée aux détenteurs.</p></details>
-        <details class="metric"><summary><span class="metric-label">TAXE VERS LES DÉTENTEURS <span class="metric-plus" aria-hidden="true">+</span></span><span class="metric-number">1<span>%</span></span><span class="metric-caption">modèle « Reward token »</span></summary><p>Le modèle sélectionné prévoit une taxe de transfert de 1 % redistribuée aux détenteurs, selon les modalités de la plateforme. Ce taux n’est pas une promesse de rendement.</p></details>
+
+    <section class="atlas section-shell" id="atlas" aria-labelledby="atlas-title">
+      <div class="section-head"><span class="eyebrow"><span class="chapter-number">02</span> LA CARTE DU VIVANT</span><span class="eyebrow">NEUROANATOMIE</span></div>
+      <div class="atlas-grid">
+        <div class="atlas-copy"><h2 id="atlas-title">L’esprit a aussi<br><span>une géographie.</span></h2><p>Pour comprendre un signal, il faut aussi explorer les structures qui le portent.</p><p>Sylvius 4 Online, présenté par Len White, permet de découvrir le cerveau par ses surfaces, ses coupes et ses repères anatomiques.</p><div class="atlas-topics"><details><summary>Observer les surfaces <span aria-hidden="true">+</span></summary><p>Reconnaître les formes et situer les principales structures sur les vues annotées du cerveau.</p></details><details><summary>Explorer les coupes <span aria-hidden="true">+</span></summary><p>Passer de la surface à l’intérieur grâce aux coupes de spécimens et aux images par résonance magnétique.</p></details><details><summary>Nommer les structures <span aria-hidden="true">+</span></summary><p>Relier ce que l’on voit aux termes du glossaire visuel de neuroanatomie.</p></details></div></div>
+        <a class="film-card" href="https://learninglink.oup.com/access/content/sylvius-instructor/sylvius-4-online-demo-video" target="_blank" rel="noopener noreferrer" aria-label="Voir la démonstration Sylvius 4 sur Oxford, en anglais, environ 10 minutes, nouvel onglet"><div class="film-top"><span class="eyebrow">OXFORD UNIVERSITY PRESS</span><svg aria-hidden="true"><use href="#i-out"/></svg></div><div class="film-art"><img src="assets/apot-cerebral.webp" width="1536" height="1024" alt="" loading="lazy"><span class="play-circle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 5 11 7-11 7z"/></svg></span></div><div class="film-bottom"><span class="eyebrow">DÉMONSTRATION · LEN WHITE</span><h3>Sylvius 4 Online</h3><p>Un atlas pour voir autrement.</p><div class="film-action"><span>Voir la vidéo sur Oxford</span><span>≈ 10 min <svg aria-hidden="true"><use href="#i-out"/></svg></span></div></div></a>
       </div>
-      <div class="launch-route"><div><span class="eyebrow">LA PAIRE SÉLECTIONNÉE</span><p>APOT <span class="pair-divider">/</span> NEURALINK</p><span class="launch-sub">Quote token · catégorie PreStocks</span></div><div class="route-path"><span>LaunchLab</span><svg aria-hidden="true"><use href="#i-arrow"/></svg><span><strong>85 SOL</strong><small>seuil de graduation</small></span><svg aria-hidden="true"><use href="#i-arrow"/></svg><span>Raydium</span></div></div>
-      <p class="source-note">Paramètres issus des captures de configuration fournies. L’adresse du contrat et le statut de lancement ne sont pas encore confirmés. La sélection du quote token NEURALINK n’implique aucune affiliation avec Neuralink.</p>
+      <p class="atlas-credit">Vidéo et atlas : Oxford University Press · Présentation en anglais. Illustration de cette page : création conceptuelle APOT.</p>
     </section>
-    <section class="closing section-shell" aria-labelledby="closing-title">
-      <div class="closing-top"><span class="eyebrow"><span class="cross">+</span> LE PROCHAIN MOUVEMENT</span><svg aria-hidden="true"><use href="#i-wave"/></svg></div>
-      <h2 id="closing-title">À VOUS<br>DE <span>JOUER.</span></h2>
-      <div class="closing-bottom"><p>L’univers est ouvert.<br>Retrouvez la plateforme de lancement.</p><a class="button button-acid" href="https://www.stonkfun.xyz/" target="_blank" rel="noopener noreferrer">Explorer StonkFun <svg aria-hidden="true"><use href="#i-up-right"/></svg><span class="sr-only"> (nouvel onglet)</span></a></div>
+
+    <section class="archives section-shell" id="archives" aria-labelledby="archives-title">
+      <div class="section-head"><span class="eyebrow"><span class="chapter-number">03</span> LES ARCHIVES VISUELLES</span><span class="eyebrow muted">L’IMAGINAIRE APOT</span></div>
+      <div class="archives-heading"><h2 id="archives-title">Il reste toujours<br><span>une trace.</span></h2><p>Un signal. Un symbole. Un laboratoire.<br>Les fragments d’une même identité.</p></div>
+      <div class="archive-grid">
+        <a class="archive-item archive-lab" href="assets/apot-lab.webp" data-gallery="0" aria-label="Ouvrir l’archive Le laboratoire"><div class="archive-image"><img src="assets/apot-lab.webp" width="1536" height="1024" alt="Un écran cathodique affiche le symbole APOT dans un laboratoire sombre aux textures d’archive analogique." loading="lazy"><span class="expand"><svg aria-hidden="true"><use href="#i-expand"/></svg></span></div><div class="archive-caption"><span>01 / Le laboratoire</span><span>Archive visuelle</span></div></a>
+        <a class="archive-item archive-medallion" href="assets/apot-medallion.webp" data-gallery="1" aria-label="Ouvrir l’archive L’empreinte"><div class="archive-image"><img src="assets/apot-medallion.webp" width="1050" height="1050" alt="Médaillon APOT or et bleu nuit avec le tracé du potentiel d’action." loading="lazy"><span class="expand"><svg aria-hidden="true"><use href="#i-expand"/></svg></span></div><div class="archive-caption"><span>02 / L’empreinte</span><span>Le symbole</span></div></a>
+        <a class="archive-item archive-signal" href="assets/apot-signal.webp" data-gallery="2" aria-label="Ouvrir l’archive Le signal"><div class="archive-image"><img src="assets/apot-signal.webp" width="800" height="1192" alt="Emblème APOT minimaliste, onde ivoire sur fond bleu nuit." loading="lazy"><span class="expand"><svg aria-hidden="true"><use href="#i-expand"/></svg></span></div><div class="archive-caption"><span>03 / Le signal</span><span>L’origine</span></div></a>
+      </div>
     </section>
+
+    <section class="token section-shell" id="token" aria-labelledby="token-title">
+      <div class="section-head"><span class="eyebrow"><span class="chapter-number">04</span> ACTION POTENTIAL</span><span class="eyebrow muted">LE PROJET</span></div>
+      <div class="token-grid"><div class="token-art"><a href="assets/apot-profile.webp" data-gallery="3" aria-label="Voir le médaillon APOT en détail"><img src="assets/apot-profile.webp" width="850" height="1266" alt="Médaillon APOT doré photographié de trois quarts sur un fond sombre." loading="lazy"><span class="token-art-caption">APOT / ACTION POTENTIAL <svg aria-hidden="true"><use href="#i-expand"/></svg></span></a></div><div class="token-copy"><span class="eyebrow gold">SOLANA · LAUNCHLAB</span><h2 id="token-title">Le signal<br>devient <span>$APOT.</span></h2><p class="token-description">Une identité née des neurosciences.<br>Un token à découvrir dans son contexte.</p><div class="token-config"><div class="config-heading">Configuration de lancement</div><dl class="token-metrics"><div><dt>Offre totale</dt><dd>1 <span>milliard</span></dd></div><div><dt>Frais de trading</dt><dd>1,25<span> %</span></dd></div><div><dt>Taxe vers les détenteurs</dt><dd>1<span> %</span></dd></div></dl><div class="token-pair"><span>Paire sélectionnée</span><strong>APOT / NEURALINK</strong><small>Quote token · PreStocks</small></div><p class="graduation">LaunchLab <span aria-hidden="true">→</span> <strong>85 SOL</strong> de graduation <span aria-hidden="true">→</span> Raydium</p></div><a class="button button-light" href="https://www.stonkfun.xyz/" target="_blank" rel="noopener noreferrer">Explorer StonkFun <svg aria-hidden="true"><use href="#i-out"/></svg><span class="sr-only"> (nouvel onglet)</span></a><p class="launch-note">Paramètres issus de la configuration fournie. Adresse du contrat et statut de lancement à confirmer.</p></div></div>
+      <div class="token-questions"><details><summary>Quel est le lien avec Neuralink ? <span aria-hidden="true">+</span></summary><p>Neuralink est la référence technologique et une source d’inspiration visuelle. Le quote token NEURALINK, dans la catégorie PreStocks, a été sélectionné dans la configuration de lancement. APOT reste indépendant ; cette sélection n’implique aucun partenariat avec Neuralink.</p></details><details><summary>Comment lire les frais ? <span aria-hidden="true">+</span></summary><p>Les frais de trading de 1,25 % sont distincts de la taxe de transfert de 1 % prévue pour les détenteurs dans le modèle « Reward token ». Ces paramètres ne constituent aucune promesse de rendement.</p></details></div>
+    </section>
+    <section class="closing section-shell" aria-labelledby="closing-title"><span class="eyebrow">ACTION POTENTIAL</span><h2 id="closing-title">L’invisible n’est<br>que le commencement.</h2><a class="closing-link" href="#origine">Revenir à l’origine <svg aria-hidden="true"><use href="#i-arrow"/></svg></a><svg class="closing-wave" aria-hidden="true"><use href="#i-mark"/></svg></section>
   </main>
-  <footer class="site-footer"><div class="footer-line"><a class="brand" href="#signal"><svg aria-hidden="true"><use href="#i-wave"/></svg><span>$APOT</span><span class="sr-only"> — Retour au début</span></a><p>DU POTENTIEL À L’ACTION.</p><a href="https://github.com/eNudimmud/APOT" target="_blank" rel="noopener noreferrer">Code source <span aria-hidden="true">↗</span><span class="sr-only"> (nouvel onglet)</span></a></div><p class="risk-note">Les cryptoactifs comportent un risque de perte totale du capital. Aucun rendement n’est garanti.</p></footer>
-  <dialog id="archive-dialog" class="archive-dialog" aria-labelledby="archive-title"><div class="dialog-heading"><h2 id="archive-title">L’univers APOT / 001</h2><button class="dialog-close" type="button" aria-label="Fermer l’archive"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div><img src="assets/apot-lab.webp" width="1536" height="1024" alt="Dans un laboratoire sombre, un écran cathodique affiche l’emblème doré APOT au milieu d’instruments et de notes, avec du grain et des parasites analogiques."><p>Action Potential — archive visuelle du projet.</p></dialog>
+  <footer class="site-footer section-shell"><div class="footer-main"><a href="#accueil" class="brand" aria-label="APOT, retour au début"><svg aria-hidden="true"><use href="#i-mark"/></svg><span>APOT</span></a><div><a href="https://neuralink.com/technology/" target="_blank" rel="noopener noreferrer">Neuralink <span aria-hidden="true">↗</span><span class="sr-only"> (nouvel onglet)</span></a><a href="https://learninglink.oup.com/access/content/sylvius-instructor/sylvius-4-online-demo-video" target="_blank" rel="noopener noreferrer">Sylvius / Oxford <span aria-hidden="true">↗</span><span class="sr-only"> (nouvel onglet)</span></a><a href="https://github.com/eNudimmud/APOT" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span><span class="sr-only"> (nouvel onglet)</span></a></div></div><div class="footer-notes"><p>APOT est indépendant de Neuralink et d’Oxford University Press. Les ressources citées appartiennent à leurs éditeurs.</p><p>Les cryptoactifs comportent un risque de perte totale du capital. Aucun rendement n’est garanti.</p></div></footer>
+  <dialog class="gallery-dialog" id="gallery-dialog" aria-labelledby="gallery-title"><div class="gallery-header"><h2 id="gallery-title">Les archives APOT</h2><button class="gallery-close" type="button" aria-label="Fermer l’archive"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div><div class="gallery-stage"><img id="gallery-image" alt="" width="1536" height="1024"></div><div class="gallery-footer"><button class="gallery-prev" type="button" aria-label="Image précédente"><svg aria-hidden="true"><use href="#i-arrow"/></svg></button><p id="gallery-caption" aria-live="polite"></p><button class="gallery-next" type="button" aria-label="Image suivante"><svg aria-hidden="true"><use href="#i-arrow"/></svg></button></div></dialog>
 </body>
 </html>

@@ -1,29 +1,41 @@
-# $APOT — Action Potential
+# $APOT — À l’origine du signal
 
-Site de présentation de $APOT : laboratoire analogique, photographie immersive, typographie condensée et accents vert acide. Version publique : https://enudimmud.github.io/APOT/.
+Site public : https://enudimmud.github.io/APOT/.
 
-## Fichiers du site
+## Direction artistique et parcours
 
-- `index.html` : page et contenus en français.
-- `styles.css` : styles adaptatifs pour mobile et ordinateur.
-- `script.js` : expérience interactive du signal, réglages des effets, son facultatif et ouverture de l’archive visuelle.
-- `assets/apot-coin.jpg` : illustration du token (environ 418 Kio).
-- `assets/apot-lab.webp` : visuel de laboratoire fourni pour la refonte, optimisé en WebP (environ 415 Kio).
-- `assets/fonts/` : Barlow Condensed et Space Grotesk, auto-hébergées, avec leurs licences SIL Open Font License.
-- `.nojekyll` : publication statique directe avec GitHub Pages.
+Refonte suivant les références du créateur : bleu nuit, ivoire, or discret, imagerie cérébrale et laboratoire analogique. Neuralink constitue la référence technologique et visuelle. APOT reste un projet indépendant, sans affiliation avec Neuralink ou Oxford University Press.
 
-Le site fonctionne sans dépendance, compilation, compte visiteur ou connexion de wallet. Les liens de navigation et le contenu restent disponibles sans JavaScript.
+Le simulateur, le compteur d’impulsions, les sons et le vert acide ont été retirés. Le parcours propose :
 
-## Expérience du signal
+- Un accueil avec une illustration cérébrale conceptuelle, explicitement identifiée comme telle.
+- Trois étapes documentées : émettre un potentiel d’action, enregistrer l’activité neuronale, traduire l’intention en commande. Les onglets répondent au clic, à Entrée/Espace et aux flèches ; Home/End accèdent aux extrémités.
+- Une section neuroanatomique avec un lien vers la démonstration officielle Sylvius 4 Online, présentée par Len White, environ 10 minutes, en anglais. La vidéo reste sur le lecteur de son éditeur ; elle n’est ni téléchargée ni réhébergée.
+- Une galerie des quatre références APOT du créateur. Navigation précédente/suivante, flèches du clavier, fermeture avec Échap, retour du focus au lien d’origine.
+- La configuration du token et des réponses sur le lien avec Neuralink et les frais.
 
-- Le bouton d’accueil déclenche une impulsion visuelle et incrémente un compteur propre à la session.
-- Le stimulus varie de 0 à 100. Le seuil de 60 est arbitraire et illustratif, sans unité biologique. En dessous, une petite perturbation s’atténue ; à partir du seuil, l’amplitude de l’impulsion reste constante (« tout ou rien »).
-- Le curseur se manipule au clavier ; Entrée ou le bouton « Stimuler » déclenchent l’expérience. Les résultats disposent d’un retour textuel accessible.
-- Le son est désactivé par défaut et activable explicitement. Aucun son n’est chargé depuis un service externe.
-- Les animations respectent `prefers-reduced-motion` et peuvent être coupées manuellement. Le canvas n’anime que pendant une impulsion visible ; il reste statique hors écran et lorsque l’onglet est masqué.
-- Les chiffres du token se déplient au clic ou au clavier. L’image s’ouvre dans une boîte de dialogue native, refermable avec Échap.
+Le menu s’adapte au mobile. Aucun défilement forcé, aucune animation répétitive, aucun son automatique. Les transitions respectent `prefers-reduced-motion`. Sans JavaScript, tous les articles restent visibles et les liens des images ouvrent leurs fichiers.
 
-L’expérience n’affiche aucune donnée de marché. Référence pédagogique : [Neuroscience, Electrical Potentials Across Nerve Cell Membranes, NCBI Bookshelf](https://www.ncbi.nlm.nih.gov/books/NBK11069/).
+## Sources et ressources
+
+| Ressource | Provenance / rôle |
+| --- | --- |
+| Technologie Neuralink | https://neuralink.com/technology/ — source principale sur l’enregistrement des potentiels d’action et le décodage des intentions motrices |
+| Potentiels électriques | https://www.ncbi.nlm.nih.gov/books/NBK11069/ — Neuroscience, Electrical Potentials Across Nerve Cell Membranes |
+| Sylvius 4 Online | https://learninglink.oup.com/access/sylvius — description de l’atlas, vues, coupes et glossaire |
+| Démonstration Sylvius | https://learninglink.oup.com/access/content/sylvius-instructor/sylvius-4-online-demo-video — lecteur officiel OUP |
+| `assets/apot-signal.webp` | Visuel 1000035568.jpg fourni par le créateur, conversion WebP |
+| `assets/apot-lab.webp` | Visuel 1000035567.png fourni par le créateur, conversion WebP |
+| `assets/apot-medallion.webp` | Visuel 1000035354.jpg fourni par le créateur, conversion WebP |
+| `assets/apot-profile.webp` | Visuel 1000035350.jpg fourni par le créateur, conversion WebP |
+| `assets/apot-cerebral.webp` | Illustration de marque générée avec l’outil de génération d’images intégré ; ce n’est pas une mesure clinique ni un atlas anatomique |
+| `assets/fonts/` | Space Grotesk auto-hébergée, licence SIL Open Font License fournie |
+
+Le seuil −55 mV appartient au visuel du créateur. La page précise qu’il s’agit d’un repère illustratif variable selon les cellules et les conditions.
+
+## Code
+
+`index.html`, `styles.css` et `script.js` sont servis directement par GitHub Pages depuis `main`. Aucun framework, dépendance, build, wallet, compte visiteur ou collecte de données. Les assets utilisent des chemins relatifs. `.nojekyll` préserve la publication statique directe.
 
 ## Configuration sélectionnée avant lancement
 
