@@ -1,53 +1,91 @@
 (() => {
   'use strict';
-  const root=document.documentElement;
+  const root = document.documentElement;
   root.classList.add('js');
-  const motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
-  const mobile=matchMedia('(max-width: 760px)');
-  const menu=document.querySelector('.menu-toggle'), nav=document.querySelector('#main-nav'), header=document.querySelector('.site-header');
-  function closeMenu(){nav.classList.remove('is-open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open menu');}
-  function syncMenu(){menu.hidden=!mobile.matches;closeMenu();}
-  menu.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';nav.classList.toggle('is-open',open);menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Close menu':'Open menu');});
-  nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMenu));
-  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&menu.getAttribute('aria-expanded')==='true'){closeMenu();menu.focus();}});
-  mobile.addEventListener('change',syncMenu);syncMenu();
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const mobile = matchMedia('(max-width: 760px)');
+  const menu = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('#main-nav');
+  const header = document.querySelector('.site-header');
+  const tablist = document.querySelector('[role=tablist]');
+  const motionButton = document.querySelector('.motion-toggle');
+  let paused = reduced.matches, manualMotion = false, scrollFrame = 0;
+  function closeMenu() {
+    nav.classList.remove('is-open');
+    menu.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-label', 'Open menu');
+  }
+  function syncMenu() {
+    menu.hidden = !mobile.matches;
+    tablist.setAttribute('aria-orientation', mobile.matches ? 'horizontal' : 'vertical');
+    closeMenu();
+  }
+  menu.addEventListener('click', () => {
+    const open = menu.getAttribute('aria-expanded') !== 'true';
+    nav.classList.toggle('is-open', open);
+    menu.setAttribute('aria-expanded', String(open));
+    menu.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') { closeMenu(); menu.focus(); }
+  });
+  mobile.addEventListener('change', syncMenu); syncMenu();
 
-  const track=document.querySelector('.hero-track'),stage=document.querySelector('.hero-stage'),intro=document.querySelector('.hero-intro'),reveal=document.querySelector('.hero-reveal'),progressBar=document.querySelector('.hero-progress span'),motionButton=document.querySelector('.motion-toggle');
-  let paused=motionPreference.matches,scrollFrame=0;
-  const clamp=value=>Math.min(1,Math.max(0,value));
-  function updateStory(){
-    scrollFrame=0;
-    header.classList.toggle('is-scrolled',window.scrollY>80);
-    const active=root.classList.contains('has-motion');
-    const distance=Math.max(1,track.offsetHeight-stage.offsetHeight);
-    const progress=active?clamp(-track.getBoundingClientRect().top/distance):0;
-    const fade=active?clamp((progress-.2)/.31):0;
-    const incoming=active?clamp((progress-.47)/.27):0;
-    intro.style.opacity=String(1-fade);intro.style.transform='translateY('+(-fade*28)+'px)';
-    reveal.style.opacity=String(incoming);reveal.style.transform='translateY('+((1-incoming)*26)+'px)';
-    const secondActive=incoming>.3;
-    reveal.classList.toggle('is-active',secondActive);reveal.inert=!secondActive;reveal.setAttribute('aria-hidden',String(!secondActive));
-    intro.inert=fade>.8;intro.setAttribute('aria-hidden',String(fade>.8));
-    progressBar.style.width=(progress*100)+'%';
-    if(window.APOTSignal)window.APOTSignal.setProgress(progress);
+  function syncMotion() {
+    root.dataset.motion = paused ? 'off' : 'on';
+    root.classList.toggle('motion-on', !paused);
+    root.classList.toggle('motion-off', paused);
+    motionButton.setAttribute('aria-pressed', String(!paused));
+    motionButton.querySelector('.motion-label').textContent = paused ? 'Play motion' : 'Pause motion';
+    motionButton.querySelector('.motion-icon').textContent = paused ? '▷' : 'Ⅱ';
+    window.LambdaSignal?.setPaused(paused);
   }
-  function queueStory(){if(!scrollFrame)scrollFrame=requestAnimationFrame(updateStory);}
-  function syncMotion(){
-    root.classList.toggle('has-motion',Boolean(window.APOTSignal)&&!motionPreference.matches);
-    motionButton.hidden=!window.APOTSignal||motionPreference.matches;
-    motionButton.setAttribute('aria-pressed',String(paused));
-    motionButton.querySelector('.motion-label').textContent=paused?'Resume motion':'Pause motion';
-    motionButton.querySelector('.pause-symbol').textContent=paused?'▷':'Ⅱ';
-    window.APOTSignal?.setPaused(paused);queueStory();
+  motionButton.addEventListener('click', () => { manualMotion = true; paused = !paused; syncMotion(); });
+  reduced.addEventListener('change', () => { if (!manualMotion) { paused = reduced.matches; syncMotion(); } });
+  syncMotion();
+  function updateScroll() {
+    scrollFrame = 0;
+    header.classList.toggle('is-scrolled', window.scrollY > 40);
+    window.LambdaSignal?.setScroll(Math.min(1, window.scrollY / Math.max(1, window.innerHeight)));
   }
-  motionButton.addEventListener('click',()=>{paused=!paused;syncMotion();});
-  motionPreference.addEventListener('change',()=>{paused=motionPreference.matches;syncMotion();});
-  window.addEventListener('scroll',queueStory,{passive:true});window.addEventListener('resize',queueStory,{passive:true});syncMotion();
+  window.addEventListener('scroll', () => { if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScroll); }, { passive: true });
+  updateScroll();
+
+  const reveals = document.querySelectorAll('[data-reveal]');
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('is-revealed'); observer.unobserve(entry.target); }
+    }), { threshold: .08 });
+    reveals.forEach(el => observer.observe(el));
+  } else reveals.forEach(el => el.classList.add('is-revealed'));
+
+  const tabs = [...document.querySelectorAll('[role=tab]')];
+  function selectTab(index, focus = false) {
+    tabs.forEach((tab, i) => {
+      const active = i === index;
+      tab.setAttribute('aria-selected', String(active));
+      tab.tabIndex = active ? 0 : -1;
+      document.getElementById(tab.getAttribute('aria-controls')).hidden = !active;
+    });
+    if (focus) tabs[index].focus({ preventScroll: true });
+  }
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => selectTab(index));
+    tab.addEventListener('keydown', event => {
+      let next;
+      if (event.key === 'ArrowDown' || event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+      if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (index + tabs.length - 1) % tabs.length;
+      if (event.key === 'Home') next = 0;
+      if (event.key === 'End') next = tabs.length - 1;
+      if (next !== undefined) { event.preventDefault(); selectTab(next, true); }
+    });
+  });
 
   const film=document.querySelector('#film-dialog'),filmFrame=film.querySelector('.film-frame');
   const gallery=document.querySelector('#gallery-dialog'),galleryImage=gallery.querySelector('#gallery-image'),galleryCaption=gallery.querySelector('#gallery-caption');
   const images=[
-    ['assets/apot-lab.webp','The laboratory','APOT’s signal emblem on an analog laboratory monitor.'],
+    ['assets/apot-lab.webp','The laboratory / original artwork','The original APOT signal emblem on an analog laboratory monitor.'],
     ['assets/apot-medallion.webp','The imprint','Front view of the gold and midnight-blue APOT medallion.'],
     ['assets/apot-signal.webp','The signal','The ivory APOT signal on midnight blue. The −55 mV label is an illustrative reference, not a universal threshold.'],
     ['assets/apot-profile.webp','The medallion','Three-quarter view of the APOT medallion.']

@@ -23,3 +23,11 @@ Motion reveals the continuity from signal to expression. It follows normal scrol
 The official Neuralink film uses an original typographic editorial cover with publisher attribution. The cover is native HTML/CSS and an abstract SVG line drawing; it is not a frame from the film or an image of Audrey. The original cube illustration introducing Alex's CAD work is labelled a conceptual study; it does not depict his actual charger mount. The Oxford resource opens at the publisher's site.
 
 All four supplied brand references are retained in the archive. The token medallion is used as a signature object. The user-provided community URL is https://x.com/APOTsignal.
+
+## λ edition — 29 September 2026
+
+The creator corrected the canonical spelling to **λP⊙T** and explicitly required **λP⊙T × NEURALINK PreStock** on the public page. A new vector wordmark makes lambda and the circled dot consistent even though the bundled text font lacks these glyphs. The original supplied archive images remain unaltered; the current token specimen is native vector/CSS artwork with the new wordmark.
+
+The visual hierarchy now gives the brand and pair immediate prominence. A full-width editorial field replaces separate cards with three source-backed exploration tabs. The palette stays midnight navy, ivory and restrained gold. The motion is no longer WebGL-dependent: Canvas 2D projects original 3D geometry, with a travelling impulse and visible camera breathing. The SVG/CSS fallback is animated too. No new raster artwork was generated.
+
+Motion can always be controlled, including a Play motion opt-in when the system requests reduced motion. The full page remains readable when motion is paused. Typographic reveals, editorial transitions and specimen movement support the existing content; no simulator, artificial financial data or invented project milestones are added.
