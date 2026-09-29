@@ -11,7 +11,7 @@ English only. A concise scientific and creative identity, with the token as the 
 
 - Static HTML, CSS, and JavaScript. GitHub Pages serves the repository root. No package install and no second framework.
 - The public wordmark is **λP⊙T**. The running header, the hero, and the access title show the exact line **APOT X NEURALINK Prestock**. The ticker stays **$APOT**, always reachable from the header.
-- The hero is a depth-sorted 3D filament drawn on canvas. Scroll through the opening study to orbit the bundle, raise the crest, and open the field. A no-canvas SVG trace remains, and its dash position follows the same scroll. Pause is a real control. Reduced motion starts paused and can be played.
+- The hero is a depth-sorted 3D filament drawn on canvas. It runs as a continuous idle loop; scroll only nudges the pose. The loop uses requestAnimationFrame, pauses when the tab is hidden or the hero is off screen, and starts paused when reduced motion is requested. Pause stops the loop. A no-canvas SVG trace keeps its own loop.
 - Copy is English and short. References: Neuralink’s Audrey film (opened on demand), Alex’s PRIME Study note, and the Sylvius 4 Online demo. Sylvius stays on Oxford University Press and is not embedded. The archive is keyboard operable. $APOT access uses the confirmed mint `GsUXfGLgAvfMKxiCUVoe8iNaMR4dqP5xBbXcD8BbAP4o`, with Jupiter as the buy link and the related Solscan account as the explorer.
 
 ## Sources

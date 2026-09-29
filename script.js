@@ -26,12 +26,6 @@
     spike: 'The crest becomes action.',
     field: 'The filament opens into a field.'
   };
-  const liveText = {
-    rest: 'Signal study. Rest.',
-    rise: 'Signal study. Rise.',
-    spike: 'Signal study. Spike.',
-    field: 'Signal study. Field.'
-  };
 
   function closeMenu() {
     nav.classList.remove('is-open');
@@ -91,23 +85,28 @@
     return 'field';
   }
 
+  function applyMetrics(metrics) {
+    const bucket = bucketFor(metrics.phase);
+    const name = bucket.toUpperCase();
+    if (phaseName.textContent !== name) phaseName.textContent = name;
+    if (studyLine.textContent !== buckets[bucket]) studyLine.textContent = buckets[bucket];
+    const orbit = `ORBIT ${metrics.orbit}°`;
+    if (orbitReadout.textContent !== orbit) orbitReadout.textContent = orbit;
+    phaseFill.style.transform = `scaleX(${metrics.phase.toFixed(3)})`;
+    if (bucket === lastBucket) return;
+    lastBucket = bucket;
+    phaseMarks.forEach(mark => mark.classList.toggle('is-active', mark.dataset.phase === bucket));
+  }
+
   function updateScroll() {
     scrollFrame = 0;
-    const total = Math.max(1, world.offsetHeight - window.innerHeight);
-    const progress = Math.min(1, Math.max(0, -world.getBoundingClientRect().top / total));
     header.classList.toggle('is-scrolled', window.scrollY > 24);
-    const metrics = window.LambdaSignal?.setScroll(progress) || { phase: progress, orbit: 0 };
-    const bucket = bucketFor(metrics.phase);
-    phaseName.textContent = bucket.toUpperCase();
-    studyLine.textContent = buckets[bucket];
-    orbitReadout.textContent = `ORBIT ${metrics.orbit}°`;
-    phaseFill.style.transform = `scaleX(${metrics.phase})`;
-    phaseMarks.forEach(mark => mark.classList.toggle('is-active', mark.dataset.phase === bucket));
-    if (bucket !== lastBucket) {
-      lastBucket = bucket;
-      phaseLive.textContent = liveText[bucket];
-    }
+    const traveled = -world.getBoundingClientRect().top / Math.max(window.innerHeight, 1);
+    window.LambdaSignal?.setScroll(Math.min(1, Math.max(0, traveled)));
   }
+
+  phaseLive.textContent = 'The filament turns on its own. Pause stops the motion.';
+  window.LambdaSignal?.onMetrics(applyMetrics);
 
   window.addEventListener('scroll', () => {
     if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScroll);
