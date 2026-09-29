@@ -24,6 +24,10 @@ The official Neuralink film uses an original typographic editorial cover with pu
 
 All four supplied brand references are retained in the archive. The token medallion is used as a signature object. The user-provided community URL is https://x.com/APOTsignal.
 
+## Signal study — 29 September 2026
+
+The page stays on the static GitHub Pages stack. The opening is a scroll-linked filament: a projected bundle, gold rings, and an ivory crest. Scroll is the pose. Time only drifts the impulse. The mandatory pair line is set in the running header, the hero, and the access title as `APOT X NEURALINK Prestock`. The wordmark remains λP⊙T. No new raster artwork. The medallion photograph replaces the earlier CSS coin. Sylvius is linked, not embedded.
+
 ## λ edition — 29 September 2026
 
 The creator corrected the canonical spelling to **λP⊙T** and explicitly required **λP⊙T × NEURALINK PreStock** on the public page. A new vector wordmark makes lambda and the circled dot consistent even though the bundled text font lacks these glyphs. The original supplied archive images remain unaltered; the current token specimen is native vector/CSS artwork with the new wordmark.

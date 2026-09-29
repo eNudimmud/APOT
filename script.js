@@ -7,59 +7,131 @@
   const menu = document.querySelector('.menu-toggle');
   const nav = document.querySelector('#main-nav');
   const header = document.querySelector('.site-header');
-  const tablist = document.querySelector('[role=tablist]');
+  const world = document.querySelector('.signal-world');
   const motionButton = document.querySelector('.motion-toggle');
-  let paused = reduced.matches, manualMotion = false, scrollFrame = 0;
+  const phaseLive = document.querySelector('#phase-live');
+  const studyLine = document.querySelector('#study-line');
+  const phaseName = document.querySelector('#phase-name');
+  const orbitReadout = document.querySelector('#orbit-readout');
+  const phaseFill = document.querySelector('#phase-fill');
+  const phaseMarks = [...document.querySelectorAll('[data-phase]')];
+  let paused = reduced.matches;
+  let manualMotion = false;
+  let scrollFrame = 0;
+  let lastBucket = '';
+
+  const buckets = {
+    rest: 'Quiet, before the impulse.',
+    rise: 'Potential gathers along the line.',
+    spike: 'The crest becomes action.',
+    field: 'The filament opens into a field.'
+  };
+  const liveText = {
+    rest: 'Signal study. Rest.',
+    rise: 'Signal study. Rise.',
+    spike: 'Signal study. Spike.',
+    field: 'Signal study. Field.'
+  };
+
   function closeMenu() {
     nav.classList.remove('is-open');
     menu.setAttribute('aria-expanded', 'false');
     menu.setAttribute('aria-label', 'Open menu');
   }
+
   function syncMenu() {
     menu.hidden = !mobile.matches;
-    tablist.setAttribute('aria-orientation', mobile.matches ? 'horizontal' : 'vertical');
     closeMenu();
   }
+
   menu.addEventListener('click', () => {
     const open = menu.getAttribute('aria-expanded') !== 'true';
     nav.classList.toggle('is-open', open);
     menu.setAttribute('aria-expanded', String(open));
     menu.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (open) nav.querySelector('a')?.focus();
   });
   nav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') { closeMenu(); menu.focus(); }
+    if (event.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') {
+      closeMenu();
+      menu.focus();
+    }
   });
-  mobile.addEventListener('change', syncMenu); syncMenu();
+  mobile.addEventListener('change', syncMenu);
+  syncMenu();
 
   function syncMotion() {
     root.dataset.motion = paused ? 'off' : 'on';
     root.classList.toggle('motion-on', !paused);
     root.classList.toggle('motion-off', paused);
     motionButton.setAttribute('aria-pressed', String(!paused));
-    motionButton.querySelector('.motion-label').textContent = paused ? 'Play motion' : 'Pause motion';
+    motionButton.querySelector('.motion-label').textContent = paused ? 'Play' : 'Pause';
+    motionButton.setAttribute('aria-label', paused ? 'Play motion' : 'Pause motion');
     motionButton.querySelector('.motion-icon').textContent = paused ? '▷' : 'Ⅱ';
     window.LambdaSignal?.setPaused(paused);
   }
-  motionButton.addEventListener('click', () => { manualMotion = true; paused = !paused; syncMotion(); });
-  reduced.addEventListener('change', () => { if (!manualMotion) { paused = reduced.matches; syncMotion(); } });
+  motionButton.addEventListener('click', () => {
+    manualMotion = true;
+    paused = !paused;
+    syncMotion();
+  });
+  reduced.addEventListener('change', () => {
+    if (!manualMotion) {
+      paused = reduced.matches;
+      syncMotion();
+    }
+  });
   syncMotion();
+
+  function bucketFor(progress) {
+    if (progress < 0.25) return 'rest';
+    if (progress < 0.5) return 'rise';
+    if (progress < 0.75) return 'spike';
+    return 'field';
+  }
+
   function updateScroll() {
     scrollFrame = 0;
-    header.classList.toggle('is-scrolled', window.scrollY > 40);
-    window.LambdaSignal?.setScroll(Math.min(1, window.scrollY / Math.max(1, window.innerHeight)));
+    const total = Math.max(1, world.offsetHeight - window.innerHeight);
+    const progress = Math.min(1, Math.max(0, -world.getBoundingClientRect().top / total));
+    header.classList.toggle('is-scrolled', window.scrollY > 24);
+    const metrics = window.LambdaSignal?.setScroll(progress) || { phase: progress, orbit: 0 };
+    const bucket = bucketFor(metrics.phase);
+    phaseName.textContent = bucket.toUpperCase();
+    studyLine.textContent = buckets[bucket];
+    orbitReadout.textContent = `ORBIT ${metrics.orbit}°`;
+    phaseFill.style.transform = `scaleX(${metrics.phase})`;
+    phaseMarks.forEach(mark => mark.classList.toggle('is-active', mark.dataset.phase === bucket));
+    if (bucket !== lastBucket) {
+      lastBucket = bucket;
+      phaseLive.textContent = liveText[bucket];
+    }
   }
-  window.addEventListener('scroll', () => { if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScroll); }, { passive: true });
+
+  window.addEventListener('scroll', () => {
+    if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScroll);
+  }, { passive: true });
+  window.addEventListener('resize', () => {
+    if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScroll);
+  }, { passive: true });
   updateScroll();
 
   const reveals = document.querySelectorAll('[data-reveal]');
   if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-      if (entry.isIntersecting) { entry.target.classList.add('is-revealed'); observer.unobserve(entry.target); }
-    }), { threshold: .08 });
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-revealed');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12 });
     reveals.forEach(el => observer.observe(el));
-  } else reveals.forEach(el => el.classList.add('is-revealed'));
+  } else {
+    reveals.forEach(el => el.classList.add('is-revealed'));
+  }
 
+  const tablist = document.querySelector('[role=tablist]');
   const tabs = [...document.querySelectorAll('[role=tab]')];
   function selectTab(index, focus = false) {
     tabs.forEach((tab, i) => {
@@ -68,6 +140,7 @@
       tab.tabIndex = active ? 0 : -1;
       document.getElementById(tab.getAttribute('aria-controls')).hidden = !active;
     });
+    tablist.setAttribute('aria-orientation', mobile.matches ? 'horizontal' : 'vertical');
     if (focus) tabs[index].focus({ preventScroll: true });
   }
   tabs.forEach((tab, index) => {
@@ -78,41 +151,86 @@
       if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (index + tabs.length - 1) % tabs.length;
       if (event.key === 'Home') next = 0;
       if (event.key === 'End') next = tabs.length - 1;
-      if (next !== undefined) { event.preventDefault(); selectTab(next, true); }
+      if (next === undefined) return;
+      event.preventDefault();
+      selectTab(next, true);
     });
   });
+  mobile.addEventListener('change', () => selectTab(tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true')));
 
-  const film=document.querySelector('#film-dialog'),filmFrame=film.querySelector('.film-frame');
-  const gallery=document.querySelector('#gallery-dialog'),galleryImage=gallery.querySelector('#gallery-image'),galleryCaption=gallery.querySelector('#gallery-caption');
-  const images=[
-    ['assets/apot-lab.webp','The laboratory / original artwork','The original APOT signal emblem on an analog laboratory monitor.'],
-    ['assets/apot-medallion.webp','The imprint','Front view of the gold and midnight-blue APOT medallion.'],
-    ['assets/apot-signal.webp','The signal','The ivory APOT signal on midnight blue. The −55 mV label is an illustrative reference, not a universal threshold.'],
-    ['assets/apot-profile.webp','The medallion','Three-quarter view of the APOT medallion.']
+  const film = document.querySelector('#film-dialog');
+  const filmFrame = film.querySelector('.film-frame');
+  const gallery = document.querySelector('#gallery-dialog');
+  const galleryImage = gallery.querySelector('#gallery-image');
+  const galleryCaption = gallery.querySelector('#gallery-caption');
+  const images = [
+    ['assets/apot-lab.webp', 'The laboratory', 'Original emblem on an analog laboratory monitor.'],
+    ['assets/apot-medallion.webp', 'The medallion', 'Front view of the gold and midnight-blue medallion.'],
+    ['assets/apot-signal.webp', 'The signal plate', 'Ivory signal line on midnight blue. The voltage mark is illustrative, not a measured threshold.'],
+    ['assets/apot-profile.webp', 'The profile', 'Three-quarter view of the medallion.']
   ];
-  let galleryIndex=0,dialogTrigger=null;
-  function openDialog(dialog,trigger){dialogTrigger=trigger;dialog.showModal();document.body.classList.add('modal-open');}
-  function updateGallery(){const [src,label,alt]=images[galleryIndex];galleryImage.src=src;galleryImage.alt=alt;galleryCaption.textContent=String(galleryIndex+1).padStart(2,'0')+' / 04 — '+label;}
-  function stepGallery(delta){galleryIndex=(galleryIndex+delta+images.length)%images.length;updateGallery();}
-  if(typeof film.showModal==='function'){
-    document.querySelectorAll('[data-film]').forEach(link=>link.addEventListener('click',event=>{
-      if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+  let galleryIndex = 0;
+  let dialogTrigger = null;
+
+  function openDialog(dialog, trigger) {
+    dialogTrigger = trigger;
+    dialog.showModal();
+    document.body.classList.add('modal-open');
+  }
+
+  function updateGallery() {
+    const [src, label, alt] = images[galleryIndex];
+    galleryImage.src = src;
+    galleryImage.alt = alt;
+    galleryCaption.textContent = `${String(galleryIndex + 1).padStart(2, '0')} / 04 — ${label}`;
+  }
+
+  function stepGallery(delta) {
+    galleryIndex = (galleryIndex + delta + images.length) % images.length;
+    updateGallery();
+  }
+
+  if (typeof film.showModal === 'function') {
+    document.querySelectorAll('[data-film]').forEach(link => link.addEventListener('click', event => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
-      const player=document.createElement('iframe');
-      player.src='https://www.youtube-nocookie.com/embed/5hYg3rUfLiQ?autoplay=1&rel=0&hl=en&cc_lang_pref=en';
-      player.title='Creating Art With The Mind — Neuralink';player.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';player.allowFullscreen=true;player.referrerPolicy='strict-origin-when-cross-origin';
-      filmFrame.replaceChildren(player);openDialog(film,link);
+      const player = document.createElement('iframe');
+      player.src = 'https://www.youtube-nocookie.com/embed/5hYg3rUfLiQ?autoplay=1&rel=0&hl=en&cc_lang_pref=en';
+      player.title = 'Creating Art With The Mind — Neuralink';
+      player.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      player.allowFullscreen = true;
+      player.referrerPolicy = 'strict-origin-when-cross-origin';
+      filmFrame.replaceChildren(player);
+      openDialog(film, link);
     }));
-    document.querySelectorAll('[data-gallery]').forEach(link=>link.addEventListener('click',event=>{
-      if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
-      event.preventDefault();galleryIndex=Number(link.dataset.gallery);updateGallery();openDialog(gallery,link);
+    document.querySelectorAll('[data-gallery]').forEach(link => link.addEventListener('click', event => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      galleryIndex = Number(link.dataset.gallery);
+      updateGallery();
+      openDialog(gallery, link);
+      gallery.querySelector('.gallery-next').focus();
     }));
-    [film,gallery].forEach(dialog=>{
-      dialog.querySelector('.dialog-close').addEventListener('click',()=>dialog.close());
-      dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const rect=dialog.getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)dialog.close();});
-      dialog.addEventListener('close',()=>{if(dialog===film)filmFrame.replaceChildren();document.body.classList.remove('modal-open');dialogTrigger?.focus({preventScroll:true});});
+    [film, gallery].forEach(dialog => {
+      dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
+      dialog.addEventListener('click', event => {
+        if (event.target !== dialog) return;
+        const rect = dialog.getBoundingClientRect();
+        const inside = event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
+        if (!inside) dialog.close();
+      });
+      dialog.addEventListener('close', () => {
+        if (dialog === film) filmFrame.replaceChildren();
+        document.body.classList.remove('modal-open');
+        dialogTrigger?.focus({ preventScroll: true });
+      });
     });
-    gallery.querySelector('.gallery-prev').addEventListener('click',()=>stepGallery(-1));gallery.querySelector('.gallery-next').addEventListener('click',()=>stepGallery(1));
-    gallery.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();stepGallery(event.key==='ArrowLeft'?-1:1);}});
+    gallery.querySelector('.gallery-prev').addEventListener('click', () => stepGallery(-1));
+    gallery.querySelector('.gallery-next').addEventListener('click', () => stepGallery(1));
+    gallery.addEventListener('keydown', event => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      stepGallery(event.key === 'ArrowLeft' ? -1 : 1);
+    });
   }
 })();
