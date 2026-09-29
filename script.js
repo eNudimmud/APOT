@@ -233,4 +233,48 @@
       stepGallery(event.key === 'ArrowLeft' ? -1 : 1);
     });
   }
+
+  const mintToggle = document.querySelector('.mint-address');
+  const mintCopy = document.querySelector('.mint-copy');
+  if (mintToggle) {
+    mintToggle.addEventListener('click', () => {
+      const open = mintToggle.getAttribute('aria-expanded') === 'true';
+      mintToggle.setAttribute('aria-expanded', String(!open));
+    });
+  }
+  if (mintCopy) {
+    const status = mintCopy.querySelector('.mint-action');
+    mintCopy.addEventListener('click', async () => {
+      const value = mintCopy.getAttribute('data-copy');
+      try {
+        await copyText(value);
+        mintCopy.classList.add('is-copied');
+        status.textContent = 'Copied';
+        window.setTimeout(() => {
+          mintCopy.classList.remove('is-copied');
+          status.textContent = 'Copy';
+        }, 1600);
+      } catch {
+        if (mintToggle) mintToggle.setAttribute('aria-expanded', 'true');
+        status.textContent = 'Select';
+      }
+    });
+  }
+
+  function copyText(value) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(value);
+    return new Promise((resolve, reject) => {
+      const area = document.createElement('textarea');
+      area.value = value;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.append(area);
+      area.select();
+      const ok = document.execCommand('copy');
+      area.remove();
+      if (ok) resolve();
+      else reject(new Error('copy failed'));
+    });
+  }
 })();

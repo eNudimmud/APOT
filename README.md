@@ -12,7 +12,7 @@ English only. A concise scientific and creative identity, with the token as the 
 - Static HTML, CSS, and JavaScript. GitHub Pages serves the repository root. No package install and no second framework.
 - The public wordmark is **λP⊙T**. The running header, the hero, and the access title show the exact line **APOT X NEURALINK Prestock**. The ticker stays **$APOT**, always reachable from the header.
 - The hero is a depth-sorted 3D filament drawn on canvas. Scroll through the opening study to orbit the bundle, raise the crest, and open the field. A no-canvas SVG trace remains, and its dash position follows the same scroll. Pause is a real control. Reduced motion starts paused and can be played.
-- Copy is English and short. References: Neuralink’s Audrey film (opened on demand), Alex’s PRIME Study note, and the Sylvius 4 Online demo. Sylvius stays on Oxford University Press and is not embedded. The archive is keyboard operable. StonkFun stays a generic link until a mint address is confirmed.
+- Copy is English and short. References: Neuralink’s Audrey film (opened on demand), Alex’s PRIME Study note, and the Sylvius 4 Online demo. Sylvius stays on Oxford University Press and is not embedded. The archive is keyboard operable. $APOT access uses the confirmed mint `GsUXfGLgAvfMKxiCUVoe8iNaMR4dqP5xBbXcD8BbAP4o`, with Jupiter as the buy link and the related Solscan account as the explorer.
 
 ## Sources
 
@@ -60,4 +60,4 @@ La taxe de transfert de 1 % est distincte des frais de trading de 1,25 %. Leur p
 
 ## Token configuration updates
 
-The setup below is a record of the creator's prelaunch screenshots. Verify the actual contract before turning the generic StonkFun link into a token-specific purchase link. The creator subsequently requested explicit public display of the NEURALINK PreStock pair. The pairing is now shown prominently; it does not announce a partnership. Contract-level verification is still pending.
+The creator confirmed the mint `GsUXfGLgAvfMKxiCUVoe8iNaMR4dqP5xBbXcD8BbAP4o` (Action Potential / $APOT). The access section shows that address, links to [Jupiter](https://jup.ag/tokens/GsUXfGLgAvfMKxiCUVoe8iNaMR4dqP5xBbXcD8BbAP4o) for the swap, and links to the related [Solscan account](https://solscan.io/account/EV9iJQTEK3rwoKGvG5N4qh4CMwi727SJAjiKz1H9vZH4). StonkFun’s public token index returned no pool for this mint (`GET /api/public/v1/tokens/{mint}` → not found; the Open Graph card says “Token not found”), so the generic StonkFun homepage is no longer the buy link. The NEURALINK Prestock pair stays on the page as the creator’s quote pair; it does not announce a partnership. Supply, tax, and fee figures remain the pre-launch notes in the table above.
