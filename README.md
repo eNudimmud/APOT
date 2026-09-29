@@ -7,16 +7,12 @@ Community: https://x.com/APOTsignal
 
 English only. A concise scientific and creative identity, with the token as the main conversion goal. Community participation is open to everyone; holding APOT is optional. Future steps and collaborations are left open. Neuralink is an editorial reference, not the identity of APOT or an announced partner.
 
-## Experience — λ edition, 29 September 2026
+## Experience — signal study, 29 September 2026
 
-- The brand is written **λP⊙T**. The navigation, hero and footer use a custom vector wordmark with a lambda and a single circled dot; the technical token ticker remains `$APOT`. Original supplied artwork is kept intact in the clearly labelled archive.
-- **λP⊙T × NEURALINK PreStock** is visible in the hero and in a dedicated pair section, as requested by the creator. It describes the quote-token pairing on StonkFun, not an announced corporate partnership. Future collaborations remain unspecified.
-- The original 3D filament geometry is now projected in Canvas 2D on all devices. A visible impulse traverses the sculpture every 5.2 seconds, with continuous rotation and breathing. This is abstract brand artwork, not physiological data or a simulator.
-- A CSS-animated vector signal remains available without canvas. Rendering stops offscreen or in a hidden tab. Reduced-motion preferences are respected initially, but the Play motion control always remains accessible and can explicitly enable motion.
-- The old WebGL-only failure cases, slow 29-second pulse and hidden reduced-motion control have been removed. The hero is immediate and does not require scrolling or hovering to move.
-- Three keyboard-accessible exploration tabs connect art, CAD and neuroanatomy to their attributed primary sources. The official Neuralink film opens only on demand, with a direct YouTube link.
-- Community links use the creator-confirmed @APOTsignal account. Participation is open; token holding is optional. The four original visual references remain in an accessible archive.
-- The pair details retain the prelaunch configuration and its verification status. No contract address, token-specific trading URL, price, holder count or community creation is invented.
+- Static HTML, CSS, and JavaScript. GitHub Pages serves the repository root. No package install and no second framework.
+- The public wordmark is **λP⊙T**. The running header, the hero, and the access title show the exact line **APOT X NEURALINK Prestock**. The ticker stays **$APOT**, always reachable from the header.
+- The hero is a depth-sorted 3D filament drawn on canvas. Scroll through the opening study to orbit the bundle, raise the crest, and open the field. A no-canvas SVG trace remains, and its dash position follows the same scroll. Pause is a real control. Reduced motion starts paused and can be played.
+- Copy is English and short. References: Neuralink’s Audrey film (opened on demand), Alex’s PRIME Study note, and the Sylvius 4 Online demo. Sylvius stays on Oxford University Press and is not embedded. The archive is keyboard operable. StonkFun stays a generic link until a mint address is confirmed.
 
 ## Sources
 
@@ -32,7 +28,7 @@ The Neuralink film is an account of clinical trial participants, not a general c
 
 ## Build and hosting
 
-Static HTML, CSS and JavaScript served by GitHub Pages from main. No package install or build step. `signal.js` contains the original Canvas 2D projection; `script.js` handles navigation, scroll composition, the film and the archive. Fonts are self-hosted under their existing SIL OFL licenses. No wallet connection, transaction, form submission or analytics. YouTube is loaded only on request. The film uses an original typographic editorial cover, so the page does not depend on a third-party thumbnail. The fixed navigation keeps the token accessible throughout the page.
+Static HTML, CSS and JavaScript served by GitHub Pages from the default branch (`main`) at https://enudimmud.github.io/APOT/. A pull request is not what Pages publishes. To preview a branch, check it out and run `python3 -m http.server` from the repository root. Relative paths match the `/APOT/` base. No package install or build step. `signal.js` contains the original Canvas 2D projection; `script.js` handles navigation, scroll composition, the film and the archive. Fonts are self-hosted under their existing SIL OFL licenses. No wallet connection, transaction, form submission or analytics. YouTube is loaded only on request. The film uses an original typographic editorial cover, so the page does not depend on a third-party thumbnail. The fixed navigation keeps the token accessible throughout the page.
 
 Use relative paths to preserve compatibility with the /APOT/ base path. Keep `.nojekyll` in the root. Existing images are reused without modifying their artwork.
 
