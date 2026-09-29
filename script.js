@@ -26,12 +26,6 @@
     spike: 'The crest becomes action.',
     field: 'The filament opens into a field.'
   };
-  const liveText = {
-    rest: 'Signal study. Rest.',
-    rise: 'Signal study. Rise.',
-    spike: 'Signal study. Spike.',
-    field: 'Signal study. Field.'
-  };
 
   function closeMenu() {
     nav.classList.remove('is-open');
@@ -91,23 +85,28 @@
     return 'field';
   }
 
+  function applyMetrics(metrics) {
+    const bucket = bucketFor(metrics.phase);
+    const name = bucket.toUpperCase();
+    if (phaseName.textContent !== name) phaseName.textContent = name;
+    if (studyLine.textContent !== buckets[bucket]) studyLine.textContent = buckets[bucket];
+    const orbit = `ORBIT ${metrics.orbit}°`;
+    if (orbitReadout.textContent !== orbit) orbitReadout.textContent = orbit;
+    phaseFill.style.transform = `scaleX(${metrics.phase.toFixed(3)})`;
+    if (bucket === lastBucket) return;
+    lastBucket = bucket;
+    phaseMarks.forEach(mark => mark.classList.toggle('is-active', mark.dataset.phase === bucket));
+  }
+
   function updateScroll() {
     scrollFrame = 0;
-    const total = Math.max(1, world.offsetHeight - window.innerHeight);
-    const progress = Math.min(1, Math.max(0, -world.getBoundingClientRect().top / total));
     header.classList.toggle('is-scrolled', window.scrollY > 24);
-    const metrics = window.LambdaSignal?.setScroll(progress) || { phase: progress, orbit: 0 };
-    const bucket = bucketFor(metrics.phase);
-    phaseName.textContent = bucket.toUpperCase();
-    studyLine.textContent = buckets[bucket];
-    orbitReadout.textContent = `ORBIT ${metrics.orbit}°`;
-    phaseFill.style.transform = `scaleX(${metrics.phase})`;
-    phaseMarks.forEach(mark => mark.classList.toggle('is-active', mark.dataset.phase === bucket));
-    if (bucket !== lastBucket) {
-      lastBucket = bucket;
-      phaseLive.textContent = liveText[bucket];
-    }
+    const traveled = -world.getBoundingClientRect().top / Math.max(window.innerHeight, 1);
+    window.LambdaSignal?.setScroll(Math.min(1, Math.max(0, traveled)));
   }
+
+  phaseLive.textContent = 'The filament turns on its own. Pause stops the motion.';
+  window.LambdaSignal?.onMetrics(applyMetrics);
 
   window.addEventListener('scroll', () => {
     if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScroll);
@@ -231,6 +230,50 @@
       if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
       event.preventDefault();
       stepGallery(event.key === 'ArrowLeft' ? -1 : 1);
+    });
+  }
+
+  const mintToggle = document.querySelector('.mint-address');
+  const mintCopy = document.querySelector('.mint-copy');
+  if (mintToggle) {
+    mintToggle.addEventListener('click', () => {
+      const open = mintToggle.getAttribute('aria-expanded') === 'true';
+      mintToggle.setAttribute('aria-expanded', String(!open));
+    });
+  }
+  if (mintCopy) {
+    const status = mintCopy.querySelector('.mint-action');
+    mintCopy.addEventListener('click', async () => {
+      const value = mintCopy.getAttribute('data-copy');
+      try {
+        await copyText(value);
+        mintCopy.classList.add('is-copied');
+        status.textContent = 'Copied';
+        window.setTimeout(() => {
+          mintCopy.classList.remove('is-copied');
+          status.textContent = 'Copy';
+        }, 1600);
+      } catch {
+        if (mintToggle) mintToggle.setAttribute('aria-expanded', 'true');
+        status.textContent = 'Select';
+      }
+    });
+  }
+
+  function copyText(value) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(value);
+    return new Promise((resolve, reject) => {
+      const area = document.createElement('textarea');
+      area.value = value;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.append(area);
+      area.select();
+      const ok = document.execCommand('copy');
+      area.remove();
+      if (ok) resolve();
+      else reject(new Error('copy failed'));
     });
   }
 })();

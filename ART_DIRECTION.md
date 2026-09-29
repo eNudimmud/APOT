@@ -26,7 +26,7 @@ All four supplied brand references are retained in the archive. The token medall
 
 ## Signal study — 29 September 2026
 
-The page stays on the static GitHub Pages stack. The opening is a scroll-linked filament: a projected bundle, gold rings, and an ivory crest. Scroll is the pose. Time only drifts the impulse. The mandatory pair line is set in the running header, the hero, and the access title as `APOT X NEURALINK Prestock`. The wordmark remains λP⊙T. No new raster artwork. The medallion photograph replaces the earlier CSS coin. Sylvius is linked, not embedded.
+The page stays on the static GitHub Pages stack. The opening is an idle-loop filament: a projected bundle, gold rings, and an ivory crest. Time is the pose. Scroll only nudges it. The mandatory pair line is set in the running header, the hero, and the access title as `APOT X NEURALINK Prestock`. The wordmark remains λP⊙T. No new raster artwork. The medallion photograph replaces the earlier CSS coin. Sylvius is linked, not embedded.
 
 ## λ edition — 29 September 2026
 
