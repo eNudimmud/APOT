@@ -22,9 +22,10 @@
 
   const buckets = {
     rest: 'Quiet, before the impulse.',
-    rise: 'Potential gathers along the line.',
-    spike: 'The crest becomes action.',
-    field: 'The filament opens into a field.'
+    rise: 'Potential builds.',
+    spike: 'A signal emerges.',
+    field: 'The network responds.',
+    signature: 'A stable pattern. Yours.'
   };
 
   function closeMenu() {
@@ -64,6 +65,7 @@
     motionButton.setAttribute('aria-label', paused ? 'Play motion' : 'Pause motion');
     motionButton.querySelector('.motion-icon').textContent = paused ? '▷' : 'Ⅱ';
     window.LambdaSignal?.setPaused(paused);
+    window.ApotStage?.setPaused(paused);
   }
   motionButton.addEventListener('click', () => {
     manualMotion = true;
@@ -79,10 +81,11 @@
   syncMotion();
 
   function bucketFor(progress) {
-    if (progress < 0.25) return 'rest';
-    if (progress < 0.5) return 'rise';
-    if (progress < 0.75) return 'spike';
-    return 'field';
+    if (progress < 0.2) return 'rest';
+    if (progress < 0.4) return 'rise';
+    if (progress < 0.6) return 'spike';
+    if (progress < 0.8) return 'field';
+    return 'signature';
   }
 
   function applyMetrics(metrics) {

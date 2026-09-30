@@ -14,6 +14,19 @@ English only. A concise scientific and creative identity, with the token as the 
 - The hero is a depth-sorted 3D filament drawn on canvas. It runs as a continuous idle loop; scroll only nudges the pose. The loop uses requestAnimationFrame, pauses when the tab is hidden or the hero is off screen, and starts paused when reduced motion is requested. Pause stops the loop. A no-canvas SVG trace keeps its own loop.
 - Copy is English and short. References: Neuralink’s Audrey film (opened on demand), Alex’s PRIME Study note, and the Sylvius 4 Online demo. Sylvius stays on Oxford University Press and is not embedded. The archive is keyboard operable. $APOT access uses the confirmed mint `GsUXfGLgAvfMKxiCUVoe8iNaMR4dqP5xBbXcD8BbAP4o`, with Jupiter as the buy link and the related Solscan account as the explorer.
 
+## Signal signature
+
+A visitor can generate a personal signature in the browser. No account, wallet, or token is required. One seed writes four graphic parameters, the waveform, the network, the λ-ID, and both PNG exports. The same seed always rebuilds the same result. Phase 4, optional X identity linking, is not on this page.
+
+Try it locally with `python3 -m http.server` from the repository root:
+
+1. Open the site and choose **Generate your signal**, or **Generate signal** in `05 / SIGNATURE`.
+2. Copy the eight-character seed, then **Restore signal** and enter it again. The λ-ID, parameters, curve, and network return.
+3. **Download PFP** (1:1) and **Download banner** (3:1). Both are drawn from the seed on an offscreen canvas.
+4. **Share signal** opens an X compose window with prefilled text. It does not post.
+
+The deterministic fixture is seed `7F2A91C4` (λ-7F2A). Check it with `node signature-check.js`.
+
 ## Sources
 
 | Editorial reference | Source |
