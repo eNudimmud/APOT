@@ -21,8 +21,9 @@
   const generateButton = document.querySelector('#generate-signal');
   const exportPfp = document.querySelector('#export-pfp');
   const exportBanner = document.querySelector('#export-banner');
-  const portraitInput = document.querySelector('#portrait-input');
-  const portraitPick = document.querySelector('.portrait-pick');
+  const xConnect = document.querySelector('#x-connect');
+  const xDisconnect = document.querySelector('#x-disconnect');
+  const xAccount = document.querySelector('#x-account');
   const portraitNote = document.querySelector('#portrait-note');
   const portraitPreview = document.querySelector('#portrait-preview');
   const portraitWrap = document.querySelector('.portrait-preview');
@@ -44,6 +45,7 @@
   let current = null;
   let exporting = false;
   let portrait = null;
+  let xUser = '';
   let opacity = 0.45;
   const overlayCache = new Map();
   const PFP_SIZE = 1440;
@@ -608,7 +610,7 @@
     syncPortraitControls();
     if (portrait) void refreshPreview();
     if (live) {
-      live.textContent = sig.lambdaId + '. Resting ' + formatMv(sig.resting) + '. Threshold ' + formatMv(sig.threshold) + '. Amplitude ' + formatMv(sig.amplitude) + '. Frequency ' + formatHz(sig.frequency) + '. Generated locally. Not a recording.';
+      live.textContent = sig.lambdaId + '. Resting ' + formatMv(sig.resting) + '. Threshold ' + formatMv(sig.threshold) + '. Amplitude ' + formatMv(sig.amplitude) + '. Frequency ' + formatHz(sig.frequency) + '. Drawn in this browser. Not a recording.';
     }
     markArchive(sig.seed);
     fillAlgorithm(sig);
@@ -635,12 +637,10 @@
     return fontReady;
   }
 
-  function readPortrait(file) {
-    if (typeof createImageBitmap === 'function') {
-      return createImageBitmap(file, { imageOrientation: 'from-image' }).catch(() => createImageBitmap(file));
-    }
+  function loadBitmap(blob) {
+    if (typeof createImageBitmap === 'function') return createImageBitmap(blob);
     return new Promise((resolve, reject) => {
-      const url = URL.createObjectURL(file);
+      const url = URL.createObjectURL(blob);
       const img = new Image();
       img.onload = () => {
         URL.revokeObjectURL(url);
@@ -652,6 +652,14 @@
       };
       img.src = url;
     });
+  }
+
+  function noteIdle() {
+    return 'A profile image needs an X sign-in. Connect reads your avatar only. The signal is still drawn in this browser. Nothing is posted.';
+  }
+
+  function noteReady(username) {
+    return 'Signed in as @' + username + '. Your X avatar is the base. The signature is drawn in this browser. Nothing is posted.';
   }
 
   function drawCover(ctx, image, size) {
@@ -732,7 +740,7 @@
     const ctx = portraitPreview.getContext('2d');
     if (!ctx) return;
     paintComposite(ctx, PREVIEW_SIZE);
-    portraitPreview.setAttribute('aria-label', 'Preview of your photo with ' + current.lambdaId + ' at ' + Math.round(opacity * 100) + ' percent opacity');
+    portraitPreview.setAttribute('aria-label', 'Preview of @' + xUser + ' with ' + current.lambdaId + ' at ' + Math.round(opacity * 100) + ' percent opacity');
   }
 
   async function refreshPreview() {
@@ -741,14 +749,28 @@
     paintPreview();
   }
 
+  function clearPortrait() {
+    if (portrait && typeof portrait.close === 'function') portrait.close();
+    portrait = null;
+    xUser = '';
+    if (xAccount) {
+      xAccount.hidden = true;
+      xAccount.textContent = '';
+    }
+    if (portraitWrap) portraitWrap.hidden = true;
+    if (portraitNote) portraitNote.textContent = noteIdle();
+    syncPortraitControls();
+  }
+
   function syncPortraitControls() {
-    const ready = Boolean(current && portrait);
+    const ready = Boolean(current && portrait && xUser);
     if (exportPfp) {
       exportPfp.disabled = !ready;
-      exportPfp.setAttribute('aria-label', ready ? 'Download PFP for ' + current.lambdaId : 'Add a photo before downloading a PFP');
+      exportPfp.setAttribute('aria-label', ready ? 'Download PFP for ' + current.lambdaId : 'Connect with X before downloading a PFP');
     }
     if (opacityInput) opacityInput.disabled = !portrait;
-    if (portraitPick) portraitPick.textContent = portrait ? 'Change photo' : 'Use your photo';
+    if (xConnect) xConnect.hidden = Boolean(xUser);
+    if (xDisconnect) xDisconnect.hidden = !xUser;
   }
 
   function setOpacity(value) {
@@ -850,22 +872,56 @@
   if (exportPfp) exportPfp.addEventListener('click', () => { download('pfp'); });
   if (exportBanner) exportBanner.addEventListener('click', () => { download('banner'); });
 
-  if (portraitInput) {
-    portraitInput.addEventListener('change', async () => {
-      const file = portraitInput.files && portraitInput.files[0];
-      portraitInput.value = '';
-      if (!file) return;
-      try {
-        const image = await readPortrait(file);
-        if (!image.width && !image.naturalWidth) throw new Error('empty');
-        if (portrait && typeof portrait.close === 'function') portrait.close();
-        portrait = image;
-        if (portraitNote) portraitNote.textContent = 'Local only. This photo never leaves the browser. The same seed draws the same overlay on any picture.';
-        syncPortraitControls();
-        await refreshPreview();
-      } catch (_) {
-        if (portraitNote) portraitNote.textContent = 'This browser could not read that image. Try a JPEG or PNG.';
-      }
+  async function applyAvatar(username) {
+    const response = await fetch('api/x/avatar', { credentials: 'same-origin' });
+    if (!response.ok) throw new Error('avatar');
+    const image = await loadBitmap(await response.blob());
+    if (!image.width && !image.naturalWidth) throw new Error('empty');
+    if (portrait && typeof portrait.close === 'function') portrait.close();
+    portrait = image;
+    xUser = username;
+    if (xAccount) {
+      xAccount.hidden = false;
+      xAccount.textContent = '@' + username;
+    }
+    if (portraitNote) portraitNote.textContent = noteReady(username);
+    syncPortraitControls();
+    await refreshPreview();
+  }
+
+  async function loadXSession() {
+    const flag = new URLSearchParams(location.search).get('x');
+    let response;
+    try {
+      response = await fetch('api/x/session', { credentials: 'same-origin' });
+    } catch (_) {
+      if (portraitNote) portraitNote.textContent = 'Connect with X is available on the deployed site. The signal can still be generated in this browser. Nothing is posted.';
+      return;
+    }
+    if (response.status === 503) {
+      if (portraitNote) portraitNote.textContent = 'X sign-in is not configured on this server yet. The signal can still be generated here. Nothing is posted.';
+      return;
+    }
+    if (!response.ok) {
+      if (flag === 'denied' && portraitNote) portraitNote.textContent = 'X sign-in was cancelled. Nothing was connected.';
+      else if (flag === 'error' && portraitNote) portraitNote.textContent = 'X sign-in did not finish. Try Connect with X again. Nothing was posted.';
+      return;
+    }
+    try {
+      const data = await response.json();
+      if (!data || !/^[A-Za-z0-9_]{1,15}$/.test(data.username || '')) return;
+      await applyAvatar(data.username);
+    } catch (_) {
+      clearPortrait();
+      if (portraitNote) portraitNote.textContent = 'The X avatar could not be read. Try Connect with X again. Nothing was posted.';
+    }
+  }
+
+  if (xDisconnect) {
+    xDisconnect.addEventListener('click', async () => {
+      try { await fetch('api/x/logout', { method: 'POST', credentials: 'same-origin' }); }
+      catch (_) { /* the portrait still leaves this page */ }
+      clearPortrait();
     });
   }
 
@@ -1007,4 +1063,5 @@
     if (restorePanel) restorePanel.hidden = false;
     if (restoreToggle) restoreToggle.setAttribute('aria-expanded', 'true');
   }
+  loadXSession();
 })();

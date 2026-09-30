@@ -248,7 +248,7 @@ dialog::backdrop{background:#03080fd4}
   .param-grid{grid-template-columns:1fr 1fr}
   .signature-stage{aspect-ratio:1/1}
   .signature-actions,.export-row,.restore-row,.portrait-controls{align-items:stretch}
-  .signature-actions .solid-button,.signature-actions .ghost-button,.export-row .ghost-button,.restore-row .solid-button,.restore-row input,.portrait-pick{width:100%}
+  .signature-actions .solid-button,.signature-actions .ghost-button,.export-row .ghost-button,.restore-row .solid-button,.restore-row input,#x-connect,#x-disconnect{width:100%}
   .footer-bottom{flex-direction:column}
   .film-dialog-caption{flex-direction:column;align-items:flex-start}
 }
@@ -268,6 +268,7 @@ dialog::backdrop{background:#03080fd4}
 .ghost-button{border-color:var(--line)}
 .ghost-button:hover{border-color:var(--gold);color:var(--gold)}
 .solid-button:disabled,.ghost-button:disabled{opacity:.45;cursor:default}
+[hidden]{display:none !important}
 .restore-panel{margin-top:18px}
 .restore-panel .eyebrow{display:block;margin-bottom:8px}
 .restore-row{margin-top:0}
@@ -293,9 +294,7 @@ dialog::backdrop{background:#03080fd4}
 .export-row{margin-top:18px}
 .portrait-block{margin-top:26px}
 .portrait-controls{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center}
-.portrait-file{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.portrait-pick{cursor:pointer}
-.portrait-file:focus-visible+.portrait-pick{outline:2px solid var(--gold);outline-offset:4px}
+.x-account{margin:0;font:13px/1.4 ui-monospace,monospace;letter-spacing:.08em;color:var(--gold)}
 .opacity-control{display:flex;align-items:center;gap:10px;min-height:44px}
 .opacity-control input[type=range]{width:min(180px,46vw);accent-color:var(--gold);cursor:pointer}
 .opacity-control input[type=range]:disabled{opacity:.45;cursor:default}
