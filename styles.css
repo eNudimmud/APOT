@@ -246,7 +246,7 @@ dialog::backdrop{background:#03080fd4}
   .panel-caption span{text-align:left}
   .archive-grid,.signal-archive{grid-template-columns:1fr}
   .param-grid{grid-template-columns:1fr 1fr}
-  .signature-stage{aspect-ratio:4/5}
+  .signature-stage{aspect-ratio:1/1}
   .signature-actions,.export-row,.restore-row{align-items:stretch}
   .signature-actions .solid-button,.signature-actions .ghost-button,.export-row .ghost-button,.restore-row .solid-button,.restore-row input{width:100%}
   .footer-bottom{flex-direction:column}
@@ -280,7 +280,7 @@ dialog::backdrop{background:#03080fd4}
 .lambda-glyph,.mini-lambda{display:block;width:.62em;height:1em;stroke:currentColor;fill:none;stroke-width:6;overflow:visible}
 .lambda-hyphen{color:var(--gold)}
 #lambda-digits{font-variant-numeric:tabular-nums}
-.signature-stage{position:relative;aspect-ratio:16/10;margin-top:28px;background:radial-gradient(ellipse 48% 55% at 50% 62%,#1a3a4d40,transparent 70%),#08131d;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.signature-stage{position:relative;aspect-ratio:2.15/1;margin-top:28px;background:radial-gradient(ellipse 48% 55% at 50% 62%,#1a3a4d40,transparent 70%),#08131d;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .signature-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .param-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:28px 0 0}
 .param-grid div{border-top:1px solid var(--line);padding-top:12px}
