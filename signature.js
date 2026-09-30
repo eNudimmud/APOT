@@ -21,6 +21,13 @@
   const generateButton = document.querySelector('#generate-signal');
   const exportPfp = document.querySelector('#export-pfp');
   const exportBanner = document.querySelector('#export-banner');
+  const portraitInput = document.querySelector('#portrait-input');
+  const portraitPick = document.querySelector('.portrait-pick');
+  const portraitNote = document.querySelector('#portrait-note');
+  const portraitPreview = document.querySelector('#portrait-preview');
+  const portraitWrap = document.querySelector('.portrait-preview');
+  const opacityInput = document.querySelector('#portrait-opacity');
+  const opacityValue = document.querySelector('#portrait-opacity-value');
   const share = document.querySelector('#share-signal');
   const seedCopy = document.querySelector('#seed-copy');
   const seedStatus = document.querySelector('#seed-copy-status');
@@ -36,6 +43,11 @@
   let revealFrom = 0;
   let current = null;
   let exporting = false;
+  let portrait = null;
+  let opacity = 0.45;
+  const overlayCache = new Map();
+  const PFP_SIZE = 1440;
+  const PREVIEW_SIZE = 720;
   const check = engine.selfCheck();
 
   if (section) section.dataset.signatureCheck = check.ok ? 'pass' : 'fail';
@@ -135,7 +147,7 @@
 
   function sceneBox(mode, width, height) {
     if (mode === 'banner') return { x: width * 0.3, y: height * 0.12, w: width * 0.4, h: height * 0.76 };
-    if (mode === 'pfp') return { x: width * 0.08, y: height * 0.18, w: width * 0.84, h: height * 0.54 };
+    if (mode === 'pfp') return { x: width * 0.07, y: height * 0.22, w: width * 0.86, h: height * 0.52 };
     const padX = width * (mode === 'plate' ? 0.07 : 0.05);
     const padY = height * 0.08;
     return { x: padX, y: padY, w: width - padX * 2, h: height - padY * 2 };
@@ -143,7 +155,12 @@
 
   function strokesFor(mode, width, simplified) {
     if (mode === 'pfp') {
-      return { wave: width * 0.004, spike: width * 0.03, edge: Math.max(1.2, width * 0.0013), node: width * 0.0045 };
+      return {
+        wave: Math.max(1.25, width * 0.0015),
+        spike: Math.max(2, width * 0.0028),
+        edge: Math.max(0.7, width * 0.00075),
+        node: Math.max(1.4, width * 0.0018)
+      };
     }
     if (mode === 'banner') {
       return { wave: Math.max(1.5, width * 0.0013), spike: Math.max(2.6, width * 0.0028), edge: 1.15, node: 2.3 };
@@ -253,15 +270,19 @@
     const muted = '#9aa8b2';
     ctx.textBaseline = 'middle';
     if (mode === 'pfp') {
-      drawWordmark(ctx, width * 0.08, height * 0.065, width * 0.26, ivory);
-      const idSize = width * 0.105;
-      const y = height * 0.8;
-      let cursor = width * 0.08;
+      ctx.save();
+      ctx.shadowColor = 'rgba(7,18,29,0.5)';
+      ctx.shadowBlur = Math.max(2, width * 0.005);
+      drawWordmark(ctx, width * 0.07, height * 0.05, width * 0.15, ivory);
+      const idSize = width * 0.04;
+      const y = height * 0.905;
+      let cursor = width * 0.07;
       const markW = drawLambda(ctx, cursor, y, idSize, ivory);
-      cursor += markW + idSize * 0.08;
-      setFont(ctx, idSize * 0.86);
+      cursor += markW + idSize * 0.1;
+      setFont(ctx, idSize * 0.82);
       ctx.fillStyle = ivory;
-      ctx.fillText('-' + sig.seed.slice(0, 4), cursor, y + idSize * 0.5);
+      ctx.fillText('-' + sig.seed.slice(0, 4), cursor, y + idSize * 0.46);
+      ctx.restore();
       return;
     }
     drawWordmark(ctx, width * 0.055, height * 0.13, Math.min(width * 0.15, 280), ivory);
@@ -302,13 +323,11 @@
     const simplified = Boolean(opt.simplified);
     ctx.clearRect(0, 0, width, height);
     ctx.globalAlpha = 1;
-    if (mode === 'pfp' || mode === 'banner') {
+    if (mode === 'banner') {
       ctx.fillStyle = '#07121d';
       ctx.fillRect(0, 0, width, height);
-      const glowX = mode === 'banner' ? width * 0.5 : width * 0.5;
-      const glowY = mode === 'banner' ? height * 0.52 : height * 0.46;
-      const radius = Math.max(width, height) * (mode === 'banner' ? 0.42 : 0.48);
-      const shade = ctx.createRadialGradient(glowX, glowY, 0, glowX, glowY, radius);
+      const radius = Math.max(width, height) * 0.42;
+      const shade = ctx.createRadialGradient(width * 0.5, height * 0.52, 0, width * 0.5, height * 0.52, radius);
       shade.addColorStop(0, 'rgba(26,58,77,0.55)');
       shade.addColorStop(1, 'rgba(26,58,77,0)');
       ctx.fillStyle = shade;
@@ -369,7 +388,7 @@
       const glowB = propagating && gb.delay !== 99 ? pulse(since, gb.delay, maxDelay) : 0;
       const glow = Math.max(glowA, glowB);
       const warm = edge.kind === 'root' || edge.kind === 'bridge' || glow > 0.15;
-      let alpha = (0.05 + edge.weight * (mode === 'pfp' ? 0.34 : 0.24)) * fade;
+      let alpha = ((mode === 'pfp' ? 0.16 : 0.05) + edge.weight * (mode === 'pfp' ? 0.5 : 0.24)) * fade;
       if (edge.kind === 'root') alpha += 0.1 * fade;
       alpha += glow * 0.5;
       ctx.beginPath();
@@ -411,12 +430,6 @@
     if (spike[1] > spike[0]) {
       const spikeEnd = Math.min(spike[1], lastIndex);
       if (spikeEnd > spike[0]) {
-        if (mode === 'pfp') {
-          ctx.strokeStyle = 'rgba(240,214,150,0.28)';
-          ctx.lineWidth = pen.spike * 2.6;
-          ctx.globalAlpha = 0.85;
-          strokeSpan(ctx, points, spike[0], spikeEnd);
-        }
         ctx.strokeStyle = '#f0d696';
         ctx.lineWidth = pen.spike;
         ctx.globalAlpha = 0.95;
@@ -587,14 +600,13 @@
       share.removeAttribute('aria-disabled');
       share.setAttribute('aria-label', 'Share ' + sig.lambdaId + ' on X. Opens a compose window. Nothing is posted for you.');
     }
-    if (exportPfp) {
-      exportPfp.disabled = false;
-      exportPfp.setAttribute('aria-label', 'Download PFP for ' + sig.lambdaId);
-    }
     if (exportBanner) {
       exportBanner.disabled = false;
       exportBanner.setAttribute('aria-label', 'Download banner for ' + sig.lambdaId);
     }
+    overlayCache.clear();
+    syncPortraitControls();
+    if (portrait) void refreshPreview();
     if (live) {
       live.textContent = sig.lambdaId + '. Resting ' + formatMv(sig.resting) + '. Threshold ' + formatMv(sig.threshold) + '. Amplitude ' + formatMv(sig.amplitude) + '. Frequency ' + formatHz(sig.frequency) + '. Generated locally. Not a recording.';
     }
@@ -610,16 +622,145 @@
     if (!paused && visible && !document.hidden) schedule();
   }
 
-  async function ensureFont() {
-    if (!document.fonts || !document.fonts.load) return;
-    try {
-      await document.fonts.load('400 64px Space');
-      await document.fonts.load('600 64px Space');
-    } catch (_) { /* Arial still draws the Latin text */ }
+  let fontReady = null;
+  function ensureFont() {
+    if (fontReady) return fontReady;
+    fontReady = (async () => {
+      if (!document.fonts || !document.fonts.load) return;
+      try {
+        await document.fonts.load('400 64px Space');
+        await document.fonts.load('600 64px Space');
+      } catch (_) { /* Arial still draws the Latin text */ }
+    })();
+    return fontReady;
+  }
+
+  function readPortrait(file) {
+    if (typeof createImageBitmap === 'function') {
+      return createImageBitmap(file, { imageOrientation: 'from-image' }).catch(() => createImageBitmap(file));
+    }
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        resolve(img);
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error('unreadable'));
+      };
+      img.src = url;
+    });
+  }
+
+  function drawCover(ctx, image, size) {
+    const sw = image.width || image.naturalWidth;
+    const sh = image.height || image.naturalHeight;
+    const scale = Math.max(size / sw, size / sh);
+    const dw = sw * scale;
+    const dh = sh * scale;
+    ctx.drawImage(image, (size - dw) / 2, (size - dh) / 2, dw, dh);
+  }
+
+  function paintVignette(ctx, size) {
+    const shade = ctx.createRadialGradient(size * 0.5, size * 0.42, size * 0.22, size * 0.5, size * 0.5, size * 0.72);
+    shade.addColorStop(0, 'rgba(7,18,29,0)');
+    shade.addColorStop(0.62, 'rgba(7,18,29,0.05)');
+    shade.addColorStop(1, 'rgba(7,18,29,0.4)');
+    ctx.fillStyle = shade;
+    ctx.fillRect(0, 0, size, size);
+  }
+
+  function softenOverlay(ctx, size) {
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-in';
+    const mask = ctx.createRadialGradient(size * 0.5, size * 0.48, size * 0.18, size * 0.5, size * 0.5, size * 0.78);
+    mask.addColorStop(0, 'rgba(0,0,0,1)');
+    mask.addColorStop(0.72, 'rgba(0,0,0,0.94)');
+    mask.addColorStop(1, 'rgba(0,0,0,0.58)');
+    ctx.fillStyle = mask;
+    ctx.fillRect(0, 0, size, size);
+    ctx.restore();
+  }
+
+  function overlayPlate(size) {
+    const hit = overlayCache.get(size);
+    if (hit && hit.seed === current.seed) return hit.canvas;
+    const plate = document.createElement('canvas');
+    plate.width = size;
+    plate.height = size;
+    const layer = plate.getContext('2d');
+    paint(layer, size, size, current, {
+      mode: 'pfp',
+      reveal: 1,
+      travel: current.spikeT,
+      time: 0,
+      still: true,
+      simplified: false
+    });
+    softenOverlay(layer, size);
+    overlayCache.set(size, { seed: current.seed, canvas: plate });
+    return plate;
+  }
+
+  function paintComposite(ctx, size) {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalAlpha = 1;
+    ctx.clearRect(0, 0, size, size);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    drawCover(ctx, portrait, size);
+    paintVignette(ctx, size);
+    ctx.save();
+    ctx.globalAlpha = opacity;
+    ctx.drawImage(overlayPlate(size), 0, 0);
+    ctx.restore();
+  }
+
+  function paintPreview() {
+    if (!portraitPreview || !portraitWrap) return;
+    if (!current || !portrait) {
+      portraitWrap.hidden = true;
+      return;
+    }
+    portraitWrap.hidden = false;
+    if (portraitPreview.width !== PREVIEW_SIZE || portraitPreview.height !== PREVIEW_SIZE) {
+      portraitPreview.width = PREVIEW_SIZE;
+      portraitPreview.height = PREVIEW_SIZE;
+    }
+    const ctx = portraitPreview.getContext('2d');
+    if (!ctx) return;
+    paintComposite(ctx, PREVIEW_SIZE);
+    portraitPreview.setAttribute('aria-label', 'Preview of your photo with ' + current.lambdaId + ' at ' + Math.round(opacity * 100) + ' percent opacity');
+  }
+
+  async function refreshPreview() {
+    if (portrait) await ensureFont();
+    overlayCache.clear();
+    paintPreview();
+  }
+
+  function syncPortraitControls() {
+    const ready = Boolean(current && portrait);
+    if (exportPfp) {
+      exportPfp.disabled = !ready;
+      exportPfp.setAttribute('aria-label', ready ? 'Download PFP for ' + current.lambdaId : 'Add a photo before downloading a PFP');
+    }
+    if (opacityInput) opacityInput.disabled = !portrait;
+    if (portraitPick) portraitPick.textContent = portrait ? 'Change photo' : 'Use your photo';
+  }
+
+  function setOpacity(value) {
+    const next = Math.min(80, Math.max(15, Number(value)));
+    opacity = (Number.isFinite(next) ? next : 45) / 100;
+    if (opacityValue) opacityValue.textContent = Math.round(opacity * 100) + '%';
+    if (portrait) paintPreview();
   }
 
   async function download(kind) {
     if (!current || exporting) return;
+    if (kind === 'pfp' && !portrait) return;
     exporting = true;
     const button = kind === 'pfp' ? exportPfp : exportBanner;
     const previous = button ? button.textContent : '';
@@ -628,7 +769,8 @@
       button.textContent = 'Drawing…';
     }
     await ensureFont();
-    const plate = renderPlate(kind);
+    overlayCache.clear();
+    const plate = kind === 'pfp' ? renderPfp(PFP_SIZE) : renderPlate('banner');
     const blob = plate ? await new Promise(resolve => plate.toBlob(resolve, 'image/png')) : null;
     if (blob) {
       const url = URL.createObjectURL(blob);
@@ -640,10 +782,10 @@
       link.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1500);
     }
-    if (button) {
-      button.disabled = false;
-      button.textContent = previous;
-    }
+    if (button) button.textContent = previous;
+    syncPortraitControls();
+    if (exportBanner && current) exportBanner.disabled = false;
+    if (portrait) paintPreview();
     exporting = false;
   }
 
@@ -707,6 +849,27 @@
 
   if (exportPfp) exportPfp.addEventListener('click', () => { download('pfp'); });
   if (exportBanner) exportBanner.addEventListener('click', () => { download('banner'); });
+
+  if (portraitInput) {
+    portraitInput.addEventListener('change', async () => {
+      const file = portraitInput.files && portraitInput.files[0];
+      portraitInput.value = '';
+      if (!file) return;
+      try {
+        const image = await readPortrait(file);
+        if (!image.width && !image.naturalWidth) throw new Error('empty');
+        if (portrait && typeof portrait.close === 'function') portrait.close();
+        portrait = image;
+        if (portraitNote) portraitNote.textContent = 'Local only. This photo never leaves the browser. The same seed draws the same overlay on any picture.';
+        syncPortraitControls();
+        await refreshPreview();
+      } catch (_) {
+        if (portraitNote) portraitNote.textContent = 'This browser could not read that image. Try a JPEG or PNG.';
+      }
+    });
+  }
+
+  if (opacityInput) opacityInput.addEventListener('input', () => setOpacity(opacityInput.value));
   if (share) {
     share.addEventListener('click', event => {
       if (!current) event.preventDefault();
@@ -788,20 +951,26 @@
     }
   });
 
-  function renderPlate(kind) {
-    if (!current) return null;
+  function renderPfp(size) {
+    if (!current || !portrait) return null;
     const plate = document.createElement('canvas');
-    if (kind === 'pfp') {
-      plate.width = 1440;
-      plate.height = 1440;
-    } else {
-      plate.width = 1800;
-      plate.height = 600;
-    }
+    plate.width = size;
+    plate.height = size;
+    const ctx = plate.getContext('2d');
+    if (!ctx) return null;
+    paintComposite(ctx, size);
+    return plate;
+  }
+
+  function renderPlate(kind) {
+    if (!current || kind !== 'banner') return null;
+    const plate = document.createElement('canvas');
+    plate.width = 1800;
+    plate.height = 600;
     const ctx = plate.getContext('2d');
     if (!ctx) return null;
     paint(ctx, plate.width, plate.height, current, {
-      mode: kind,
+      mode: 'banner',
       reveal: 1,
       travel: current.spikeT,
       time: 0,

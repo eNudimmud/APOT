@@ -16,14 +16,17 @@ English only. A concise scientific and creative identity, with the token as the 
 
 ## Signal signature
 
-A visitor can generate a personal signature in the browser. No account, wallet, or token is required. One seed writes four graphic parameters, the waveform, the network, the λ-ID, and both PNG exports. The same seed always rebuilds the same result. Phase 4, optional X identity linking, is not on this page.
+A visitor can generate a personal signature in the browser. No account, wallet, or token is required. One seed writes four graphic parameters, the waveform, the network, and the λ-ID. The same seed always rebuilds the same overlay, on any photo. Phase 4, optional X identity linking, is not on this page.
+
+The profile image is the visitor’s own picture with that signature laid over it. The photo is read locally and is never uploaded. The banner stays a seed-drawn plate, with no photo.
 
 Try it locally with `python3 -m http.server` from the repository root:
 
 1. Open the site and choose **Generate your signal**, or **Generate signal** in `05 / SIGNATURE`.
 2. Copy the eight-character seed, then **Restore signal** and enter it again. The λ-ID, parameters, curve, and network return.
-3. **Download PFP** (1:1) and **Download banner** (3:1). Both are drawn from the seed on an offscreen canvas.
-4. **Share signal** opens an X compose window with prefilled text. It does not post.
+3. Choose **Use your photo** and pick a square image (a current avatar works). Set **Overlay** — the default is 45% — until the face stays readable. **Download PFP** saves a 1:1 PNG of that composite.
+4. **Download banner** saves the 3:1 plate drawn from the seed. It does not use the photo.
+5. **Share signal** opens an X compose window with prefilled text. It does not post.
 
 The deterministic fixture is seed `7F2A91C4` (λ-7F2A). Check it with `node signature-check.js`.
 

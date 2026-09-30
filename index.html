@@ -15,11 +15,11 @@
   <link rel="canonical" href="https://enudimmud.github.io/APOT/">
   <link rel="icon" href="assets/lambda-mark.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/space-grotesk-regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=signature-1">
-  <script src="signature-engine.js?v=signature-1" defer></script>
-  <script src="signal.js?v=signature-1" defer></script>
-  <script src="script.js?v=signature-1" defer></script>
-  <script src="signature.js?v=signature-1" defer></script>
+  <link rel="stylesheet" href="styles.css?v=signature-2">
+  <script src="signature-engine.js?v=signature-2" defer></script>
+  <script src="signal.js?v=signature-2" defer></script>
+  <script src="script.js?v=signature-2" defer></script>
+  <script src="signature.js?v=signature-2" defer></script>
   <title>λP⊙T — Potential, in motion.</title>
 </head>
 <body>
@@ -133,12 +133,27 @@
       <button class="ghost-button" type="button" id="seed-copy">Copy</button>
       <span class="sr-only" id="seed-copy-status" aria-live="polite"></span>
     </div>
-    <div class="export-row">
-      <button class="ghost-button" type="button" id="export-pfp" disabled>Download PFP</button>
-      <button class="ghost-button" type="button" id="export-banner" disabled>Download banner</button>
-      <a class="ghost-button" id="share-signal" target="_blank" rel="noopener noreferrer" aria-disabled="true" href="https://x.com/intent/tweet?text=%CE%BBP%E2%8A%99T">Share signal</a>
+    <div class="portrait-block">
+      <div class="portrait-controls">
+        <input id="portrait-input" class="portrait-file" type="file" accept="image/*">
+        <label class="ghost-button portrait-pick" for="portrait-input">Use your photo</label>
+        <label class="opacity-control" for="portrait-opacity">
+          <span class="eyebrow">Overlay</span>
+          <input id="portrait-opacity" type="range" min="15" max="80" value="45" step="1" disabled>
+          <span id="portrait-opacity-value">45%</span>
+        </label>
+      </div>
+      <p class="portrait-note" id="portrait-note">Add a square photo. The signature lays over it. The photo stays in this browser.</p>
+      <div class="portrait-preview" hidden>
+        <canvas id="portrait-preview" width="720" height="720" aria-label="Portrait preview"></canvas>
+      </div>
     </div>
-    <p class="export-note eyebrow">PNG · 1:1 and 3:1 · drawn from the seed</p>
+    <div class="export-row">
+      <button class="ghost-button" type="button" id="export-pfp" disabled aria-describedby="portrait-note">Download PFP</button>
+      <button class="ghost-button" type="button" id="export-banner" disabled>Download banner</button>
+      <a class="ghost-button" id="share-signal" target="_blank" rel="noopener noreferrer" aria-disabled="true" href="https://x.com/intent/tweet?text=%CE%bbP%E2%8A%99T">Share signal</a>
+    </div>
+    <p class="export-note eyebrow">PFP · your photo, signature over it · Banner · drawn from the seed</p>
     <p class="local-note">Deterministic. Reproducible. Yours. Generated locally.</p>
     <noscript><p class="local-note">Signal signatures need JavaScript. The rest of the page stays readable.</p></noscript>
     <details class="token-details signature-notes">
