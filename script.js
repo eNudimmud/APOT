@@ -162,16 +162,6 @@
 
   const film = document.querySelector('#film-dialog');
   const filmFrame = film.querySelector('.film-frame');
-  const gallery = document.querySelector('#gallery-dialog');
-  const galleryImage = gallery.querySelector('#gallery-image');
-  const galleryCaption = gallery.querySelector('#gallery-caption');
-  const images = [
-    ['assets/apot-lab.webp', 'The laboratory', 'Original emblem on an analog laboratory monitor.'],
-    ['assets/apot-medallion.webp', 'The medallion', 'Front view of the gold and midnight-blue medallion.'],
-    ['assets/apot-signal.webp', 'The signal plate', 'Ivory signal line on midnight blue. The voltage mark is illustrative, not a measured threshold.'],
-    ['assets/apot-profile.webp', 'The profile', 'Three-quarter view of the medallion.']
-  ];
-  let galleryIndex = 0;
   let dialogTrigger = null;
 
   function openDialog(dialog, trigger) {
@@ -180,19 +170,7 @@
     document.body.classList.add('modal-open');
   }
 
-  function updateGallery() {
-    const [src, label, alt] = images[galleryIndex];
-    galleryImage.src = src;
-    galleryImage.alt = alt;
-    galleryCaption.textContent = `${String(galleryIndex + 1).padStart(2, '0')} / 04 — ${label}`;
-  }
-
-  function stepGallery(delta) {
-    galleryIndex = (galleryIndex + delta + images.length) % images.length;
-    updateGallery();
-  }
-
-  if (typeof film.showModal === 'function') {
+  if (film && typeof film.showModal === 'function') {
     document.querySelectorAll('[data-film]').forEach(link => link.addEventListener('click', event => {
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
@@ -205,34 +183,17 @@
       filmFrame.replaceChildren(player);
       openDialog(film, link);
     }));
-    document.querySelectorAll('[data-gallery]').forEach(link => link.addEventListener('click', event => {
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      event.preventDefault();
-      galleryIndex = Number(link.dataset.gallery);
-      updateGallery();
-      openDialog(gallery, link);
-      gallery.querySelector('.gallery-next').focus();
-    }));
-    [film, gallery].forEach(dialog => {
-      dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
-      dialog.addEventListener('click', event => {
-        if (event.target !== dialog) return;
-        const rect = dialog.getBoundingClientRect();
-        const inside = event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
-        if (!inside) dialog.close();
-      });
-      dialog.addEventListener('close', () => {
-        if (dialog === film) filmFrame.replaceChildren();
-        document.body.classList.remove('modal-open');
-        dialogTrigger?.focus({ preventScroll: true });
-      });
+    film.querySelector('.dialog-close').addEventListener('click', () => film.close());
+    film.addEventListener('click', event => {
+      if (event.target !== film) return;
+      const rect = film.getBoundingClientRect();
+      const inside = event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
+      if (!inside) film.close();
     });
-    gallery.querySelector('.gallery-prev').addEventListener('click', () => stepGallery(-1));
-    gallery.querySelector('.gallery-next').addEventListener('click', () => stepGallery(1));
-    gallery.addEventListener('keydown', event => {
-      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
-      event.preventDefault();
-      stepGallery(event.key === 'ArrowLeft' ? -1 : 1);
+    film.addEventListener('close', () => {
+      filmFrame.replaceChildren();
+      document.body.classList.remove('modal-open');
+      dialogTrigger?.focus({ preventScroll: true });
     });
   }
 

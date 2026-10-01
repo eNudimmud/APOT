@@ -35,3 +35,7 @@ The creator corrected the canonical spelling to **λP⊙T** and explicitly requi
 The visual hierarchy now gives the brand and pair immediate prominence. A full-width editorial field replaces separate cards with three source-backed exploration tabs. The palette stays midnight navy, ivory and restrained gold. The motion is no longer WebGL-dependent: Canvas 2D projects original 3D geometry, with a travelling impulse and visible camera breathing. The SVG/CSS fallback is animated too. No new raster artwork was generated.
 
 Motion can always be controlled, including a Play motion opt-in when the system requests reduced motion. The full page remains readable when motion is paused. Typographic reveals, editorial transitions and specimen movement support the existing content; no simulator, artificial financial data or invented project milestones are added.
+
+## Editorial plates — 1 October 2026
+
+The photo gallery and the token photographs are off the page. Two stills carry the pictures: `assets/apot-laboratory.webp`, the monitor in the lab, and `assets/apot-mark.webp`, the ivory signal and wordmark. The laboratory sits once, with a caption, under the four restore plates. The mark sits beside $APOT. Neither is a thumbnail, and neither opens a lightbox. The line “threshold −55 mV” on the mark is illustrative, not a measurement. Mint, Jupiter, and Solscan stay.
