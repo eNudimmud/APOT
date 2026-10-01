@@ -74,7 +74,7 @@ The Neuralink film is an account of clinical trial participants, not a general c
 
 Static HTML, CSS and JavaScript served by GitHub Pages from the default branch (`main`) at https://enudimmud.github.io/APOT/. A pull request is not what Pages publishes. To preview a branch, check it out and run `python3 -m http.server` from the repository root. Relative paths match the `/APOT/` base. No package install or build step. `signal.js` contains the original Canvas 2D projection; `script.js` handles navigation, scroll composition, the film and the archive. Fonts are self-hosted under their existing SIL OFL licenses. No wallet connection, transaction, form submission or analytics. YouTube is loaded only on request. The film uses an original typographic editorial cover, so the page does not depend on a third-party thumbnail. The fixed navigation keeps the token accessible throughout the page.
 
-Use relative paths to preserve compatibility with the /APOT/ base path. Keep `.nojekyll` in the root. Existing images are reused without modifying their artwork.
+Use relative paths to preserve compatibility with the /APOT/ base path. Keep `.nojekyll` in the root. The still pictures on the page are `assets/apot-laboratory.webp` and `assets/apot-mark.webp`. Coin and medallion photographs are not used.
 
 ## Configuration sélectionnée avant lancement
 
