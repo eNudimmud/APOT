@@ -9,5 +9,10 @@ module.exports = function session(req, res) {
   if (!env.ok) return oauth.notConfigured(res, env.missing);
   const current = oauth.readSession(req);
   if (!current) return oauth.sendJson(res, 401, { connected: false });
-  oauth.sendJson(res, 200, { connected: true, username: current.username, name: current.name || '' });
+  oauth.sendJson(res, 200, {
+    connected: true,
+    id: current.id,
+    username: current.username,
+    name: current.name || ''
+  });
 };
