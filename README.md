@@ -14,6 +14,50 @@ English only. A concise scientific and creative identity, with the token as the 
 - The hero is a depth-sorted 3D filament drawn on canvas. It runs as a continuous idle loop; scroll only nudges the pose. The loop uses requestAnimationFrame, pauses when the tab is hidden or the hero is off screen, and starts paused when reduced motion is requested. Pause stops the loop. A no-canvas SVG trace keeps its own loop.
 - Copy is English and short. References: Neuralink’s Audrey film (opened on demand), Alex’s PRIME Study note, and the Sylvius 4 Online demo. Sylvius stays on Oxford University Press and is not embedded. The archive is keyboard operable. $APOT access uses the confirmed mint `GsUXfGLgAvfMKxiCUVoe8iNaMR4dqP5xBbXcD8BbAP4o`, with Jupiter as the buy link and the related Solscan account as the explorer.
 
+## Signal signature
+
+A visitor can generate a personal signature in the browser. No wallet or token is required to draw the signal. One seed writes four graphic parameters, the waveform, the network, and the λ-ID. The same seed always rebuilds the same overlay. The banner stays a seed-drawn plate and does not use an avatar.
+
+The profile image is the connected X account’s avatar with that signature laid over it. There is no manual upload. **Download PFP** stays off until X sign-in has supplied the avatar. The signal itself is drawn in the browser. X sign-in is not local: the server exchanges the OAuth code and fetches the avatar. Nothing is posted.
+
+Try the signal locally with `python3 -m http.server` from the repository root. Connect with X needs the Vercel deployment below, or `vercel dev` with the environment variables set.
+
+1. Open the site and choose **Generate your signal**, or **Generate signal** in `05 / SIGNATURE`.
+2. Copy the eight-character seed, then **Restore signal** and enter it again. The λ-ID, parameters, curve, and network return.
+3. **Connect with X**, approve the read-only prompt, and return to the page. The account avatar becomes the base. Set **Overlay** — the default is 45% — until the face stays readable. **Download PFP** saves the 1:1 PNG.
+4. **Download banner** saves the 3:1 plate drawn from the seed. It does not use the avatar.
+5. **Share signal** opens an X compose window with prefilled text. It does not post.
+
+The deterministic fixture is seed `7F2A91C4` (λ-7F2A). Check it with `node signature-check.js`. The X helper, with no network and no real secrets, is `node x-oauth-check.js`.
+
+## X sign-in for the profile image
+
+Deploy this repository as a Vercel project with the site at the domain root. The `api/x` routes run there. GitHub Pages can still show the page, but it cannot complete OAuth.
+
+X app, in the developer console:
+
+1. Create an app and turn on OAuth 2.0 user authentication.
+2. App type: Web App, confidential client.
+3. Permissions: Read only. That is “Read Posts and profile information.” Do not enable write, Direct Messages, or follow.
+4. Callback / redirect URL, character for character: `https://<your-domain>/api/x/callback`
+5. Website URL: `https://<your-domain>`
+6. Copy the OAuth 2.0 Client ID and Client Secret. They are not in this repository.
+
+The code asks only for the scopes `users.read` and `tweet.read`. X requires `tweet.read` before `GET /2/users/me` can return the signed-in account. The server then requests `profile_image_url` and nothing else. It does not request `tweet.write`, `offline.access`, `dm.read`, `dm.write`, `follows.read`, or `follows.write`, and it never calls a post, like, follow, or message endpoint. The access token is used once and is not stored. A signed cookie remembers the @handle and the avatar URL for 12 hours.
+
+Vercel → Project → Settings → Environment Variables. Set them for Production (and Preview, if you test there). Redeploy after saving. Do not commit the values.
+
+| Name | Value |
+| --- | --- |
+| `X_CLIENT_ID` | OAuth 2.0 Client ID |
+| `X_CLIENT_SECRET` | OAuth 2.0 Client Secret |
+| `X_REDIRECT_URI` | `https://<your-domain>/api/x/callback` |
+| `APOT_SESSION_SECRET` | A long random string, for example `openssl rand -base64 32` |
+
+`X_REDIRECT_URI` must match the callback registered on the X app. Empty names are listed in `.env.example`.
+
+Happy path on the deployed site: **Connect with X** → **Generate signal** → set **Overlay** → **Download PFP**. **Disconnect** ends the session. **Share signal** still only opens a compose window.
+
 ## Sources
 
 | Editorial reference | Source |
