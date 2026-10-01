@@ -18,6 +18,7 @@ function mockRes() {
 const secret = 'test-session-secret';
 const session = {
   v: 1,
+  id: '1847291056384729103',
   username: 'APOTsignal',
   name: 'λP⊙T',
   avatar: 'https://pbs.twimg.com/profile_images/1/face_400x400.jpg',
@@ -43,14 +44,24 @@ assert.strictEqual(oauth.allowAvatarUrl('https://pbs.twimg.com/media/not-an-avat
 
 const profile = oauth.sessionFromProfile({
   data: {
+    id: '1847291056384729103',
     username: 'signal_test',
     name: 'Signal',
     profile_image_url: 'https://pbs.twimg.com/profile_images/9/a_normal.jpg'
   }
 });
+assert.strictEqual(profile.id, '1847291056384729103');
 assert.strictEqual(profile.avatar, 'https://pbs.twimg.com/profile_images/9/a_400x400.jpg');
-assert.strictEqual(oauth.sessionFromProfile({ data: { username: 'bad name', profile_image_url: profile.avatar } }), null);
-assert.strictEqual(oauth.sessionFromProfile({ data: { username: 'ok', profile_image_url: 'https://evil.example/a.jpg' } }), null);
+assert.ok(!Object.prototype.hasOwnProperty.call(profile, 'access_token'));
+assert.strictEqual(oauth.sessionFromProfile({
+  data: { username: 'signal_test', profile_image_url: profile.avatar }
+}), null);
+assert.strictEqual(oauth.sessionFromProfile({
+  data: { id: 'APOTsignal', username: 'signal_test', profile_image_url: profile.avatar }
+}), null);
+assert.strictEqual(oauth.sessionFromProfile({ data: { id: '1847291056384729103', username: 'bad name', profile_image_url: profile.avatar } }), null);
+assert.strictEqual(oauth.sessionFromProfile({ data: { id: '1847291056384729103', username: 'ok', profile_image_url: 'https://evil.example/a.jpg' } }), null);
+assert.ok(oauth.ME_URL.includes('user.fields=id,'));
 
 assert.strictEqual(oauth.SCOPES, 'users.read tweet.read');
 assert.ok(!/tweet\.write|dm\.|follows\.|like\.write|offline\.access|mute\.|block\./.test(oauth.SCOPES));
@@ -84,6 +95,34 @@ assert.ok(!String(cookie).includes('client-secret'));
 
 const back = oauth.returnUrl('connected');
 assert.strictEqual(back, 'https://apot.example/?x=connected#signature');
+
+const sessionReq = { headers: { cookie: oauth.SESSION_COOKIE + '=' + encodeURIComponent(token) } };
+assert.strictEqual(oauth.readSession(sessionReq).id, '1847291056384729103');
+const legacy = oauth.sign({
+  v: 1,
+  username: 'APOTsignal',
+  name: 'λP⊙T',
+  avatar: session.avatar,
+  exp: Date.now() + 60000
+}, secret);
+assert.strictEqual(oauth.readSession({
+  headers: { cookie: oauth.SESSION_COOKIE + '=' + encodeURIComponent(legacy) }
+}), null);
+const sessionRoute = require('./api/x/session');
+const sessionRes = mockRes();
+sessionRoute({ method: 'GET', headers: sessionReq.headers }, sessionRes);
+const sessionBody = JSON.parse(sessionRes.body);
+assert.strictEqual(sessionRes.statusCode, 200);
+assert.strictEqual(sessionBody.id, '1847291056384729103');
+assert.strictEqual(sessionBody.username, 'APOTsignal');
+assert.ok(!Object.prototype.hasOwnProperty.call(sessionBody, 'access_token'));
+assert.ok(!Object.prototype.hasOwnProperty.call(sessionBody, 'avatar'));
+const legacyRes = mockRes();
+sessionRoute({
+  method: 'GET',
+  headers: { cookie: oauth.SESSION_COOKIE + '=' + encodeURIComponent(legacy) }
+}, legacyRes);
+assert.strictEqual(legacyRes.statusCode, 401);
 
 const callback = require('./api/x/callback');
 const denied = mockRes();

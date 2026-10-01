@@ -46,6 +46,7 @@
   let exporting = false;
   let portrait = null;
   let xUser = '';
+  let boundId = '';
   let opacity = 0.45;
   const overlayCache = new Map();
   const PFP_SIZE = 1440;
@@ -610,7 +611,9 @@
     syncPortraitControls();
     if (portrait) void refreshPreview();
     if (live) {
-      live.textContent = sig.lambdaId + '. Resting ' + formatMv(sig.resting) + '. Threshold ' + formatMv(sig.threshold) + '. Amplitude ' + formatMv(sig.amplitude) + '. Frequency ' + formatHz(sig.frequency) + '. Drawn in this browser. Not a recording.';
+      const fromAccount = boundId && sig.seed === engine.seedForIdentity(boundId);
+      const source = fromAccount ? ' Restored from this X account.' : ' Drawn in this browser. Not a recording.';
+      live.textContent = sig.lambdaId + '. Resting ' + formatMv(sig.resting) + '. Threshold ' + formatMv(sig.threshold) + '. Amplitude ' + formatMv(sig.amplitude) + '. Frequency ' + formatHz(sig.frequency) + '.' + source;
     }
     markArchive(sig.seed);
     fillAlgorithm(sig);
@@ -659,7 +662,8 @@
   }
 
   function noteReady(username) {
-    return 'Signed in as @' + username + '. Your X avatar is the base. The signature is drawn in this browser. Nothing is posted.';
+    const label = current ? current.lambdaId : 'your signal';
+    return 'Signed in as @' + username + '. This account restores ' + label + '. Your X avatar is the base. Nothing is posted.';
   }
 
   function drawCover(ctx, image, size) {
@@ -811,9 +815,36 @@
     exporting = false;
   }
 
+  function identitySeed() {
+    return boundId ? engine.seedForIdentity(boundId) : null;
+  }
+
+  function bindIdentity(id) {
+    if (typeof id !== 'string') return false;
+    const seed = engine.seedForIdentity(id);
+    const sig = seed && engine.derive(seed);
+    if (!sig) return false;
+    boundId = id.trim();
+    apply(sig, true);
+    return true;
+  }
+
+  function showUnbound() {
+    const stored = recalled();
+    const initial = stored || mintSeed();
+    if (initial) {
+      const sig = engine.derive(initial);
+      if (sig) apply(sig, !stored && !paused);
+      return;
+    }
+    if (live) live.textContent = 'Enter an eight-character seed to restore a signal.';
+    if (restorePanel) restorePanel.hidden = false;
+    if (restoreToggle) restoreToggle.setAttribute('aria-expanded', 'true');
+  }
+
   if (generateButton) {
     generateButton.addEventListener('click', () => {
-      const seed = mintSeed();
+      const seed = identitySeed() || mintSeed();
       if (!seed) {
         if (live) live.textContent = 'This browser could not mint a seed. Enter one to restore a signal.';
         if (restorePanel) restorePanel.hidden = false;
@@ -896,31 +927,36 @@
       response = await fetch('api/x/session', { credentials: 'same-origin' });
     } catch (_) {
       if (portraitNote) portraitNote.textContent = 'Connect with X is available on the deployed site. The signal can still be generated in this browser. Nothing is posted.';
-      return;
+      return false;
     }
     if (response.status === 503) {
       if (portraitNote) portraitNote.textContent = 'X sign-in is not configured on this server yet. The signal can still be generated here. Nothing is posted.';
-      return;
+      return false;
     }
     if (!response.ok) {
       if (flag === 'denied' && portraitNote) portraitNote.textContent = 'X sign-in was cancelled. Nothing was connected.';
       else if (flag === 'error' && portraitNote) portraitNote.textContent = 'X sign-in did not finish. Try Connect with X again. Nothing was posted.';
-      return;
+      return false;
     }
+    let data;
+    try { data = await response.json(); }
+    catch (_) { return false; }
+    if (!data || !bindIdentity(data.id)) return false;
+    if (!/^[A-Za-z0-9_]{1,15}$/.test(data.username || '')) return true;
     try {
-      const data = await response.json();
-      if (!data || !/^[A-Za-z0-9_]{1,15}$/.test(data.username || '')) return;
       await applyAvatar(data.username);
     } catch (_) {
       clearPortrait();
-      if (portraitNote) portraitNote.textContent = 'The X avatar could not be read. Try Connect with X again. Nothing was posted.';
+      if (portraitNote) portraitNote.textContent = 'The X avatar could not be read. This account still restores ' + (current ? current.lambdaId : 'its signal') + '. Nothing was posted.';
     }
+    return true;
   }
 
   if (xDisconnect) {
     xDisconnect.addEventListener('click', async () => {
       try { await fetch('api/x/logout', { method: 'POST', credentials: 'same-origin' }); }
       catch (_) { /* the portrait still leaves this page */ }
+      boundId = '';
       clearPortrait();
     });
   }
@@ -1053,15 +1089,9 @@
     }
   };
 
-  const stored = recalled();
-  const initial = stored || mintSeed();
-  if (initial) {
-    const sig = engine.derive(initial);
-    if (sig) apply(sig, !stored && !paused);
-  } else if (live) {
-    live.textContent = 'Enter an eight-character seed to restore a signal.';
-    if (restorePanel) restorePanel.hidden = false;
-    if (restoreToggle) restoreToggle.setAttribute('aria-expanded', 'true');
-  }
-  loadXSession();
+  loadXSession().then(bound => {
+    if (!bound) showUnbound();
+  }).catch(() => {
+    if (!boundId) showUnbound();
+  });
 })();

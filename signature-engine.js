@@ -131,6 +131,19 @@ const FIXTURE = 'ac242dc53c887d8928bce5186dcf6935b6f7093e6ba67388d96b417bceb4b8f
     return 'λ-' + seed.slice(0, 4);
   }
 
+  /* Numeric X user id only. The @handle can change, so it is not an input.
+     First 8 hex characters of SHA-256("apot-x-user:" + id), then derive(). */
+  const FIXTURE_X_ID = '1847291056384729103';
+  const FIXTURE_X_SEED = '4A6445B3';
+  const FIXTURE_X_LAMBDA = 'λ-4A64';
+  const FIXTURE_X_FINGERPRINT = 'b02cabbcd5ab26899f23decdd654d17075041c3b14302846d588796a75b28b5d';
+
+  function seedForIdentity(id) {
+    const text = String(id == null ? '' : id).trim();
+    if (!/^[0-9]{1,20}$/.test(text)) return null;
+    return sha256Hex('apot-x-user:' + text).slice(0, 8).toUpperCase();
+  }
+
   function sampleWave(params, modifiers) {
     const rest = params.resting;
     const threshold = params.threshold;
@@ -461,6 +474,16 @@ const FIXTURE = 'ac242dc53c887d8928bce5186dcf6935b6f7093e6ba67388d96b417bceb4b8f
     });
     if (normalizeSeed('λ-7F2A') !== null) problems.push('short-id');
     if (normalizeSeed('7F2A91C4FF') !== null) problems.push('long-seed');
+    const idSeed = seedForIdentity(FIXTURE_X_ID);
+    const idAgain = seedForIdentity(' ' + FIXTURE_X_ID + ' ');
+    if (!idSeed || idSeed !== idAgain || idSeed !== FIXTURE_X_SEED) problems.push('identity-seed');
+    if (seedForIdentity('APOTsignal') !== null || seedForIdentity('') !== null) problems.push('identity-reject');
+    if (idSeed) {
+      const idSig = derive(idSeed);
+      const idReplay = derive(seedForIdentity(FIXTURE_X_ID));
+      if (!idSig || !idReplay || idSig.lambdaId !== FIXTURE_X_LAMBDA) problems.push('identity-lambda');
+      else if (fingerprint(idSig) !== FIXTURE_X_FINGERPRINT || canonical(idSig) !== canonical(idReplay)) problems.push('identity-replay');
+    }
     return { ok: problems.length === 0, problems, fingerprint: sig ? fingerprint(sig) : '', summary: summary(sig) };
   }
 
@@ -469,8 +492,13 @@ const FIXTURE = 'ac242dc53c887d8928bce5186dcf6935b6f7093e6ba67388d96b417bceb4b8f
     FIXTURE,
     ARCHIVE,
     SAMPLES,
+    FIXTURE_X_ID,
+    FIXTURE_X_SEED,
+    FIXTURE_X_LAMBDA,
+    FIXTURE_X_FINGERPRINT,
     normalizeSeed,
     lambdaId,
+    seedForIdentity,
     sha256Hex,
     derive,
     canonical,
