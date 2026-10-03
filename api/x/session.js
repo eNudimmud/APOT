@@ -1,4 +1,5 @@
 const oauth = require('../../lib/x-oauth');
+const signal = require('../../signature-engine');
 
 module.exports = function session(req, res) {
   if (req.method !== 'GET') {
@@ -12,6 +13,9 @@ module.exports = function session(req, res) {
   oauth.sendJson(res, 200, {
     connected: true,
     id: current.id,
+    seed: signal.seedForIdentity(current.id),
+    binding: 'x-id-v1',
+    expiresAt: current.exp,
     username: current.username,
     name: current.name || ''
   });

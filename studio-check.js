@@ -21,8 +21,8 @@ assert.ok(pcm.every(value=>Number.isFinite(value)&&Math.abs(value)<=0.7),'PCM mu
 assert.ok(pcm.some(value=>Math.abs(value)>0.1),'The motif must contain audible material.');
 assert.ok(pcm.slice(-1000).every(value=>value===0),'Release must finish before the file ends.');
 const url=new URL(studio.permalink(first,'paper'));
-assert.equal(signal.derive(url.searchParams.get('seed')).seed,first.seed);
-assert.equal(url.searchParams.get('tone'),'paper');assert.equal(url.hash,'#signature');
-assert.equal(new URL(studio.permalink(first,'unexpected')).searchParams.get('tone'),'midnight');
+assert.equal(url.search,'','Sharing must never provide an anonymous seed override.');
+assert.equal(url.hash,'#signature');
+assert.equal(studio.permalink(first),studio.permalink(second),'Visitors must connect with their own X account.');
 assert.throws(()=>studio.wav(first,0));assert.throws(()=>studio.wav({seed:'wrong'}));
-console.log('studio check ok — deterministic five-second WAV, valid PCM, full-seed links');
+console.log('studio check ok — deterministic five-second WAV, valid PCM, account sign-in links');

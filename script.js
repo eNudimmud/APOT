@@ -65,7 +65,6 @@
     motionButton.setAttribute('aria-label', paused ? 'Play motion' : 'Pause motion');
     motionButton.querySelector('.motion-icon').textContent = paused ? '▷' : 'Ⅱ';
     window.LambdaSignal?.setPaused(paused);
-    window.ApotStage?.setPaused(paused);
   }
   motionButton.addEventListener('click', () => {
     manualMotion = true;

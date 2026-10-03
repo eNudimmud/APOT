@@ -3,9 +3,9 @@
 The website establishes the visual world first. Photo and video storyboards are the next production phase, after review of this redesign.
 
 ## Launch sequence
-1. Review the website on desktop and mobile: first impression, composer, restored seeds, card and audio exports, artwork dialogs, public records, open call and token address.
+1. Review the website on desktop and mobile: first impression, required X sign-in, fixed-account PFP and banner, card and audio exports, artwork dialogs, public records, open call and token address.
 2. Finalise the X profile with the same wordmark, navy/ivory palette, clear independent-project description and a pinned invitation to compose. Upload the approved banner and images manually. Premium can support account presentation, but is not verification of the token, a partnership or investment credibility.
-3. Release Study 001 and one complete edition. Give a new visitor one understandable action: make a signal, hear it, carry it, then create something.
+3. Release Study 001 and one complete edition. Give a new visitor one understandable action: connect with X, recover a fixed signal, carry it, then create something.
 4. Invite the first contributions through FIRST SIGNAL / 001. Feature real submitted work only with permission, a creator name, date, process and source credits. No invented participation or activity counters.
 5. Build the first realistic photo/video storyboard series. Publish original episodes at a sustainable pace and evaluate saves, meaningful replies, shares and completed creations rather than price language.
 
@@ -22,7 +22,7 @@ For each route, the next deliverable is a storyboard with shot-by-shot timing, l
 - Realistic present-day spaces, instruments, paper, skin, metal and sound. Strong visual styling without imaginary technology.
 - Scientific sources and observed human capabilities get their own clear credits. Our original art remains labelled as composed or generated.
 - 2030–2040 is an editorial horizon for access, expression and agency. Do not turn it into promised Neuralink dates.
-- Work remains open to everyone. No wallet gate or purchase requirement for creation.
+- Work remains open to everyone. No wallet gate or purchase requirement. A personal signal requires X sign-in; editorial studies and references stay public.
 - Full seeds, dates, named creators and the evolving archive establish continuity. Public work can be copied; never claim an invulnerable identity.
 - The photographic source files currently measure 1672 or 1536 pixels wide. Keep a native-resolution production plan for bigger outputs. The studio cards already draw directly at 3840 × 2160.
 

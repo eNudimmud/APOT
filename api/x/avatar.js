@@ -17,6 +17,7 @@ module.exports = async function avatar(req, res) {
     res.statusCode = 200;
     res.setHeader('Content-Type', image.type);
     res.setHeader('Cache-Control', 'private, no-store');
+    res.setHeader('X-APOT-Account', current.id);
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.end(image.bytes);
   } catch (_) {
