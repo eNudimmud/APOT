@@ -4,23 +4,28 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#07121d">
-  <meta name="description" content="λP⊙T — Potential, in motion. The network has a grammar. Generate your signal. Not a recording.">
+  <meta name="description" content="λP⊙T — Potential, in motion. A creative laboratory for art, sound and human intention. Compose your signal. Make something worth sharing.">
   <meta property="og:title" content="λP⊙T — Potential, in motion.">
-  <meta property="og:description" content="The network has a grammar. Generate your signal. Not a recording.">
+  <meta property="og:description" content="A creative laboratory for art, sound and human intention. Compose your signal. Make something worth sharing.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://enudimmud.github.io/APOT/">
-  <meta property="og:image" content="https://enudimmud.github.io/APOT/assets/apot-laboratory.webp">
+  <meta property="og:url" content="https://www.apot.world/">
+  <meta property="og:image" content="https://www.apot.world/assets/open-graph.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="675">
+  <meta property="og:image:alt" content="The λP⊙T wordmark, Potential in motion, and an original composed signal.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@APOTsignal">
-  <link rel="canonical" href="https://enudimmud.github.io/APOT/">
+  <link rel="canonical" href="https://www.apot.world/">
   <link rel="icon" href="assets/lambda-mark.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/space-grotesk-regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=editorial-1">
+  <link rel="stylesheet" href="styles.css?v=realist-1">
   <script src="signature-engine.js?v=identity-1" defer></script>
-  <script src="signal.js?v=editorial-1" defer></script>
+  <script src="signal.js?v=realist-1" defer></script>
   <script src="script.js?v=editorial-1" defer></script>
-  <script src="signature.js?v=identity-1" defer></script>
+  <script src="signature.js?v=realist-1" defer></script>
   <title>λP⊙T — Potential, in motion.</title>
+  <script src="studio-engine.js?v=realist-1" defer></script>
+  <script src="studio.js?v=realist-1" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#study-title">Skip to content</a>
@@ -38,10 +43,10 @@
     <a class="brand" href="#top" aria-label="λP⊙T home"><svg aria-hidden="true"><use href="#wordmark"/></svg><span class="sr-only">λP⊙T</span></a>
     <nav id="main-nav" aria-label="Main navigation">
       <a href="#top">Signal</a>
-      <a href="#signature">Signature</a>
+      <a href="#signature">Compose</a>
       <a href="#record">Record</a>
-      <a href="#archive">Archive</a>
-      <a href="#community">Community</a>
+      <a href="#archive">Studies</a>
+      <a href="#community">Open circuit</a>
     </nav>
     <a class="header-pair" href="#access">APOT X NEURALINK Prestock</a>
     <a class="token-access" href="#access">$APOT</a>
@@ -51,57 +56,38 @@
 </header>
 
 <main>
-  <section class="signal-world" id="top" aria-labelledby="study-title">
+  <section class="signal-world section-pad" id="top" aria-labelledby="study-title">
     <div class="signal-sticky">
-      <div class="scrim" aria-hidden="true"></div>
-      <div class="signal-scene" role="img" aria-label="Three-dimensional filament that turns and opens on its own. Pause stops the motion.">
-        <svg class="signal-fallback" viewBox="0 0 1000 700" aria-hidden="true">
-          <defs><path id="fallback-path" d="M40 390H250C320 390 332 120 390 120S470 600 540 600 620 340 690 340 750 400 820 400H980"/></defs>
-          <use href="#fallback-path" class="fallback-base"/>
-          <use href="#fallback-path" class="fallback-pulse" pathLength="100"/>
-        </svg>
-        <canvas id="signal-canvas" aria-hidden="true"></canvas>
-      </div>
       <div class="hero-copy">
-        <p class="eyebrow"><span class="signal-dot" aria-hidden="true"></span>SCIENCE × CREATIVITY</p>
+        <p class="eyebrow"><span class="signal-dot" aria-hidden="true"></span>01 / THE CREATIVE LABORATORY</p>
         <p class="hero-mark"><svg class="hero-wordmark" aria-hidden="true"><use href="#wordmark"/></svg><span class="sr-only">λP⊙T</span></p>
-        <p class="hero-kicker">Potential, <em>in motion.</em></p>
-        <h1 id="study-title">The network<br>has a grammar.</h1>
-        <p class="dek">Same grammar as a command pulse. Not a recording.</p>
+        <h1 id="study-title">Potential,<br><em>in motion.</em></h1>
+        <p class="dek">Art. Sound. Human intention.<br>A place to make something that stays with you.</p>
         <p class="hero-pairline">APOT X NEURALINK Prestock</p>
-        <a class="text-link" href="#signature">Generate your signal <span class="arrow-circle"><svg aria-hidden="true"><use href="#arrow"/></svg></span></a>
+        <p class="hero-context">An independent creative project around $APOT.</p>
+        <div class="hero-actions"><a class="solid-link" href="#signature">Compose your signal <svg aria-hidden="true"><use href="#arrow"/></svg></a><a class="text-link" href="#archive">Explore the studies <svg aria-hidden="true"><use href="#arrow"/></svg></a></div>
       </div>
-      <div class="study-hud">
-        <p class="study-index">APOT SIGNAL STUDY / 001</p>
-        <p class="study-line" id="study-line">Quiet, before the impulse.</p>
-        <p class="study-metrics" aria-hidden="true"><span id="phase-name">REST</span><span id="orbit-readout">ORBIT 0°</span></p>
-        <div class="phase-rail" aria-hidden="true"><span id="phase-fill"></span></div>
-        <ol class="phase-scale" aria-hidden="true">
-          <li data-phase="rest" class="is-active">REST</li>
-          <li data-phase="rise">RISE</li>
-          <li data-phase="spike">SPIKE</li>
-          <li data-phase="field">FIELD</li>
-          <li data-phase="signature">SIGNATURE</li>
-        </ol>
-      </div>
-      <p class="sr-only" id="phase-live" aria-live="polite"></p>
-      <div class="hero-foot">
-        <a class="scroll-cue" href="#record"><span class="scroll-track" aria-hidden="true"><i></i></span>SCROLL TO EXPLORE</a>
-        <p class="honest">Composed filament. Not a recording.</p>
-      </div>
+      <figure class="hero-photograph">
+        <img src="assets/study-signal-1672.webp" srcset="assets/study-signal-480.webp 480w, assets/study-signal-960.webp 960w, assets/study-signal-1672.webp 1672w" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 56vw, 780px" width="1672" height="941" alt="An ivory oscilloscope, a pencil and graph paper on a midnight-blue workbench." fetchpriority="high" decoding="async">
+        <figcaption><span class="eyebrow">SIGNAL STUDY / 001</span><span>First, a line.</span></figcaption>
+      </figure>
     </div>
-    <div id="signal-depth" class="signal-anchor"></div>
+    <div class="hero-rail">
+      <div><span class="eyebrow">A SIGNAL TO START WITH</span><p id="study-line">Quiet, before the impulse.</p></div>
+      <div class="signal-scene" role="img" aria-label="A composed filament moves slowly. Use Pause to stop it."><canvas id="signal-canvas" aria-hidden="true"></canvas><svg class="signal-fallback" viewBox="0 0 1000 700" aria-hidden="true"><path d="M40 390H250C320 390 332 120 390 120S470 600 540 600 620 340 690 340 750 400 820 400H980"/></svg></div>
+      <a class="text-link" href="#signature">Make your mark <span class="arrow-circle"><svg aria-hidden="true"><use href="#arrow"/></svg></span></a>
+    </div>
+    <div class="sr-only" aria-hidden="true"><span id="phase-name">REST</span><span id="orbit-readout">ORBIT 0°</span><span id="phase-fill"></span></div><p class="sr-only" id="phase-live"></p>
   </section>
 
   <section class="signature section-pad" id="signature" aria-labelledby="signature-title" data-signature-check="pending">
-    <div class="section-top">
-      <span class="eyebrow">05 / SIGNATURE</span>
-      <span class="eyebrow">NO WALLET REQUIRED</span>
-    </div>
-    <div class="section-heading" data-reveal>
-      <h2 id="signature-title">Your unique configuration.</h2>
-      <p>A stable pattern. Yours.</p>
-    </div>
+    <div class="section-top"><span class="eyebrow">02 / COMPOSE</span><span class="eyebrow">OPEN TO EVERYONE</span></div>
+    <div class="section-heading"><h2 id="signature-title">Make your mark.</h2><p>A pattern to see. A motif to hear.<br>One seed brings it back.</p></div>
+    <div class="compose-layout">
+      <div class="card-preview-wrap"><canvas id="card-preview" width="1600" height="900" role="img" aria-label="Your composed signal card"></canvas><p class="compose-caption"><span>YOUR SIGNAL / YOUR EDITION</span><span>Composed here. Yours to carry.</span></p></div>
+      <div class="compose-controls">    <p class="signature-status">This one is yours.</p>
+    <p class="lambda-id" aria-hidden="true"><svg class="lambda-glyph" viewBox="8 4 46 64"><path d="M16 8h4c5 0 8 4 11 11l18 43M30 21 8 62"/></svg><span class="lambda-hyphen">-</span><span id="lambda-digits">————</span></p>
+    <p id="signature-live" class="sr-only" aria-live="polite"></p>
     <div class="signature-actions" data-reveal>
       <button class="solid-button" type="button" id="generate-signal">Generate signal</button>
       <button class="ghost-button" type="button" id="restore-toggle" aria-expanded="false" aria-controls="restore-panel">Restore signal</button>
@@ -114,10 +100,15 @@
       </div>
       <p class="seed-error" id="seed-error" role="alert" hidden>Enter the eight-character seed.</p>
     </form>
-    <p class="signature-status">This one is yours.</p>
-    <p class="lambda-id" aria-hidden="true"><svg class="lambda-glyph" viewBox="8 4 46 64"><path d="M16 8h4c5 0 8 4 11 11l18 43M30 21 8 62"/></svg><span class="lambda-hyphen">-</span><span id="lambda-digits">————</span></p>
-    <p id="signature-live" class="sr-only" aria-live="polite"></p>
-    <div class="signature-stage" data-reveal>
+        <div class="tone-picker" role="group" aria-label="Card palette"><button type="button" data-tone="midnight" aria-pressed="true">Midnight</button><button type="button" data-tone="paper" aria-pressed="false">Paper</button></div>
+        <button class="listen-button" id="listen-signal" type="button" disabled><svg aria-hidden="true"><use href="#play"/></svg><span>Listen to your signal</span></button>
+        <p class="sound-note" id="sound-status" aria-live="polite">An original, composed motif. Sound starts when you choose.</p>
+        <div class="studio-exports"><button class="solid-button" id="export-card" type="button" disabled>Download card <span>3840 × 2160 PNG</span></button><button class="ghost-button" id="export-sound" type="button" disabled>Download sound <span>WAV</span></button></div>
+        <a class="text-link" id="share-card" href="https://x.com/intent/tweet" target="_blank" rel="noopener noreferrer" aria-disabled="true">Share your edition <svg aria-hidden="true"><use href="#out"/></svg></a>
+        <p class="studio-note">Generated artwork and sound. No neural data.</p>
+      </div>
+    </div>
+    <details class="token-details"><summary>Signal anatomy &amp; seed <span aria-hidden="true">+</span></summary><div class="details-content">    <div class="signature-stage" data-reveal>
       <canvas id="signature-canvas" aria-hidden="true"></canvas>
     </div>
     <dl class="param-grid">
@@ -133,7 +124,8 @@
       <button class="ghost-button" type="button" id="seed-copy">Copy</button>
       <span class="sr-only" id="seed-copy-status" aria-live="polite"></span>
     </div>
-    <div class="portrait-block">
+</div></details>
+    <details class="token-details"><summary>X profile image &amp; banner <span aria-hidden="true">+</span></summary><div class="details-content">    <div class="portrait-block">
       <div class="portrait-controls">
         <a class="ghost-button" id="x-connect" href="api/x/start">Connect with X</a>
         <button class="ghost-button" type="button" id="x-disconnect" hidden>Disconnect</button>
@@ -156,8 +148,8 @@
     </div>
     <p class="export-note eyebrow">PFP · your X avatar, signature over it · Banner · drawn from the seed</p>
     <p class="local-note">The signal is drawn in this browser. Signing in with X uses the site server to read your avatar. Nothing is posted.</p>
-    <noscript><p class="local-note">Signal signatures need JavaScript. The rest of the page stays readable.</p></noscript>
-    <details class="token-details signature-notes">
+</div></details>
+    <details class="token-details"><summary>How it is made <span aria-hidden="true">+</span></summary><div class="details-content">    <details class="token-details signature-notes">
       <summary>How a signature is written <span aria-hidden="true">+</span></summary>
       <div class="details-content">
         <p class="pipeline"><span>SEED</span><span>PARAMETERS</span><span>SIGNAL</span><span>NETWORK</span><span>SIGNATURE</span></p>
@@ -172,15 +164,30 @@
         <div id="algorithm-body" class="algorithm-body"></div>
       </div>
     </details>
+</div></details>
+    <noscript><p class="local-note">Composing requires JavaScript. The studies and references remain readable.</p></noscript>
   </section>
+
+  <section class="archive section-pad" id="archive" aria-labelledby="archive-title"><div class="section-top"><span class="eyebrow">03 / SIGNAL STUDIES</span><span class="eyebrow">ORIGINAL PHOTOGRAPHIC ARTWORK</span></div><div class="section-heading"><h2 id="archive-title">Small gestures.<br>Lasting impressions.</h2><p>Three studies from the laboratory.<br>Objects, hands and the act of creating.</p></div><div class="study-grid"><article class="study-card"><a class="study-image" data-study="signal" href="assets/masters/study-signal.png" aria-label="View study 001: First, a line."><img src="assets/study-signal-1672.webp" srcset="assets/study-signal-480.webp 480w, assets/study-signal-960.webp 960w, assets/study-signal-1672.webp 1672w" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 45vw, 440px" width="1672" height="941" alt="An ivory oscilloscope on a real-world laboratory workbench." loading="lazy" decoding="async"><span class="study-open" aria-hidden="true">↗</span></a><p class="eyebrow">λP⊙T / STUDY 001</p><h3>First, a line.</h3><p>The quiet before the mark.</p></article><article class="study-card"><a class="study-image" data-study="mark" href="assets/masters/study-mark.png" aria-label="View study 002: Then, a gesture."><img src="assets/study-mark-1536.webp" srcset="assets/study-mark-480.webp 480w, assets/study-mark-960.webp 960w, assets/study-mark-1536.webp 1536w" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 45vw, 440px" width="1536" height="1024" alt="A human hand drawing a graphite line on ivory graph paper." loading="lazy" decoding="async"><span class="study-open" aria-hidden="true">↗</span></a><p class="eyebrow">λP⊙T / STUDY 002</p><h3>Then, a gesture.</h3><p>Intention leaves a trace.</p></article><article class="study-card"><a class="study-image" data-study="sound" href="assets/masters/study-sound.png" aria-label="View study 003: And a sound."><img src="assets/study-sound-1536.webp" srcset="assets/study-sound-480.webp 480w, assets/study-sound-960.webp 960w, assets/study-sound-1536.webp 1536w" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 45vw, 440px" width="1536" height="1024" alt="A hand plucking an electric guitar string with an ivory plectrum." loading="lazy" decoding="async"><span class="study-open" aria-hidden="true">↗</span></a><p class="eyebrow">λP⊙T / STUDY 003</p><h3>And a sound.</h3><p>A small movement changes the room.</p></article></div><p class="art-credit">Art direction: λP⊙T · AI-generated photographic studies.</p><details class="token-details"><summary>Four seeds to explore <span aria-hidden="true">+</span></summary><div class="details-content"><p>Choose a plate to restore its complete seed in the composer.</p>    <ul class="signal-archive" data-reveal>
+      <li><button type="button" class="signal-plate" data-seed="7F2A91C4" aria-label="Restore signature λ-7F2A"><canvas width="800" height="592" aria-hidden="true"></canvas><span><svg class="mini-lambda" viewBox="8 4 46 64" aria-hidden="true"><path d="M16 8h4c5 0 8 4 11 11l18 43M30 21 8 62"/></svg>7F2A</span></button></li>
+      <li><button type="button" class="signal-plate" data-seed="91BC4E18" aria-label="Restore signature λ-91BC"><canvas width="800" height="592" aria-hidden="true"></canvas><span><svg class="mini-lambda" viewBox="8 4 46 64" aria-hidden="true"><path d="M16 8h4c5 0 8 4 11 11l18 43M30 21 8 62"/></svg>91BC</span></button></li>
+      <li><button type="button" class="signal-plate" data-seed="A04E77D2" aria-label="Restore signature λ-A04E"><canvas width="800" height="592" aria-hidden="true"></canvas><span><svg class="mini-lambda" viewBox="8 4 46 64" aria-hidden="true"><path d="M16 8h4c5 0 8 4 11 11l18 43M30 21 8 62"/></svg>A04E</span></button></li>
+      <li><button type="button" class="signal-plate" data-seed="31FF0C8A" aria-label="Restore signature λ-31FF"><canvas width="800" height="592" aria-hidden="true"></canvas><span><svg class="mini-lambda" viewBox="8 4 46 64" aria-hidden="true"><path d="M16 8h4c5 0 8 4 11 11l18 43M30 21 8 62"/></svg>31FF</span></button></li>
+    </ul></div></details><details class="token-details"><summary>From the original laboratory <span aria-hidden="true">+</span></summary><div class="details-content">    <figure class="editorial" data-reveal>
+      <img loading="lazy" decoding="async" src="assets/apot-laboratory.webp" width="1536" height="1024" alt="A laboratory monitor showing the λP⊙T mark and a signal trace, with printed studies on the bench.">
+      <figcaption>
+        <span class="eyebrow">THE LABORATORY</span>
+        <p>The mark on a monitor. A composed scene, not a recording.</p>
+      </figcaption>
+    </figure></div></details></section>
 
   <section class="record section-pad" id="record" aria-labelledby="record-title">
     <div class="section-top">
-      <span class="eyebrow">02 / THE RECORD</span>
+      <span class="eyebrow">04 / PUBLIC RECORD</span>
     </div>
     <div class="section-heading" data-reveal>
-      <h2 id="record-title">Sources at the edge.</h2>
-      <p>Three public records. Art, objects, and the atlas beneath the signal.</p>
+      <h2 id="record-title">Creation is already happening.</h2>
+      <p>People, tools and the science behind new ways to create.</p>
     </div>
     <div class="exploration-layout" data-reveal>
       <div class="exploration-index" role="tablist" aria-label="Scientific and creative references" aria-orientation="vertical">
@@ -220,32 +227,13 @@
     </div>
   </section>
 
-  <section class="archive section-pad" id="archive" aria-labelledby="archive-title">
-    <div class="section-top">
-      <span class="eyebrow">03 / SIGNAL ARCHIVE</span>
-    </div>
-    <div class="section-heading" data-reveal>
-      <h2 id="archive-title">Four signals.</h2>
-      <p>Each one different. Open a plate to restore that seed.</p>
-    </div>
-    <ul class="signal-archive" data-reveal>
-      <li><button type="button" class="signal-plate" data-seed="7F2A91C4" aria-label="Restore signature λ-7F2A"><canvas width="800" height="592" aria-hidden="true"></canvas><span><svg class="mini-lambda" viewBox="8 4 46 64" aria-hidden="true"><path d="M16 8h4c5 0 8 4 11 11l18 43M30 21 8 62"/></svg>7F2A</span></button></li>
-      <li><button type="button" class="signal-plate" data-seed="91BC4E18" aria-label="Restore signature λ-91BC"><canvas width="800" height="592" aria-hidden="true"></canvas><span><svg class="mini-lambda" viewBox="8 4 46 64" aria-hidden="true"><path d="M16 8h4c5 0 8 4 11 11l18 43M30 21 8 62"/></svg>91BC</span></button></li>
-      <li><button type="button" class="signal-plate" data-seed="A04E77D2" aria-label="Restore signature λ-A04E"><canvas width="800" height="592" aria-hidden="true"></canvas><span><svg class="mini-lambda" viewBox="8 4 46 64" aria-hidden="true"><path d="M16 8h4c5 0 8 4 11 11l18 43M30 21 8 62"/></svg>A04E</span></button></li>
-      <li><button type="button" class="signal-plate" data-seed="31FF0C8A" aria-label="Restore signature λ-31FF"><canvas width="800" height="592" aria-hidden="true"></canvas><span><svg class="mini-lambda" viewBox="8 4 46 64" aria-hidden="true"><path d="M16 8h4c5 0 8 4 11 11l18 43M30 21 8 62"/></svg>31FF</span></button></li>
-    </ul>
-    <figure class="editorial" data-reveal>
-      <img src="assets/apot-laboratory.webp" width="1536" height="1024" alt="A laboratory monitor showing the λP⊙T mark and a signal trace, with printed studies on the bench.">
-      <figcaption>
-        <span class="eyebrow">THE LABORATORY</span>
-        <p>The mark on a monitor. A composed scene, not a recording.</p>
-      </figcaption>
-    </figure>
-  </section>
+  <section class="lineage section-pad" id="lineage" aria-labelledby="lineage-title"><div class="section-top"><span class="eyebrow">05 / LOOKING AHEAD</span><span class="eyebrow">CREATIVE QUESTIONS / 2030–2040</span></div><div class="section-heading"><h2 id="lineage-title">The human part.</h2><p>The years ahead begin with what we make now.</p></div><div class="horizon-grid"><article><span class="horizon-year">2030</span><h3>Access.</h3><p>What makes a creative tool easier for more people to use?</p></article><article><span class="horizon-year">2035</span><h3>Expression.</h3><p>What could a new instrument let someone express?</p></article><article><span class="horizon-year">2040</span><h3>Agency.</h3><p>How could a useful object give someone more independence?</p></article></div><p class="art-credit">Questions for our creative programme. Dates are editorial horizons.</p><details class="token-details"><summary>THE LINEAGE / cultural notes <span aria-hidden="true">+</span></summary><div class="details-content"><p>Identity, perception and agency run through books, cinema and games. We read these works as questions about the human experience.</p><ul class="culture-links"><li><a href="https://kodansha.us/series/the-ghost-in-the-shell/" target="_blank" rel="noopener noreferrer">Ghost in the Shell · Masamune Shirow ↗</a><span>Identity and the body.</span></li><li><a href="https://www.warnerbros.com/movies/matrix" target="_blank" rel="noopener noreferrer">The Matrix · The Wachowskis ↗</a><span>Perception and choice.</span></li><li><a href="https://www.penguinrandomhouse.com/books/293994/neuromancer-by-william-gibson/" target="_blank" rel="noopener noreferrer">Neuromancer · William Gibson ↗</a><span>Interfaces and expression.</span></li><li><a href="https://www.eidosmontreal.com/news/deus-ex-mankind-divided-announced/" target="_blank" rel="noopener noreferrer">Deus Ex ↗</a><span>Technology and agency.</span></li></ul><p>Editorial connections selected by λP⊙T. Public scientific records remain linked to their own sources.</p></div></details></section>
+
+  <section class="community section-pad" id="community" aria-labelledby="community-title"><div class="section-top"><span class="eyebrow">06 / OPEN CIRCUIT</span><span class="eyebrow">FIRST SIGNAL / OPEN CALL</span></div><div class="community-layout"><div class="community-copy"><h2 id="community-title">One intention.<br>One creation.</h2><p>Draw a line. Record a sound. Build a small tool.<br>Show us what your signal becomes.</p><a class="solid-link" id="contribute" href="https://x.com/intent/tweet?text=FIRST%20SIGNAL%20%2F%20001%0A%0AMy%20creation%3A%0AHow%20I%20made%20it%3A%0A%0A%40APOTsignal%20https%3A%2F%2Fwww.apot.world%2F" target="_blank" rel="noopener noreferrer">Bring your first signal <svg aria-hidden="true"><use href="#out"/></svg></a><span class="open-note">Open to everyone. Holding $APOT is optional.</span></div><ol class="mission-steps"><li><span>01</span><div><h3>Make it.</h3><p>An image, a sound, a video or a working idea.</p></div></li><li><span>02</span><div><h3>Show the process.</h3><p>Add your name, tools and credits for anything you used.</p></div></li><li><span>03</span><div><h3>Open the circuit.</h3><p>Post on X and tag <a href="https://x.com/APOTsignal" target="_blank" rel="noopener noreferrer">@APOTsignal</a>. We may feature selected work with your permission.</p></div></li></ol></div></section>
 
   <section class="access section-pad" id="access" aria-labelledby="access-title">
     <div class="section-top">
-      <span class="eyebrow">04 / $APOT</span>
+      <span class="eyebrow">07 / $APOT</span>
       <span class="eyebrow">SOLANA</span>
     </div>
     <div class="access-layout">
@@ -271,7 +259,7 @@
         </div>
       </div>
       <figure class="specimen" data-reveal>
-        <img src="assets/apot-mark.webp" width="1027" height="1531" alt="Ivory signal line and the λP⊙T wordmark on midnight blue. The line on the plate reads threshold −55 mV.">
+        <svg class="vector-specimen" viewBox="0 0 600 660" role="img" aria-label="The ivory λP⊙T mark and a composed signal on midnight blue"><rect width="600" height="660" fill="#081a30"/><use href="#wave" x="75" y="105" width="450" height="290" stroke="#e7e2d4" stroke-width="1.6"/><use href="#wordmark" x="92" y="480" width="416" height="117"/></svg>
         <figcaption><span class="eyebrow">ILLUSTRATIVE MARK</span><span>Not a measurement.</span></figcaption>
       </figure>
     </div>
@@ -293,30 +281,17 @@
       </div>
     </details>
   </section>
-
-  <section class="community section-pad" id="community" aria-labelledby="community-title">
-    <div class="section-top">
-      <span class="eyebrow">06 / OPEN CIRCUIT</span>
-    </div>
-    <div class="community-layout">
-      <div class="community-copy" data-reveal>
-        <h2 id="community-title">Make something worth sharing.</h2>
-        <p>Art, sound, code, unfinished ideas. The circuit is open.</p>
-        <a class="text-link" href="https://x.com/APOTsignal" target="_blank" rel="noopener noreferrer">Join @APOTsignal <span class="arrow-circle"><svg aria-hidden="true"><use href="#out"/></svg></span><span class="sr-only"> (X, new tab)</span></a>
-        <span class="open-note">Open to everyone. Holding $APOT is optional.</span>
-      </div>
-    </div>
-  </section>
 </main>
 
 <footer class="footer section-pad">
   <a class="footer-wordmark" href="#top" aria-label="λP⊙T, back to top"><svg aria-hidden="true"><use href="#wordmark"/></svg><span class="sr-only">λP⊙T</span></a>
-  <p class="footer-line">At the edge of thought, creation becomes possible.</p>
+  <p class="footer-line">A line. A gesture. A possibility.</p>
   <div class="footer-bottom">
     <span>© 2026 λP⊙T</span>
     <a href="https://github.com/eNudimmud/APOT" target="_blank" rel="noopener noreferrer">Source ↗<span class="sr-only"> (GitHub, new tab)</span></a>
-    <span>Cryptoassets involve risk. No guaranteed return.</span>
+    <span>Independent creative project.</span>
   </div>
+  <p class="footer-note">Photographic studies are generated artwork. Signals and sound are composed, with no neural data. Cryptoassets involve risk; no guaranteed return.</p>
 </footer>
 
 <dialog class="film-dialog" id="film-dialog" aria-labelledby="film-title">
@@ -327,5 +302,6 @@
     <a class="text-link" href="https://www.youtube.com/watch?v=5hYg3rUfLiQ" target="_blank" rel="noopener noreferrer">Watch on YouTube <svg aria-hidden="true"><use href="#out"/></svg><span class="sr-only"> (new tab)</span></a>
   </div>
 </dialog>
+<dialog class="study-dialog" id="study-dialog" aria-labelledby="study-dialog-title"><div class="dialog-top"><span class="eyebrow" id="study-dialog-index">λP⊙T / STUDY</span><button class="dialog-close" type="button" aria-label="Close study"><svg aria-hidden="true"><use href="#close"/></svg></button></div><img id="study-dialog-image" alt="" width="1672" height="941"><div class="study-dialog-caption"><div><h2 id="study-dialog-title">First, a line.</h2><p id="study-dialog-description"></p><p class="art-credit">Art direction: λP⊙T · Generated photographic artwork.</p></div><a class="text-link" id="study-compose" href="#signature">Compose your own <svg aria-hidden="true"><use href="#arrow"/></svg></a></div></dialog>
 </body>
 </html>

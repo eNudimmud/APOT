@@ -1,18 +1,29 @@
-# λP⊙T — The next impulse.
+# λP⊙T — Potential, in motion.
 
-Public site: https://enudimmud.github.io/APOT/  
+Public site: https://www.apot.world/  
+Static mirror: https://enudimmud.github.io/APOT/  
 Community: https://x.com/APOTsignal
 
 ## Direction agreed with the creator
 
-English only. A concise scientific and creative identity, with the token as the main conversion goal. Community participation is open to everyone; holding APOT is optional. Future steps and collaborations are left open. Neuralink is an editorial reference, not the identity of APOT or an announced partner.
+English only. A concise scientific and creative identity, with creation as the first invitation and clear access to the token. Community participation is open to everyone; holding APOT is optional. Future steps and collaborations are left open. Neuralink is an editorial reference, not the identity of APOT or an announced partner.
 
-## Experience — signal study, 29 September 2026
+## Experience — realistic laboratory, 3 October 2026
 
 - Static HTML, CSS, and JavaScript. GitHub Pages serves the repository root. No package install and no second framework.
 - The public wordmark is **λP⊙T**. The running header, the hero, and the access title show the exact line **APOT X NEURALINK Prestock**. The ticker stays **$APOT**, always reachable from the header.
-- The hero is a depth-sorted 3D filament drawn on canvas. It runs as a continuous idle loop; scroll only nudges the pose. The loop uses requestAnimationFrame, pauses when the tab is hidden or the hero is off screen, and starts paused when reduced motion is requested. Pause stops the loop. A no-canvas SVG trace keeps its own loop.
+- The opening pairs strong editorial type with an original photograph of a credible oscilloscope workbench. A small filament in the band below is drawn on canvas. Its loop pauses when the tab is hidden or the band is off screen, and starts paused when reduced motion is requested. A static SVG trace is the no-canvas fallback.
 - Copy is English and short. References: Neuralink’s Audrey film (opened on demand), Alex’s PRIME Study note, and the Sylvius 4 Online demo. Sylvius stays on Oxford University Press and is not embedded. The archive is keyboard operable. $APOT access uses the confirmed mint `GsUXfGLgAvfMKxiCUVoe8iNaMR4dqP5xBbXcD8BbAP4o`, with Jupiter as the buy link and the related Solscan account as the explorer.
+
+## Compose an edition
+
+The composer adds a Midnight/Paper edition card and an original musical motif to the existing deterministic signature. **Download card** draws directly at 3840 × 2160. **Listen to your signal** plays a five-second motif only on request; a second click, a seed change or hiding the tab stops it. **Download sound** saves mono PCM 16-bit WAV at 44.1 kHz. These are artistic seed mappings, with no neural data.
+
+**Share your edition** opens an X draft containing the full seed and palette URL, for example `https://www.apot.world/?seed=7F2A91C4&tone=paper#signature`. A valid linked seed takes precedence on page arrival, including for a connected visitor. Explicit Generate while connected still restores that account's own seed. No automatic posting.
+
+The three new photographic studies open in an accessible native dialog. The community invitation drafts FIRST SIGNAL / 001; the visitor adds their work and submits it voluntarily. 2030, 2035 and 2040 remain editorial questions, not a Neuralink schedule. Culture references are credited reading connections.
+
+Offline checks: `node signature-check.js`, `node x-oauth-check.js`, and `node studio-check.js`. These check signature and X identity fixtures, read-only OAuth helpers, deterministic WAV bytes, PCM structure/headroom, and full-seed share URLs. `review.html` provides 390/768/1024 px iframe layouts on an actual hosted preview. This changes layout width only, not the device pixel ratio.
 
 ## Signal signature
 
@@ -24,10 +35,10 @@ The profile image is the connected X account’s avatar with that signature laid
 
 Try the signal locally with `python3 -m http.server` from the repository root. Connect with X needs the Vercel deployment below, or `vercel dev` with the environment variables set.
 
-1. Open the site and choose **Generate your signal**, or **Generate signal** in `05 / SIGNATURE`.
+1. Open the site and choose **Generate your signal**, or **Generate signal** in `02 / COMPOSE`.
 2. Copy the eight-character seed, then **Restore signal** and enter it again. The λ-ID, parameters, curve, and network return.
 3. **Connect with X**, approve the read-only prompt, and return to the page. The signal on screen becomes that account’s signal, and the avatar becomes the base. Connect again, or open another browser, and the same λ-ID returns. Set **Overlay** — the default is 45% — until the face stays readable. **Download PFP** saves the 1:1 PNG.
-4. **Download banner** saves the 3:1 plate drawn from the seed. It does not use the avatar.
+4. **Download banner** saves the 3000 × 1000 plate drawn from the seed. It does not use the avatar.
 5. **Share signal** opens an X compose window with prefilled text. It does not post.
 
 The deterministic fixture is seed `7F2A91C4` (λ-7F2A). The X identity fixture is user id `1847291056384729103`, which restores seed `4A6445B3` (λ-4A64) on every run. Check both with `node signature-check.js`. The X helper, with no network and no real secrets, is `node x-oauth-check.js`.
@@ -76,7 +87,7 @@ The Neuralink film is an account of clinical trial participants, not a general c
 
 Static HTML, CSS and JavaScript served by GitHub Pages from the default branch (`main`) at https://enudimmud.github.io/APOT/. A pull request is not what Pages publishes. To preview a branch, check it out and run `python3 -m http.server` from the repository root. Relative paths match the `/APOT/` base. No package install or build step. `signal.js` contains the original Canvas 2D projection; `script.js` handles navigation, scroll composition, the film and the archive. Fonts are self-hosted under their existing SIL OFL licenses. No wallet connection, transaction, form submission or analytics. YouTube is loaded only on request. The film uses an original typographic editorial cover, so the page does not depend on a third-party thumbnail. The fixed navigation keeps the token accessible throughout the page.
 
-Use relative paths to preserve compatibility with the /APOT/ base path. Keep `.nojekyll` in the root. The still pictures on the page are `assets/apot-laboratory.webp` and `assets/apot-mark.webp`. Coin and medallion photographs are not used.
+Use relative paths to preserve compatibility with the /APOT/ base path. Keep `.nojekyll` in the root. The current photographic studies are the responsive `assets/study-*.webp` files. Native generated PNG sources are preserved in `assets/masters`; actual dimensions are recorded in `assets/media-manifest.json`. The token specimen is vector artwork. Photographic sources are 1672 or 1536 pixels wide, not 4K. See `ART_DIRECTION.md` for the current visual canon.
 
 ## Configuration sélectionnée avant lancement
 

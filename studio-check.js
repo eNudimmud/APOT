@@ -1,0 +1,28 @@
+/* Offline checks for reproducible exported artwork and playable PCM files. */
+'use strict';
+const assert=require('node:assert/strict');
+const crypto=require('node:crypto');
+const signal=require('./signature-engine');
+const studio=require('./studio-engine');
+const hash=bytes=>crypto.createHash('sha256').update(Buffer.from(bytes)).digest('hex');
+const first=signal.derive('7F2A91C4'), second=signal.derive('91BC4E18');
+const a=studio.wav(first), b=studio.wav(signal.derive('7F2A91C4'));
+assert.equal(hash(a),hash(b),'Restoring a seed must reproduce the identical WAV.');
+assert.notEqual(hash(a),hash(studio.wav(second)),'A different seed must produce a different motif.');
+const wav=new DataView(a);
+const text=(start,length)=>Buffer.from(a,start,length).toString('ascii');
+assert.equal(text(0,4),'RIFF');assert.equal(text(8,4),'WAVE');assert.equal(text(36,4),'data');
+assert.equal(wav.getUint32(4,true),a.byteLength-8);
+assert.equal(wav.getUint16(20,true),1);assert.equal(wav.getUint16(22,true),1);
+assert.equal(wav.getUint32(24,true),44100);assert.equal(wav.getUint16(34,true),16);
+assert.equal(wav.getUint32(40,true),44100*5*2);assert.equal(a.byteLength,44+44100*5*2);
+const pcm=studio.samples(first);
+assert.ok(pcm.every(value=>Number.isFinite(value)&&Math.abs(value)<=0.7),'PCM must be finite and stay below clipping.');
+assert.ok(pcm.some(value=>Math.abs(value)>0.1),'The motif must contain audible material.');
+assert.ok(pcm.slice(-1000).every(value=>value===0),'Release must finish before the file ends.');
+const url=new URL(studio.permalink(first,'paper'));
+assert.equal(signal.derive(url.searchParams.get('seed')).seed,first.seed);
+assert.equal(url.searchParams.get('tone'),'paper');assert.equal(url.hash,'#signature');
+assert.equal(new URL(studio.permalink(first,'unexpected')).searchParams.get('tone'),'midnight');
+assert.throws(()=>studio.wav(first,0));assert.throws(()=>studio.wav({seed:'wrong'}));
+console.log('studio check ok — deterministic five-second WAV, valid PCM, full-seed links');

@@ -69,8 +69,8 @@
 
   function quality() {
     narrow = small.matches || width < 800;
-    if (narrow) return { strands: 16, steps: 52, dpr: 1.25 };
-    return { strands: 26, steps: 68, dpr: 1.5 };
+    if (narrow) return { strands: 16, steps: 52, dpr: 2 };
+    return { strands: 26, steps: 68, dpr: 2 };
   }
 
   function makeGeometry() {
@@ -154,10 +154,10 @@
   }
 
   function paint(open, camera) {
-    const fit = narrow ? width * 0.84 : width * 0.48;
-    const scale = Math.min(fit / 9.2, (height * (narrow ? 0.32 : 0.44)) / 3.2);
-    const originX = narrow ? width * 0.5 : width * 0.66;
-    const originY = narrow ? height * 0.58 : height * 0.48;
+    const fit = width * 0.84;
+    const scale = Math.min(fit / 9.2, height * 0.8 / 3.2);
+    const originX = width * 0.5;
+    const originY = height * 0.54;
     const breathe = paused ? 1 : 1 + Math.sin(time * 0.7) * 0.018;
     const spin = paused ? time * 0.11 : time * 0.16;
     const impulse = (time * 0.085) % 1;
