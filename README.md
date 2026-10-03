@@ -1,7 +1,9 @@
 # λP⊙T — Potential, in motion.
 
-Public site: https://www.apot.world/  
-Static mirror: https://enudimmud.github.io/APOT/  
+Public site: https://www.apot.world/
+
+Static mirror: https://enudimmud.github.io/APOT/
+
 Community: https://x.com/APOTsignal
 
 ## Direction agreed with the creator
