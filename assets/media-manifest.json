@@ -1,0 +1,38 @@
+[
+  {
+    "name": "signal",
+    "original": "assets/masters/study-signal.png",
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      480,
+      960,
+      1672
+    ],
+    "generation": "Built-in ImageGen; original photographic artwork, not documentary evidence."
+  },
+  {
+    "name": "mark",
+    "original": "assets/masters/study-mark.png",
+    "width": 1536,
+    "height": 1024,
+    "variants": [
+      480,
+      960,
+      1536
+    ],
+    "generation": "Built-in ImageGen; original photographic artwork, not documentary evidence."
+  },
+  {
+    "name": "sound",
+    "original": "assets/masters/study-sound.png",
+    "width": 1536,
+    "height": 1024,
+    "variants": [
+      480,
+      960,
+      1536
+    ],
+    "generation": "Built-in ImageGen; original photographic artwork, not documentary evidence."
+  }
+]

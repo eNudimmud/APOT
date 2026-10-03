@@ -106,7 +106,7 @@
   }
 
   function shareHref(sig) {
-    const text = sig.lambdaId + '\n\nTHE NETWORK HAS A GRAMMAR.\nTHIS IS MINE.\n\nλP⊙T\nhttps://apot.world';
+    const text = sig.lambdaId + '\n\nPotential, in motion.\nMade at λP⊙T.\n\nhttps://www.apot.world/?seed=' + sig.seed + '#signature';
     return 'https://x.com/intent/tweet?text=' + encodeURIComponent(text);
   }
 
@@ -135,7 +135,7 @@
     if (box.width < 2 || box.height < 2) return null;
     const width = box.width;
     const height = box.height;
-    const ratio = Math.min(window.devicePixelRatio || 1, simplified ? 1.25 : 1.75);
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
     const pw = Math.round(width * ratio);
     const ph = Math.round(height * ratio);
     if (target.width !== pw || target.height !== ph) {
@@ -304,7 +304,7 @@
     const right = width * 0.725;
     const maxW = width * 0.22;
     let headline = Math.round(height * 0.095);
-    const lines = ['THE NETWORK', 'HAS A GRAMMAR.'];
+    const lines = ['POTENTIAL,', 'IN MOTION.'];
     setFont(ctx, headline);
     while (headline > 16 && lines.some(line => ctx.measureText(line).width > maxW)) {
       headline -= 2;
@@ -316,7 +316,7 @@
     const microSize = Math.max(11, Math.round(height * 0.028));
     setFont(ctx, microSize);
     ctx.fillStyle = muted;
-    const micro = ['SAME GRAMMAR AS A COMMAND PULSE.', 'NOT A RECORDING.'];
+    const micro = ['COMPOSED SIGNAL.', 'NO NEURAL DATA.'];
     const microY = height * 0.3 + lines.length * headline * 1.08 + microSize;
     micro.forEach((line, i) => ctx.fillText(line, right, microY + i * microSize * 1.45));
   }
@@ -625,6 +625,7 @@
     }
     renderStage();
     if (!paused && visible && !document.hidden) schedule();
+    window.dispatchEvent(new CustomEvent('apot:signature', { detail: sig }));
   }
 
   let fontReady = null;
@@ -831,7 +832,8 @@
 
   function showUnbound() {
     const stored = recalled();
-    const initial = stored || mintSeed();
+    const linked = engine.normalizeSeed(new URLSearchParams(window.location.search).get('seed'));
+    const initial = linked || stored || mintSeed();
     if (initial) {
       const sig = engine.derive(initial);
       if (sig) apply(sig, !stored && !paused);
@@ -1057,8 +1059,8 @@
   function renderPlate(kind) {
     if (!current || kind !== 'banner') return null;
     const plate = document.createElement('canvas');
-    plate.width = 1800;
-    plate.height = 600;
+    plate.width = 3000;
+    plate.height = 1000;
     const ctx = plate.getContext('2d');
     if (!ctx) return null;
     paint(ctx, plate.width, plate.height, current, {
@@ -1090,7 +1092,9 @@
   };
 
   loadXSession().then(bound => {
-    if (!bound) showUnbound();
+    const linked = engine.normalizeSeed(new URLSearchParams(window.location.search).get('seed'));
+    if (linked) apply(engine.derive(linked), false);
+    else if (!bound) showUnbound();
   }).catch(() => {
     if (!boundId) showUnbound();
   });
