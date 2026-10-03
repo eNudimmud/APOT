@@ -29,6 +29,7 @@
   let strands = [];
   let order = [];
   let center = [];
+  let rings = [];
   let wave = new Float64Array(0);
   let steps = 64;
   let narrow = false;
@@ -50,8 +51,6 @@
     glowCtx.fillStyle = shade;
     glowCtx.fillRect(0, 0, 128, 128);
   }
-
-  const ringPoint = [0, 0, 0];
 
   function clamp01(value) {
     return Math.min(1, Math.max(0, value));
@@ -88,6 +87,7 @@
     }));
     order = strands.map((_, i) => i);
     center = Array.from({ length: steps }, () => [0, 0, 0]);
+    rings = Array.from({ length: 2 }, () => Array.from({ length: (narrow ? 20 : 28) + 1 }, () => [0, 0, 0]));
     wave = new Float64Array(steps);
   }
 
@@ -175,16 +175,10 @@
       const y0 = waveY(t, open);
       const x = (t - 0.5) * 9.2;
       const radius = (0.5 + open * 0.55) * (r === 0 ? 0.82 : 1.05);
-      ctx.beginPath();
       for (let k = 0; k <= ringSeg; k++) {
         const a = (k / ringSeg) * Math.PI * 2;
-        projectInto(ringPoint, x, y0 + Math.cos(a) * radius, Math.sin(a) * radius, camera, scale, originX, originY);
-        if (k === 0) ctx.moveTo(ringPoint[0], ringPoint[1]);
-        else ctx.lineTo(ringPoint[0], ringPoint[1]);
+        projectInto(rings[r][k], x, y0 + Math.cos(a) * radius, Math.sin(a) * radius, camera, scale, originX, originY);
       }
-      ctx.strokeStyle = r === 1 ? 'rgba(208,189,140,0.42)' : 'rgba(176,198,210,0.22)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
     }
 
     for (let j = 0; j < steps; j++) wave[j] = waveY(j / (steps - 1), open);
@@ -212,6 +206,27 @@
         }
       }
       strand.depth = depthSum / steps;
+    }
+
+    // Fit the entire projected bundle, including its rings, inside the small band.
+    // A fixed vertical scale clipped the crest as the camera turned.
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    const include = point => {
+      minX = Math.min(minX, point[0]); maxX = Math.max(maxX, point[0]);
+      minY = Math.min(minY, point[1]); maxY = Math.max(maxY, point[1]);
+    };
+    for (const ring of rings) for (const point of ring) include(point);
+    for (const strand of strands) for (const point of strand.xy) include(point);
+    for (const point of center) include(point);
+    const padding = Math.min(10, width * 0.08, height * 0.08);
+    const fitScale = Math.min(1, (width - padding * 2) / (maxX - minX || 1), (height - padding * 2) / (maxY - minY || 1));
+    ctx.save();
+    ctx.translate(width * 0.5, height * 0.5);
+    ctx.scale(fitScale, fitScale);
+    ctx.translate(-(minX + maxX) * 0.5, -(minY + maxY) * 0.5);
+    for (let r = 0; r < rings.length; r++) {
+      ctx.strokeStyle = r === 1 ? 'rgba(208,189,140,0.42)' : 'rgba(176,198,210,0.22)';
+      strokeRange(rings[r], 0, ringSeg, 1);
     }
 
     order.sort((a, b) => strands[a].depth - strands[b].depth);
@@ -249,6 +264,7 @@
       ctx.globalAlpha = 0.22 + open * 0.28;
       ctx.drawImage(glow, crest[0] - size * 0.5, crest[1] - size * 0.5, size, size);
     }
+    ctx.restore();
     ctx.globalAlpha = 1;
   }
 

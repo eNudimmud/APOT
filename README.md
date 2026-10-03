@@ -25,7 +25,7 @@ The composer adds a Midnight/Paper edition card and an original musical motif to
 
 The three new photographic studies open in an accessible native dialog. The community invitation drafts FIRST SIGNAL / 001; the visitor adds their work and submits it voluntarily. 2030, 2035 and 2040 remain editorial questions, not a Neuralink schedule. Culture references are credited reading connections.
 
-Offline checks: `node signature-check.js`, `node x-oauth-check.js`, and `node studio-check.js`. These check signature and X identity fixtures, read-only OAuth helpers, deterministic WAV bytes, PCM structure/headroom, and full-seed share URLs. `review.html` provides 390/768/1024 px iframe layouts on an actual hosted preview. This changes layout width only, not the device pixel ratio.
+Offline checks: `node signature-check.js`, `node x-oauth-check.js`, `node studio-check.js`, and `node filament-check.js`. These check signature and X identity fixtures, read-only OAuth helpers, deterministic WAV bytes, PCM structure/headroom, full-seed share URLs, and filament bounds over a complete camera orbit at three layout/DPR combinations. `review.html` provides 390/768/1024 px iframe layouts on an actual hosted preview. This changes layout width only, not the device pixel ratio.
 
 ## Signal signature
 
