@@ -12,66 +12,51 @@ English only. A concise scientific and creative identity, with creation as the f
 
 ## Experience — realistic laboratory, 3 October 2026
 
-- Static HTML, CSS, and JavaScript. GitHub Pages serves the repository root. No package install and no second framework.
+- Static HTML, CSS and JavaScript, with Vercel serverless routes for required X sign-in. No package install and no second framework. GitHub Pages can show the public editorial pages only.
 - The public wordmark is **λP⊙T**. The running header, the hero, and the access title show the exact line **APOT X NEURALINK Prestock**. The ticker stays **$APOT**, always reachable from the header.
 - The opening pairs strong editorial type with an original photograph of a credible oscilloscope workbench. A small filament in the band below is drawn on canvas. Its loop pauses when the tab is hidden or the band is off screen, and starts paused when reduced motion is requested. A static SVG trace is the no-canvas fallback.
 - Copy is English and short. References: Neuralink’s Audrey film (opened on demand), Alex’s PRIME Study note, and the Sylvius 4 Online demo. Sylvius stays on Oxford University Press and is not embedded. The archive is keyboard operable. $APOT access uses the confirmed mint `GsUXfGLgAvfMKxiCUVoe8iNaMR4dqP5xBbXcD8BbAP4o`, with Jupiter as the buy link and the related Solscan account as the explorer.
 
-## Compose an edition
+## Your fixed X signal
 
-The composer adds a Midnight/Paper edition card and an original musical motif to the existing deterministic signature. **Download card** draws directly at 3840 × 2160. **Listen to your signal** plays a five-second motif only on request; a second click, a seed change or hiding the tab stops it. **Download sound** saves mono PCM 16-bit WAV at 44.1 kHz. These are artistic seed mappings, with no neural data.
+Personal generation requires **Connect with X**. One verified numeric X account ID always derives the same seed using `SHA-256("apot-x-user:" + id).slice(0, 8).toUpperCase()`. Changing the @handle, avatar, browser or device never assigns a new signal. The existing algorithm and fixtures are preserved. The eight-character seed is a graphic identifier, not a certificate of globally unique ownership.
 
-**Share your edition** opens an X draft containing the full seed and palette URL, for example `https://www.apot.world/?seed=7F2A91C4&tone=paper#signature`. A valid linked seed takes precedence on page arrival, including for a connected visitor. Explicit Generate while connected still restores that account's own seed. No automatic posting.
+There is one profile space with PFP and Banner tabs. The PFP uses the connected account's avatar and fixed signature, with an adjustable 15–80% overlay (45% by default). It exports at **1440 × 1440 PNG**. The matching banner exports at **3000 × 1000 PNG**. An avatar error keeps the verified banner available and locks PFP export. There is no anonymous generator, random visitor seed, manual avatar upload or seed restoration field. URL parameters and old browser storage cannot change the account signature.
 
-The three new photographic studies open in an accessible native dialog. The community invitation drafts FIRST SIGNAL / 001; the visitor adds their work and submits it voluntarily. 2030, 2035 and 2040 remain editorial questions, not a Neuralink schedule. Culture references are credited reading connections.
+Card and sound are optional variations under **Card & sound from your signal**. The same signature draws a native **3840 × 2160** edition card in Midnight or Paper and composes a five-second, mono 16-bit **44.1 kHz WAV**. Every image export, WAV export and playback rechecks the server's signed X session. Logout or expiry clears the account preview, stops sound and locks every export. Pending avatar or canvas requests cannot export the previous account after a logout or account switch. The share link opens a draft only; it invites others to connect with their own account and contains no restorable seed override.
 
-Offline checks: `node signature-check.js`, `node x-oauth-check.js`, and `node studio-check.js`. These check signature and X identity fixtures, read-only OAuth helpers, deterministic WAV bytes, PCM structure/headroom, and full-seed share URLs. `review.html` provides 390/768/1024 px iframe layouts on an actual hosted preview. This changes layout width only, not the device pixel ratio.
+The X-ID fixture `1847291056384729103` always gives seed `4A6445B3` (λ-4A64). Existing graphic fixture `7F2A91C4` (λ-7F2A) remains an internal engine test, not a visitor generator.
 
-## Signal signature
+Run offline regression checks without real secrets or network access:
 
-A visitor can generate a personal signature in the browser. No wallet or token is required to draw the signal. One seed writes four graphic parameters, the waveform, the network, and the λ-ID. The same seed always rebuilds the same overlay. The banner stays a seed-drawn plate and does not use an avatar.
+```sh
+node signature-check.js
+node x-oauth-check.js
+node identity-check.js
+node studio-check.js
+node filament-check.js
+```
 
-A connected X account fixes that seed. The browser hashes the numeric user id and keeps the first eight hex characters. The same account restores the same seed, λ-ID, waveform, parameters, and network after Connect with X, including on another browser or device. The @handle is not an input. Generate signal, while signed in, restores that account’s signal instead of minting a new one. A random seed already stored in the tab is replaced on a successful connection.
+`profile-engine.js` holds the unchanged profile artwork drawing; `signature.js` owns the verified-account state and unified preview; `studio.js` consumes that same state. Hidden secondary cards are drawn only when opened. No hidden signal animation is duplicated.
 
-The profile image is the connected X account’s avatar with that signature laid over it. There is no manual upload. **Download PFP** stays off until X sign-in has supplied the avatar. The signal itself is drawn in the browser. X sign-in is not local: the server exchanges the OAuth code and fetches the avatar. Nothing is posted.
+## Required X sign-in
 
-Try the signal locally with `python3 -m http.server` from the repository root. Connect with X needs the Vercel deployment below, or `vercel dev` with the environment variables set.
+Use a Vercel deployment at the domain root for the `api/x` routes. GitHub Pages and a simple static local server can show the editorial site, but cannot complete OAuth or create a personal signal. A missing server configuration locks generation instead of falling back to a visitor seed.
 
-1. Open the site and choose **Generate your signal**, or **Generate signal** in `02 / COMPOSE`.
-2. Copy the eight-character seed, then **Restore signal** and enter it again. The λ-ID, parameters, curve, and network return.
-3. **Connect with X**, approve the read-only prompt, and return to the page. The signal on screen becomes that account’s signal, and the avatar becomes the base. Connect again, or open another browser, and the same λ-ID returns. Set **Overlay** — the default is 45% — until the face stays readable. **Download PFP** saves the 1:1 PNG.
-4. **Download banner** saves the 3000 × 1000 plate drawn from the seed. It does not use the avatar.
-5. **Share signal** opens an X compose window with prefilled text. It does not post.
+In the X developer console, use OAuth 2.0 user authentication, a confidential Web App, and read-only permissions. Register the exact callback `https://<your-domain>/api/x/callback` and website `https://<your-domain>`.
 
-The deterministic fixture is seed `7F2A91C4` (λ-7F2A). The X identity fixture is user id `1847291056384729103`, which restores seed `4A6445B3` (λ-4A64) on every run. Check both with `node signature-check.js`. The X helper, with no network and no real secrets, is `node x-oauth-check.js`.
-
-## X sign-in for the profile image
-
-Deploy this repository as a Vercel project with the site at the domain root. The `api/x` routes run there. GitHub Pages can still show the page, but it cannot complete OAuth.
-
-X app, in the developer console:
-
-1. Create an app and turn on OAuth 2.0 user authentication.
-2. App type: Web App, confidential client.
-3. Permissions: Read only. That is “Read Posts and profile information.” Do not enable write, Direct Messages, or follow.
-4. Callback / redirect URL, character for character: `https://<your-domain>/api/x/callback`
-5. Website URL: `https://<your-domain>`
-6. Copy the OAuth 2.0 Client ID and Client Secret. They are not in this repository.
-
-The code asks only for the scopes `users.read` and `tweet.read`. X requires `tweet.read` before `GET /2/users/me` can return the signed-in account. The server then requests the numeric user id, `profile_image_url`, name, and username. It does not request `tweet.write`, `offline.access`, `dm.read`, `dm.write`, `follows.read`, or `follows.write`, and it never calls a post, like, follow, or message endpoint. The access token is used once and is not stored. A signed cookie remembers the numeric user id, the @handle, and the avatar URL for 12 hours. A cookie from before this binding has no user id and is treated as signed out, so Connect with X once more.
-
-Vercel → Project → Settings → Environment Variables. Set them for Production (and Preview, if you test there). Redeploy after saving. Do not commit the values.
+Set the following Vercel variables for Production (and Preview when used), then redeploy. Keep their values outside the repository.
 
 | Name | Value |
 | --- | --- |
 | `X_CLIENT_ID` | OAuth 2.0 Client ID |
 | `X_CLIENT_SECRET` | OAuth 2.0 Client Secret |
-| `X_REDIRECT_URI` | `https://<your-domain>/api/x/callback` |
-| `APOT_SESSION_SECRET` | A long random string, for example `openssl rand -base64 32` |
+| `X_REDIRECT_URI` | The exact registered callback URL |
+| `APOT_SESSION_SECRET` | A long random signing secret |
 
-`X_REDIRECT_URI` must match the callback registered on the X app. Empty names are listed in `.env.example`.
+Only `users.read tweet.read` are requested. No posting, follows, DMs or wallet access. The access token is used during the callback and is not stored. A signed HttpOnly cookie remembers the verified numeric ID, handle and avatar for 12 hours. The session endpoint derives the fixed seed from that signed ID and includes its expiry. The avatar endpoint identifies the verified account in `X-APOT-Account` so another account's image cannot be mixed in. A legacy cookie without a numeric ID is signed out. Session expiry does not change the permanent ID-to-signal mapping.
 
-Happy path on the deployed site: **Connect with X** → **Generate signal** → set **Overlay** → **Download PFP**. **Disconnect** ends the session. **Share signal** still only opens a compose window.
+On the deployed site: **Connect with X** → preview **PFP / Banner** → adjust **PFP overlay** → download. **Disconnect** ends the session and clears all editions. Connect with the same account in another browser to confirm the same seed and shape return.
 
 ## Sources
 
@@ -87,7 +72,7 @@ The Neuralink film is an account of clinical trial participants, not a general c
 
 ## Build and hosting
 
-Static HTML, CSS and JavaScript served by GitHub Pages from the default branch (`main`) at https://enudimmud.github.io/APOT/. A pull request is not what Pages publishes. To preview a branch, check it out and run `python3 -m http.server` from the repository root. Relative paths match the `/APOT/` base. No package install or build step. `signal.js` contains the original Canvas 2D projection; `script.js` handles navigation, scroll composition, the film and the archive. Fonts are self-hosted under their existing SIL OFL licenses. No wallet connection, transaction, form submission or analytics. YouTube is loaded only on request. The film uses an original typographic editorial cover, so the page does not depend on a third-party thumbnail. The fixed navigation keeps the token accessible throughout the page.
+Static HTML, CSS and JavaScript with Vercel serverless X routes serve the complete site at https://www.apot.world/. GitHub Pages can serve an editorial-only mirror from `main` at https://enudimmud.github.io/APOT/. A pull request is not what Pages publishes. To preview a branch, check it out and run `python3 -m http.server` from the repository root. Relative paths match the `/APOT/` base. No package install or build step. `signal.js` contains the original Canvas 2D projection; `script.js` handles navigation, scroll composition, the film and the archive. Fonts are self-hosted under their existing SIL OFL licenses. No wallet connection, transaction or analytics. X OAuth is required for personal signal generation. YouTube is loaded only on request. The film uses an original typographic editorial cover, so the page does not depend on a third-party thumbnail. The fixed navigation keeps the token accessible throughout the page.
 
 Use relative paths to preserve compatibility with the /APOT/ base path. Keep `.nojekyll` in the root. The current photographic studies are the responsive `assets/study-*.webp` files. Native generated PNG sources are preserved in `assets/masters`; actual dimensions are recorded in `assets/media-manifest.json`. The token specimen is vector artwork. Photographic sources are 1672 or 1536 pixels wide, not 4K. See `ART_DIRECTION.md` for the current visual canon.
 

@@ -55,9 +55,9 @@
     return buffer;
   }
 
-  function permalink(sig, tone) {
+  function permalink(sig) {
     if (!sig || !/^[0-9A-F]{8}$/.test(sig.seed)) throw new Error('A valid signal is required.');
-    return 'https://www.apot.world/?seed=' + sig.seed + '&tone=' + (tone === 'paper' ? 'paper' : 'midnight') + '#signature';
+    return 'https://www.apot.world/#signature';
   }
 
   function wordmark(ctx, x, y, width, color) {
@@ -112,7 +112,7 @@
     ctx.textAlign='left'; ctx.fillStyle=accent; ctx.font='400 13px Space, Arial, sans-serif'; ctx.fillText('YOUR EDITION',84,791);
     ctx.fillStyle=foreground; ctx.font='600 27px Space, Arial, sans-serif'; ctx.fillText(sig.seed,84,830);
     ctx.textAlign='right'; ctx.fillStyle=foreground; ctx.font='400 25px Space, Arial, sans-serif'; ctx.fillText('apot.world',1517,801);
-    ctx.fillStyle=muted; ctx.font='400 13px Space, Arial, sans-serif'; ctx.fillText('Restore this edition with the full seed.',1517,830);
+    ctx.fillStyle=muted; ctx.font='400 13px Space, Arial, sans-serif'; ctx.fillText('Reconnect with your X account.',1517,830);
     ctx.restore();
   }
   return Object.freeze({score,samples,wav,paintCard,permalink,wordmark,sampleRate:RATE,duration:DURATION});

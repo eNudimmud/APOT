@@ -27,11 +27,11 @@ The applied prompt set used these scene briefs and shared constraints:
 Typography and credits are real HTML, outside the generated pictures. No stock template or film character is imitated.
 
 ## The edition system
-One eight-character seed restores the existing graphic signature. The new studio draws an original 16:9 edition card, in Midnight or Paper, directly at **3840 × 2160**, with a canonical vector wordmark, synthetic curve and full seed. This is genuine native drawing resolution, independent of the photographic assets.
+A verified numeric X account ID determines one fixed eight-character seed and the existing graphic signature. X sign-in is required for every personal edition; handles, avatar changes, URL parameters and past visitor seeds never replace that binding. The new studio draws an original 16:9 edition card, in Midnight or Paper, directly at **3840 × 2160**, with a canonical vector wordmark, synthetic curve and full seed. This is genuine native drawing resolution, independent of the photographic assets.
 
-The same seed composes an eight-note, five-second motif. It is an artistic mapping to a pentatonic musical scale, not neural decoding or an audible physiological recording. Playback begins only on request. A second click stops it; changing the seed or hiding the tab stops it. WAV export is mono PCM 16-bit, 44.1 kHz. The downloadable motif uses the same samples as browser playback.
+The same seed composes an eight-note, five-second motif. It is an artistic mapping to a pentatonic musical scale, not neural decoding or an audible physiological recording. Playback begins only on request. A second click stops it; disconnecting, losing the session, changing X accounts or hiding the tab stops it. WAV export is mono PCM 16-bit, 44.1 kHz. The downloadable motif uses the same samples as browser playback.
 
-Share opens an X draft with the full seed and palette URL. It never posts automatically. X sign-in remains optional and read-only for the avatar; the account's existing deterministic signature contract is preserved. A shared seed URL can be viewed while signed in. Explicit Generate restores the signed-in account's signature.
+PFP and banner share a single account-bound preview, with 1440 × 1440 and 3000 × 1000 PNG exports. Card and sound are secondary variants of that same signature. There is no anonymous generator or manual seed restoration. Reconnect with the same X account to recover the same curve and network. X sign-in stays read-only. Every image or sound export and playback rechecks the signed server session. Logout and expiry clear the previews and disable all exports. Share opens an X draft inviting visitors to connect with their own account. It never posts automatically.
 
 ## Editorial connections
 Neuralink's Audrey film, Alex's CAD record and Oxford's Sylvius resource are attributed to their publishers. Conceptual covers remain identified as illustrations. No affiliation or medical result is implied.
