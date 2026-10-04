@@ -5,6 +5,13 @@
   if (root) root.ApotProfile = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
+  const exportSizes = Object.freeze({
+    pfp: Object.freeze({ width: 4096, height: 4096 }),
+    banner: Object.freeze({ width: 6000, height: 2000 })
+  });
+  // Draw the same composition in native pixels at every output size.
+  const pfpSpace = 720;
+  const bannerSpace = { width: 1500, height: 500 };
   function clamp01(n) {
     return Math.min(1, Math.max(0, n));
   }
@@ -400,20 +407,31 @@
     drawCover(ctx, portrait, size);
     paintVignette(ctx, size);
     const overlay = makeCanvas(size, size);
-    const layer = overlay.getContext('2d');
-    if (!layer) throw new Error('The profile overlay could not be drawn.');
-    paint(layer, size, size, sig, { mode: 'pfp', reveal: 1, travel: sig.spikeT, time: 0, still: true, simplified: false });
-    softenOverlay(layer, size);
-    ctx.save();
-    ctx.globalAlpha = Math.max(0.15, Math.min(0.8, opacity));
-    ctx.drawImage(overlay, 0, 0);
-    ctx.restore();
+    try {
+      const layer = overlay.getContext('2d');
+      if (!layer) throw new Error('The profile overlay could not be drawn.');
+      layer.setTransform(size / pfpSpace, 0, 0, size / pfpSpace, 0, 0);
+      paint(layer, pfpSpace, pfpSpace, sig, { mode: 'pfp', reveal: 1, travel: sig.spikeT, time: 0, still: true, simplified: false });
+      layer.setTransform(1, 0, 0, 1, 0, 0);
+      softenOverlay(layer, size);
+      ctx.save();
+      ctx.globalAlpha = Math.max(0.15, Math.min(0.8, opacity));
+      ctx.drawImage(overlay, 0, 0);
+      ctx.restore();
+    } finally {
+      // Release the temporary full-resolution layer immediately on mobile too.
+      overlay.width = 0; overlay.height = 0;
+    }
   }
 
   function paintBanner(ctx, sig, width, height) {
     if (!ctx || !sig) throw new Error('A connected signature and drawing surface are required.');
-    paint(ctx, width, height, sig, { mode: 'banner', reveal: 1, travel: sig.spikeT, time: 0, still: true, simplified: false });
+    ctx.save();
+    try {
+      ctx.setTransform(width / bannerSpace.width, 0, 0, height / bannerSpace.height, 0, 0);
+      paint(ctx, bannerSpace.width, bannerSpace.height, sig, { mode: 'banner', reveal: 1, travel: sig.spikeT, time: 0, still: true, simplified: false });
+    } finally { ctx.restore(); }
   }
 
-  return Object.freeze({ paintPfp, paintBanner });
+  return Object.freeze({ paintPfp, paintBanner, exportSizes });
 });

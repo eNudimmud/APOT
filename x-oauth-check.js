@@ -41,6 +41,12 @@ assert.strictEqual(oauth.allowAvatarUrl('https://abs.twimg.com/sticky/default_pr
 assert.strictEqual(oauth.allowAvatarUrl('http://pbs.twimg.com/profile_images/1/face.jpg'), false);
 assert.strictEqual(oauth.allowAvatarUrl('https://example.com/profile_images/1/face.jpg'), false);
 assert.strictEqual(oauth.allowAvatarUrl('https://pbs.twimg.com/media/not-an-avatar.jpg'), false);
+assert.strictEqual(oauth.originalAvatar(session.avatar), 'https://pbs.twimg.com/profile_images/1/face.jpg');
+assert.strictEqual(oauth.originalAvatar('https://pbs.twimg.com/profile_images/1/face_normal.png?version=1'), 'https://pbs.twimg.com/profile_images/1/face.png?version=1');
+assert.strictEqual(oauth.originalAvatar('https://pbs.twimg.com/profile_images/1/face.jpg'), 'https://pbs.twimg.com/profile_images/1/face.jpg');
+assert.strictEqual(oauth.originalAvatar('https://abs.twimg.com/sticky/default_profile_images/default.png'), 'https://abs.twimg.com/sticky/default_profile_images/default.png');
+assert.strictEqual(oauth.originalAvatar('https://example.com/profile_images/1/face_normal.jpg'), '');
+assert.strictEqual(oauth.originalAvatar('https://pbs.twimg.com@evil.example/profile_images/1/face_normal.jpg'), '');
 
 const profile = oauth.sessionFromProfile({
   data: {

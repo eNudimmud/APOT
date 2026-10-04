@@ -11,8 +11,12 @@ module.exports = async function avatar(req, res) {
   if (!current) return oauth.sendJson(res, 401, { connected: false });
 
   try {
-    let image = await oauth.fetchAvatarBytes(current.avatar, 0);
-    if (!image) image = await oauth.fetchAvatarBytes(oauth.normalAvatar(current.avatar), 0);
+    let image = null;
+    const candidates = [...new Set([oauth.originalAvatar(current.avatar), current.avatar, oauth.normalAvatar(current.avatar)])].filter(Boolean);
+    for (const url of candidates) {
+      try { image = await oauth.fetchAvatarBytes(url, 0); } catch (_) { /* Try the next verified X image size. */ }
+      if (image) break;
+    }
     if (!image) return oauth.sendJson(res, 502, { message: 'The X avatar could not be read.' });
     res.statusCode = 200;
     res.setHeader('Content-Type', image.type);
