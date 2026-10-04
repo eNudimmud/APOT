@@ -132,8 +132,8 @@
     reveals.forEach(el => el.classList.add('is-revealed'));
   }
 
-  const tablist = document.querySelector('[role=tablist]');
-  const tabs = [...document.querySelectorAll('[role=tab]')];
+  const tablist = document.querySelector('.exploration-index[role=tablist]');
+  const tabs = [...tablist.querySelectorAll('[role=tab]')];
   function selectTab(index, focus = false) {
     tabs.forEach((tab, i) => {
       const active = i === index;

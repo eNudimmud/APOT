@@ -34,5 +34,17 @@
       1536
     ],
     "generation": "Built-in ImageGen; original photographic artwork, not documentary evidence."
+  },
+  {
+    "name": "reflection",
+    "original": "assets/masters/study-reflection.png",
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      480,
+      960,
+      1672
+    ],
+    "generation": "Built-in ImageGen; original photographic artwork, not documentary evidence."
   }
 ]
