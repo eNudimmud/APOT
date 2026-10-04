@@ -1,19 +1,20 @@
 # λP⊙T — realistic creative laboratory
-Approved direction, 3 October 2026. This file supersedes the earlier glass-brain and speculative science-fiction imagery.
+Approved direction, updated 4 October 2026. This file supersedes the earlier glass-brain and speculative science-fiction imagery, and the public catalogue of named cultural references.
 
 ## The visual rule
 Real objects. Real gestures. Original compositions. Midnight navy (#07121d), ivory (#e7e2d4), restrained champagne (#d0bd8c). Photography has tangible materials, natural shadows and a credible workbench. Space Grotesk carries the voice. Barlow Condensed gives the editorial years a strong print character. The canonical mark λP⊙T is vector geometry, so lambda and the circled dot survive every resolution.
 
 The user requested: realistic, highly stylised, conscious, scientific, pop and engaging. No futuristic city, imaginary implant, robotic hand, glass brain, hologram, neon atmosphere, fantasy or supernatural effects. Scientific credibility comes from careful language, explicit credits and links to primary records. Pop energy comes from composition, scale, a memorable gesture and the navy/ivory contrast.
 
-## Three original photographic studies
+## Four original photographic studies
 | Study | Scene | Native source | Web display files |
 | --- | --- | --- | --- |
 | 001 / First, a line. | Ivory oscilloscope, pencil, graph paper and cables on a navy workbench | 1672 × 941 PNG | 480, 960 and 1672 px WebP |
 | 002 / Then, a gesture. | An ordinary hand drawing with a graphite pencil | 1536 × 1024 PNG | 480, 960 and 1536 px WebP |
 | 003 / And a sound. | A hand plucking a navy electric guitar with an ivory plectrum | 1536 × 1024 PNG | 480, 960 and 1536 px WebP |
+| 004 / The image looks back. | A person touching their own reflection in dark glass, beside pencil and graph paper | 1672 × 941 PNG | 480, 960 and 1672 px WebP |
 
-Generation mode: built-in ImageGen, three new original compositions, no source-image editing and no CLI/API backend. Source PNGs are in assets/masters. Sharp only creates smaller responsive WebP copies, quality 90, without enlargement. assets/media-manifest.json records actual dimensions. These are generated photographic artworks, not documentary photos or evidence of a functioning medical device. The page captions make that visible.
+Generation mode: built-in ImageGen, four new original compositions, no source-image editing and no CLI/API backend. Source PNGs are in assets/masters. Sharp only creates smaller responsive WebP copies, quality 90, without enlargement. assets/media-manifest.json records actual dimensions. These are generated photographic artworks, not documentary photos or evidence of a functioning medical device. The page captions make that visible.
 
 The tool returned the native sizes above. They are **not 4K photographic masters**. A larger native generation or a real photographic shoot is required for large-format photo/video production; interpolating a small source does not add detail.
 
@@ -22,6 +23,7 @@ The applied prompt set used these scene briefs and shared constraints:
 - Study 001: original photorealistic editorial asset, landscape. An actual ivory-and-midnight oscilloscope on a contemporary lab workbench, fine warm trace on the screen, real BNC cable, ivory graph paper, graphite pencil and brass details. Quiet dark negative space to the left. Natural soft lamp light and photographic material detail. Maximum native resolution supported; 3840 px requested if available.
 - Study 002: original photorealistic macro/editorial asset. An ordinary adult human hand holding a graphite pencil, making one intentional curve on ivory graph paper on the same navy workbench. A real BNC cable and instrument gently blurred in the background. Credible hand anatomy, paper fibre and graphite detail. Landscape.
 - Study 003: original photorealistic editorial asset. An ordinary adult human hand using an ivory plectrum to pluck a string of a dark navy electric guitar with warm brass pickup details. An actual oscilloscope is softly blurred behind it. Tactile strings, skin and instrument finish. Landscape.
+- Study 004: original editorial photograph of an ordinary adult woman facing a dark glass sheet at the same workbench. Her fingertips meet her own physically plausible reflection. Navy clothing, ivory graph paper and graphite pencil; warm practical light with cool daylight, natural skin, shallow depth of field and a 35 mm photographic perspective. No text or costume. The full production spec and next sequences are in CREATIVE_GRAMMAR.md.
 - Shared: #07121d navy, #e7e2d4 ivory, #d0bd8c champagne; coherent, restrained studio photography; real objects and credible present-day actions. No science fiction, fantasy, magic, glass brains, robotic limbs, imaginary implants, holograms, neon, invented clinical measurements, text, logos or baked interface labels.
 
 Typography and credits are real HTML, outside the generated pictures. No stock template or film character is imitated.
@@ -38,10 +40,12 @@ Neuralink's Audrey film, Alex's CAD record and Oxford's Sylvius resource are att
 
 2030 / Access, 2035 / Expression, 2040 / Agency are questions for our own creative programme, not a Neuralink roadmap or guaranteed launch dates.
 
-Ghost in the Shell, The Matrix, Neuromancer and Deus Ex are discreet credited reading connections about identity, perception, interfaces and agency. Their visual language does not control our photographs. We do not reuse stills, characters, music or logos from those works.
+Cultural influences are absorbed into original images and sequences: reflected identity, repetition interrupted by a choice, intention leaving a trace, and a gesture changing another person's experience. The public page does not list works, explain the allusions or link to publisher homepages. Recognition should come from framing, rhythm, surfaces and actions. These motifs remain in the same credible present-day physical world as the other studies. Any actual source material used in a production retains its required attribution; a thematic allusion does not need a public reference catalogue.
+
+The visible section THE HUMAN FRAME begins with Study 004. Its four motifs connect the website to the next photo and video series. CREATIVE_GRAMMAR.md records that shared production language and eight-second shot plans; it is a working production document, not product copy.
 
 ## Originality that can grow
 The seed mechanism, original images, sound score, recognisable typography and properly credited editions create a coherent authored system. Public images and source code can still be copied. The lasting distinction should grow from a dated body of work, named contributors, the quality of the archive and the community's process, rather than a claim that copying is impossible.
 
 ## Next production phase
-After the website review, create photo and video storyboards in this same physical world. Begin with the line, the pencil gesture and the plucked string. Define the real action, camera framing, light, duration, sound and credit for each shot before generating or shooting it. Use process and repetition to encourage return visits, with voluntary participation.
+After the website review, produce the short sequences in CREATIVE_GRAMMAR.md. The line, pencil gesture and plucked string remain established routes; the reflected face introduces the human presence. Define the real action, camera framing, light, duration, sound and credit for each shot before generating or shooting it. Use process and repetition to encourage return visits, with voluntary participation.

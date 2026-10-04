@@ -10,12 +10,14 @@ Community: https://x.com/APOTsignal
 
 English only. A concise scientific and creative identity, with creation as the first invitation and clear access to the token. Community participation is open to everyone; holding APOT is optional. Future steps and collaborations are left open. Neuralink is an editorial reference, not the identity of APOT or an announced partner.
 
-## Experience — realistic laboratory, 3 October 2026
+## Experience — realistic laboratory, updated 4 October 2026
 
 - Static HTML, CSS and JavaScript, with Vercel serverless routes for required X sign-in. No package install and no second framework. GitHub Pages can show the public editorial pages only.
 - The public wordmark is **λP⊙T**. The running header, the hero, and the access title show the exact line **APOT X NEURALINK Prestock**. The ticker stays **$APOT**, always reachable from the header.
 - The opening pairs strong editorial type with an original photograph of a credible oscilloscope workbench. A small filament in the band below is drawn on canvas. Its loop pauses when the tab is hidden or the band is off screen, and starts paused when reduced motion is requested. A static SVG trace is the no-canvas fallback.
 - Copy is English and short. References: Neuralink’s Audrey film (opened on demand), Alex’s PRIME Study note, and the Sylvius 4 Online demo. Sylvius stays on Oxford University Press and is not embedded. The archive is keyboard operable. $APOT access uses the confirmed mint `GsUXfGLgAvfMKxiCUVoe8iNaMR4dqP5xBbXcD8BbAP4o`, with Jupiter as the buy link and the related Solscan account as the explorer.
+- **THE HUMAN FRAME** replaces the hidden cultural catalogue and its outbound publisher links. A fourth original photographic study makes reflected identity visible. Reflection, choice, trace and response shape future creations through framing, rhythm, materials and credible gestures. The page leaves these allusions unnamed. The image opens in the existing artwork dialog, with its native source available.
+- Scientific record tabs operate within their own tablist. They cannot hide the X profile preview or select its PFP/Banner tabs. Each tab group retains its own controller.
 
 ## Your fixed X signal
 
@@ -35,6 +37,7 @@ node x-oauth-check.js
 node identity-check.js
 node studio-check.js
 node filament-check.js
+node navigation-check.js
 ```
 
 `profile-engine.js` holds the unchanged profile artwork drawing; `signature.js` owns the verified-account state and unified preview; `studio.js` consumes that same state. Hidden secondary cards are drawn only when opened. No hidden signal animation is duplicated.
@@ -74,7 +77,7 @@ The Neuralink film is an account of clinical trial participants, not a general c
 
 Static HTML, CSS and JavaScript with Vercel serverless X routes serve the complete site at https://www.apot.world/. GitHub Pages can serve an editorial-only mirror from `main` at https://enudimmud.github.io/APOT/. A pull request is not what Pages publishes. To preview a branch, check it out and run `python3 -m http.server` from the repository root. Relative paths match the `/APOT/` base. No package install or build step. `signal.js` contains the original Canvas 2D projection; `script.js` handles navigation, scroll composition, the film and the archive. Fonts are self-hosted under their existing SIL OFL licenses. No wallet connection, transaction or analytics. X OAuth is required for personal signal generation. YouTube is loaded only on request. The film uses an original typographic editorial cover, so the page does not depend on a third-party thumbnail. The fixed navigation keeps the token accessible throughout the page.
 
-Use relative paths to preserve compatibility with the /APOT/ base path. Keep `.nojekyll` in the root. The current photographic studies are the responsive `assets/study-*.webp` files. Native generated PNG sources are preserved in `assets/masters`; actual dimensions are recorded in `assets/media-manifest.json`. The token specimen is vector artwork. Photographic sources are 1672 or 1536 pixels wide, not 4K. See `ART_DIRECTION.md` for the current visual canon.
+Use relative paths to preserve compatibility with the /APOT/ base path. Keep `.nojekyll` in the root. The four photographic studies are the responsive `assets/study-*.webp` files. Native generated PNG sources are preserved in `assets/masters`; actual dimensions are recorded in `assets/media-manifest.json`. The token specimen is vector artwork. Photographic sources are 1672 or 1536 pixels wide, not 4K. See `ART_DIRECTION.md` for the current visual canon and `CREATIVE_GRAMMAR.md` for the implicit cultural motifs, the new image's production spec and the next shot plans.
 
 ## Configuration sélectionnée avant lancement
 
