@@ -41,6 +41,19 @@ The returned native size is recorded above. This is artwork, not a photographed 
 
 ## Four eight-second sequences
 
+### Additional photographic fragments — Studies 005 and 006
+
+Two further original photographs extend the same physical world. They appear beside each other after Study 004 and open in the existing artwork viewer.
+
+| Study | Physical motif | Native source |
+| --- | --- | --- |
+| 005 / Still you. | A human eye and its reflection through angled smoked optical glass | assets/masters/lineage-self.png · 1536 × 1024 |
+| 006 / Your move. | Two open palms holding one red and one blue optical lens | assets/masters/lineage-choice.png · 1536 × 1024 |
+
+The lenses are tangible glass objects; the colours and human gesture carry the allusion. They are not medicines or a clinical demonstration. These images were created with built-in ImageGen. WebP display files use quality 90 at 480, 960 and 1536 pixels, with no enlargement. The exact production prompts are in assets/lineage-prompts.md.
+
+For a later film variation, a slow real change of viewing angle can align then separate the eye and its reflection. In the choice image, a person can close one hand while the other lens remains visible. These are optional physical variations on REFLECTION and CHOICE, not completed films and not replacements for the established shot plans below.
+
 Start with 9:16 clips and corresponding landscape stills. Frame the subject for each format rather than stretching or blindly cropping a single picture. Keep key actions and text away from the platform controls. Record clean room sound and the physical contact separately.
 
 ### 01 / REFLECTION — Still you.

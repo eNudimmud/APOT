@@ -6,15 +6,17 @@ Real objects. Real gestures. Original compositions. Midnight navy (#07121d), ivo
 
 The user requested: realistic, highly stylised, conscious, scientific, pop and engaging. No futuristic city, imaginary implant, robotic hand, glass brain, hologram, neon atmosphere, fantasy or supernatural effects. Scientific credibility comes from careful language, explicit credits and links to primary records. Pop energy comes from composition, scale, a memorable gesture and the navy/ivory contrast.
 
-## Four original photographic studies
+## Six original photographic studies
 | Study | Scene | Native source | Web display files |
 | --- | --- | --- | --- |
 | 001 / First, a line. | Ivory oscilloscope, pencil, graph paper and cables on a navy workbench | 1672 × 941 PNG | 480, 960 and 1672 px WebP |
 | 002 / Then, a gesture. | An ordinary hand drawing with a graphite pencil | 1536 × 1024 PNG | 480, 960 and 1536 px WebP |
 | 003 / And a sound. | A hand plucking a navy electric guitar with an ivory plectrum | 1536 × 1024 PNG | 480, 960 and 1536 px WebP |
 | 004 / The image looks back. | A person touching their own reflection in dark glass, beside pencil and graph paper | 1672 × 941 PNG | 480, 960 and 1672 px WebP |
+| 005 / Still you. | A human eye and its partial reflection in angled smoked optical glass | 1536 × 1024 PNG | 480, 960 and 1536 px WebP |
+| 006 / Your move. | Two open palms, one red optical lens and one blue optical lens | 1536 × 1024 PNG | 480, 960 and 1536 px WebP |
 
-Generation mode: built-in ImageGen, four new original compositions, no source-image editing and no CLI/API backend. Source PNGs are in assets/masters. Sharp only creates smaller responsive WebP copies, quality 90, without enlargement. assets/media-manifest.json records actual dimensions. These are generated photographic artworks, not documentary photos or evidence of a functioning medical device. The page captions make that visible.
+Generation mode: built-in ImageGen, six original compositions, no source-image editing and no CLI/API backend. Source PNGs are in assets/masters. Sharp only creates smaller responsive WebP copies, quality 90, without enlargement. assets/media-manifest.json records actual dimensions. These are generated photographic artworks, not documentary photos or evidence of a functioning medical device. The page captions make that visible. Exact prompts for Studies 005 and 006 are retained in assets/lineage-prompts.md.
 
 The tool returned the native sizes above. They are **not 4K photographic masters**. A larger native generation or a real photographic shoot is required for large-format photo/video production; interpolating a small source does not add detail.
 
@@ -43,6 +45,8 @@ Neuralink's Audrey film, Alex's CAD record and Oxford's Sylvius resource are att
 Cultural influences are absorbed into original images and sequences: reflected identity, repetition interrupted by a choice, intention leaving a trace, and a gesture changing another person's experience. The public page does not list works, explain the allusions or link to publisher homepages. Recognition should come from framing, rhythm, surfaces and actions. These motifs remain in the same credible present-day physical world as the other studies. Any actual source material used in a production retains its required attribution; a thematic allusion does not need a public reference catalogue.
 
 The visible section THE HUMAN FRAME begins with Study 004. Its four motifs connect the website to the next photo and video series. CREATIVE_GRAMMAR.md records that shared production language and eight-second shot plans; it is a working production document, not product copy.
+
+Studies 005 and 006 extend that series through real optical glass: a reflected gaze and a red/blue choice held in human hands. The photographs carry the cultural resonance without named titles, quoted dialogue, borrowed characters or a recreated frame. These are further original interpretations, not a complete cultural canon. The section invites visitors into the open call through "Make it your own".
 
 ## Originality that can grow
 The seed mechanism, original images, sound score, recognisable typography and properly credited editions create a coherent authored system. Public images and source code can still be copied. The lasting distinction should grow from a dated body of work, named contributors, the quality of the archive and the community's process, rather than a claim that copying is impossible.
