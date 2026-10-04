@@ -1,4 +1,10 @@
 {
+  "functions": {
+    "api/x/film.js": {
+      "maxDuration": 60,
+      "includeFiles": "{assets/fonts/space-grotesk-*.ttf,node_modules/@ffmpeg-installer/linux-x64/**,node_modules/@napi-rs/canvas-linux-x64-gnu/**}"
+    }
+  },
   "headers": [
     {
       "source": "/api/(.*)",

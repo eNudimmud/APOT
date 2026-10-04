@@ -10,17 +10,16 @@
   const soundStatus = find('#sound-status');
   const cardButton = find('#export-card');
   const soundButton = find('#export-sound');
-  const share = find('#share-card');
   const extras = find('#edition-tools');
   const palettes = [...document.querySelectorAll('[data-tone]')];
   let tone = 'midnight', current = null, audio = null, source = null;
-  let audioEpoch = 0, busy = false;
+  let audioEpoch = 0, busy = false, filmBusy = false;
   const idle = 'An original, composed motif. Sound starts when you choose.';
   const stage = () => window.ApotStage;
   const connected = () => Boolean(current && stage()?.current() === current && stage()?.account()?.expiresAt > Date.now());
 
   function syncControls() {
-    const enabled = connected() && !busy;
+    const enabled = connected() && !busy && !filmBusy;
     palettes.forEach(button => {
       button.disabled = !enabled;
       button.setAttribute('aria-pressed', String(button.dataset.tone === tone));
@@ -28,7 +27,6 @@
     cardButton.disabled = !enabled || !ctx;
     soundButton.disabled = !enabled;
     listen.disabled = !enabled || !(window.AudioContext || window.webkitAudioContext);
-    share.setAttribute('aria-disabled', String(!enabled));
   }
   function stopSound(message = idle) {
     audioEpoch++;
@@ -46,9 +44,6 @@
     if (!connected()) return;
     if (ctx && extras.open) engine.paintCard(ctx, current, preview.width, preview.height, tone);
     preview.setAttribute('aria-label', 'Edition of your fixed X signal ' + current.seed + ', ' + tone + ' palette.');
-    const text = 'Potential, in motion.\n\nMy fixed X signal: ' + current.seed + '\nMade at λP⊙T. Connect with X. Make yours.\n\n' + engine.permalink(current);
-    share.href = 'https://x.com/intent/tweet?text=' + encodeURIComponent(text);
-    share.setAttribute('aria-label', 'Share your signal ' + current.seed + ' on X. Opens a draft.');
     if (listen.disabled && !busy) soundStatus.textContent = 'Audio playback is unavailable here. Download the WAV to listen.';
   }
   function apply(sig) {
@@ -57,23 +52,22 @@
     if (!current) {
       ctx?.clearRect(0, 0, preview.width, preview.height);
       preview.setAttribute('aria-label', 'Connect with X to create a card from your fixed signal.');
-      share.href = 'https://x.com/intent/tweet';
-      share.setAttribute('aria-label', 'Connect with X before sharing your signal.');
       syncControls();
     } else render();
   }
   window.addEventListener('apot:signature', event => apply(event.detail));
+  window.addEventListener('apot:film-busy', event => { filmBusy = Boolean(event.detail); if (filmBusy) stopSound(); syncControls(); });
   apply(stage()?.current());
   extras.addEventListener('toggle', () => { if (extras.open) render(); });
   palettes.forEach(button => button.addEventListener('click', () => {
-    if (!connected() || busy) return;
+    if (!connected() || busy || filmBusy) return;
     tone = button.dataset.tone; render();
+    window.dispatchEvent(new CustomEvent('apot:edition-tone', { detail: tone }));
   }));
-  share.addEventListener('click', event => { if (!connected() || busy) event.preventDefault(); });
   if (document.fonts?.ready) document.fonts.ready.then(render);
 
   listen.addEventListener('click', async () => {
-    if (!connected() || busy) return;
+    if (!connected() || busy || filmBusy) return;
     if (source) { stopSound(); return; }
     const epoch = ++audioEpoch;
     busy = true; syncControls();
@@ -104,7 +98,7 @@
     window.setTimeout(() => URL.revokeObjectURL(url), 30000);
   }
   cardButton.addEventListener('click', async () => {
-    if (!connected() || !ctx || busy) return;
+    if (!connected() || !ctx || busy || filmBusy) return;
     const palette = tone, label = cardButton.innerHTML;
     let card = null;
     busy = true; syncControls(); cardButton.textContent = 'Drawing your card…';
@@ -124,7 +118,7 @@
     finally { if (card) { card.width = 1; card.height = 1; } cardButton.innerHTML = label; busy = false; syncControls(); }
   });
   soundButton.addEventListener('click', async () => {
-    if (!connected() || busy) return;
+    if (!connected() || busy || filmBusy) return;
     busy = true; syncControls();
     try {
       const permit = await stage().authorize();

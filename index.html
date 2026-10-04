@@ -18,15 +18,16 @@
   <link rel="canonical" href="https://www.apot.world/">
   <link rel="icon" href="assets/lambda-mark.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/space-grotesk-regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=human-frame-1">
+  <link rel="stylesheet" href="styles.css?v=signal-film-1">
   <script src="signature-engine.js?v=identity-1" defer></script>
   <script src="signal.js?v=realist-1" defer></script>
   <script src="script.js?v=human-frame-1" defer></script>
   <script src="profile-engine.js?v=profile-hd-1" defer></script>
   <script src="signature.js?v=profile-hd-1" defer></script>
   <title>λP⊙T — Potential, in motion.</title>
-  <script src="studio-engine.js?v=x-identity-1" defer></script>
-  <script src="studio.js?v=x-identity-1" defer></script>
+  <script src="studio-engine.js?v=signal-film-1" defer></script>
+  <script src="studio.js?v=signal-film-1" defer></script>
+  <script src="film.js?v=signal-film-1" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#study-title">Skip to content</a>
@@ -124,15 +125,19 @@
         <p id="signature-live" class="sr-only" aria-live="polite"></p>
       </div>
     </div>
-    <details class="token-details" id="edition-tools" hidden><summary>Card &amp; sound from your signal <span aria-hidden="true">+</span></summary><div class="edition-layout details-content">
-      <canvas id="card-preview" width="1600" height="900" role="img" aria-label="An edition of your fixed X signal"></canvas>
+    <details class="token-details" id="edition-tools" hidden><summary>Your signal, with sound <span aria-hidden="true">+</span></summary><div class="edition-layout details-content">
+      <div class="edition-media"><canvas id="card-preview" width="1600" height="900" role="img" aria-label="An edition of your fixed X signal"></canvas><video id="film-preview" width="1920" height="1080" controls playsinline preload="metadata" aria-label="Your personal signal video with sound" hidden></video></div>
       <div class="edition-controls">
-        <p class="edition-note">The same account signal, in another form.</p>
+        <p class="edition-note">Your signal. Your sound.<br>One personal film to carry both.</p>
         <div class="tone-picker" role="group" aria-label="Edition palette"><button type="button" data-tone="midnight" aria-pressed="true" disabled>Midnight</button><button type="button" data-tone="paper" aria-pressed="false" disabled>Paper</button></div>
         <button class="listen-button" id="listen-signal" type="button" disabled><svg aria-hidden="true"><use href="#play"/></svg><span>Listen to your signal</span></button>
         <p class="sound-note" id="sound-status" aria-live="polite">An original, composed motif. Sound starts when you choose.</p>
-        <div class="studio-exports"><button class="solid-button" id="export-card" type="button" disabled>Download card <span>3840 × 2160 PNG</span></button><button class="ghost-button" id="export-sound" type="button" disabled>Download sound <span>WAV</span></button></div>
-        <a class="text-link" id="share-card" href="https://x.com/intent/tweet" target="_blank" rel="noopener noreferrer" aria-disabled="true">Share your signal <svg aria-hidden="true"><use href="#out"/></svg></a>
+        <button class="solid-button film-create" id="create-film" type="button" disabled>Create my signal video <span>1920 × 1080 MP4 · sound included</span></button>
+        <p class="sound-note" id="film-status" role="status">Connect with X to create your personal signal video.</p>
+        <div class="studio-exports" id="film-actions" hidden><button class="solid-button" id="share-card" type="button" disabled aria-disabled="true">Share video</button><button class="ghost-button" id="download-film" type="button" disabled>Download MP4</button></div>
+        <a class="text-link" id="film-x-draft" href="https://x.com/intent/tweet" target="_blank" rel="noopener noreferrer" hidden>Open X · attach your downloaded MP4 <svg aria-hidden="true"><use href="#out"/></svg></a>
+        <p class="studio-note">Choose X in the share menu. You review the post.</p>
+        <details class="edition-originals"><summary>Still image &amp; separate audio</summary><div class="studio-exports"><button class="ghost-button" id="export-card" type="button" disabled>Download card <span>3840 × 2160 PNG</span></button><button class="ghost-button" id="export-sound" type="button" disabled>Download sound <span>WAV</span></button></div></details>
         <p class="studio-note">Generated artwork and sound. No neural data.</p>
       </div>
     </div></details>

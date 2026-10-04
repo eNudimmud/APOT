@@ -115,5 +115,65 @@
     ctx.fillStyle=muted; ctx.font='400 13px Space, Arial, sans-serif'; ctx.fillText('Reconnect with your X account.',1517,830);
     ctx.restore();
   }
-  return Object.freeze({score,samples,wav,paintCard,permalink,wordmark,sampleRate:RATE,duration:DURATION});
+  function paintFilm(ctx, sig, width, height, tone, seconds, username) {
+    const notes = score(sig);
+    const time = Math.max(0, Math.min(DURATION, Number(seconds) || 0));
+    const paper = tone === 'paper';
+    const background = paper ? '#e7e2d4' : '#07121d';
+    const foreground = paper ? '#07121d' : '#e7e2d4';
+    const accent = paper ? '#75633b' : '#d0bd8c';
+    const muted = paper ? '#485762' : '#a9b6c0';
+    paintCard(ctx, sig, width, height, tone);
+    ctx.save(); ctx.setTransform(width / 1600, 0, 0, height / 900, 0, 0);
+    // Keep the photographic brand's restraint: one trace, one moving point.
+    ctx.fillStyle = background; ctx.fillRect(64, 200, 570, 500);
+    ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = foreground; ctx.font = '400 82px Space, Arial, sans-serif';
+    ctx.fillText('THIS IS', 80, 315); ctx.fillStyle = accent; ctx.fillText('MY SIGNAL.', 80, 422);
+    ctx.fillStyle = foreground; ctx.font = '400 27px Space, Arial, sans-serif';
+    const handle = /^[A-Za-z0-9_]{1,15}$/.test(username || '') ? '@' + username : 'YOUR FIXED X SIGNAL';
+    ctx.fillText(handle, 84, 502);
+    ctx.fillStyle = muted; ctx.font = '400 18px Space, Arial, sans-serif';
+    ctx.fillText('One account. One signal. One sound.', 84, 555);
+    const field = { x: 675, y: 188, w: 840, h: 452 };
+    ctx.fillStyle = background; ctx.fillRect(field.x - 5, field.y - 5, field.w + 10, field.h + 10);
+    const min = Math.min.apply(null, sig.wave), max = Math.max.apply(null, sig.wave);
+    const waveY = value => field.y + 30 + (max - value) / Math.max(1, max - min) * (field.h - 65);
+    const point = position => {
+      const f = Math.max(0, Math.min(1, position)) * (sig.wave.length - 1);
+      const i = Math.min(sig.wave.length - 2, Math.floor(f)), u = f - i;
+      return [field.x + f / (sig.wave.length - 1) * field.w, waveY(sig.wave[i] * (1 - u) + sig.wave[i + 1] * u)];
+    };
+    const trace = end => {
+      ctx.beginPath();
+      for (let i = 0; i <= Math.floor(end * (sig.wave.length - 1)); i++) {
+        const p = point(i / (sig.wave.length - 1)); i ? ctx.lineTo(...p) : ctx.moveTo(...p);
+      }
+      ctx.lineTo(...point(end)); ctx.stroke();
+    };
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.strokeStyle = foreground; ctx.lineWidth = 1; ctx.globalAlpha = .13;
+    ctx.beginPath(); ctx.moveTo(field.x, waveY(sig.resting)); ctx.lineTo(field.x + field.w, waveY(sig.resting)); ctx.stroke();
+    ctx.globalAlpha = .16; ctx.lineWidth = 3.5; trace(1);
+    const reveal = Math.min(1, .02 + time / 1.25);
+    ctx.globalAlpha = 1; ctx.strokeStyle = accent; ctx.lineWidth = 3.5; trace(reveal);
+    const head = point(Math.min(reveal, Math.max(0, Math.min(1, time / 4.45))));
+    const pulse = Math.max(0, ...notes.map(note => Math.max(0, 1 - (time - note.start) / .22) * (time >= note.start ? 1 : 0)));
+    ctx.globalAlpha = .8; ctx.fillStyle = foreground;
+    ctx.beginPath(); ctx.arc(head[0], head[1], 4 + pulse * 2, 0, Math.PI * 2); ctx.fill();
+    ctx.globalAlpha = pulse * .22; ctx.strokeStyle = accent; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(head[0], head[1], 10 + pulse * 4, 0, Math.PI * 2); ctx.stroke();
+    // Eight restrained note marks use the exact score that produces the audio.
+    notes.forEach((note, i) => {
+      const hit = time >= note.start && time < note.start + .24;
+      ctx.globalAlpha = hit ? 1 : time >= note.start ? .6 : .18;
+      ctx.fillStyle = accent; ctx.fillRect(field.x + i * 26, 669, 16, 2 + (hit ? 3 : 0));
+    });
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = background; ctx.fillRect(1170, 769, 366, 67);
+    ctx.textAlign = 'right'; ctx.fillStyle = foreground; ctx.font = '400 25px Space, Arial, sans-serif'; ctx.fillText('apot.world', 1517, 801);
+    ctx.fillStyle = muted; ctx.font = '400 13px Space, Arial, sans-serif'; ctx.fillText('What does your signal sound like?', 1517, 830);
+    ctx.restore();
+  }
+  return Object.freeze({score,samples,wav,paintCard,paintFilm,permalink,wordmark,sampleRate:RATE,duration:DURATION});
 });

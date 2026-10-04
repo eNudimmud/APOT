@@ -12,7 +12,7 @@ English only. A concise scientific and creative identity, with creation as the f
 
 ## Experience — realistic laboratory, updated 4 October 2026
 
-- Static HTML, CSS and JavaScript, with Vercel serverless routes for required X sign-in. No package install and no second framework. GitHub Pages can show the public editorial pages only.
+- Static HTML, CSS and JavaScript, with Vercel serverless routes for required X sign-in and personal MP4 rendering. No frontend framework or build step. Vercel installs the two pinned native rendering dependencies. GitHub Pages can show the public editorial pages only.
 - The public wordmark is **λP⊙T**. The running header, the hero, and the access title show the exact line **APOT X NEURALINK Prestock**. The ticker stays **$APOT**, always reachable from the header.
 - The opening pairs strong editorial type with an original photograph of a credible oscilloscope workbench. A small filament in the band below is drawn on canvas. Its loop pauses when the tab is hidden or the band is off screen, and starts paused when reduced motion is requested. A static SVG trace is the no-canvas fallback.
 - Copy is English and short. References: Neuralink’s Audrey film (opened on demand), Alex’s PRIME Study note, and the Sylvius 4 Online demo. Sylvius stays on Oxford University Press and is not embedded. The archive is keyboard operable. $APOT access uses the confirmed mint `GsUXfGLgAvfMKxiCUVoe8iNaMR4dqP5xBbXcD8BbAP4o`, with Jupiter as the buy link and the related Solscan account as the explorer.
@@ -27,7 +27,11 @@ There is one profile space with PFP and Banner tabs. The PFP uses the connected 
 
 The authenticated avatar route first tries the original X CDN image, then the signed session's image and its normal-size fallback when needed. The allowed hosts, account header, read-only scope and signed-cookie checks are unchanged. The avatar's real source detail limits the photographic part of a PFP; increasing the output dimensions does not invent missing portrait detail. The signal and typography are redrawn in native pixels. Previews use up to 2× display density, with a 1440-square or 3000 × 1000 ceiling, and do not allocate the full master until download. The temporary PFP layer and profile export canvas are released after use, including cancellation or failure.
 
-Card and sound are optional variations under **Card & sound from your signal**. The same signature draws a native **3840 × 2160** edition card in Midnight or Paper and composes a five-second, mono 16-bit **44.1 kHz WAV**. Every image export, WAV export and playback rechecks the server's signed X session. Logout or expiry clears the account preview, stops sound and locks every export. Pending avatar or canvas requests cannot export the previous account after a logout or account switch. The share link opens a draft only; it invites others to connect with their own account and contains no restorable seed override.
+**Your signal, with sound** creates a personal five-second **1920 × 1080 MP4 at 30 fps**, with the verified @handle, fixed seed, minimal trace animation and that account's own composed sound. The server derives the seed from the signed numeric ID; the request accepts only the Midnight or Paper palette. The moving point and restrained note marks follow the same eight-note score as the audio. H.264 High Profile, YUV 4:2:0, closed GOP and mono AAC-LC at 44.1 kHz / 128 kbps make the image and sound one actual video file. No microphone, screen capture, uploaded media or anonymous seed is used. The signal and typography are drawn at the final resolution.
+
+After creation, play the video with its controls, **Share video** through the native file share menu and choose X, or **Download MP4**. File sharing passes the personal MP4 and a suggested caption. The user reviews the post in X. Some browsers require a second **Choose X** gesture after session verification. If file sharing is unavailable, the same MP4 downloads and an X draft link explicitly asks the user to attach it; that link cannot attach the file itself. Cancelling the share menu leaves the video ready and does not download it. No X posting scopes or API publishing have been added.
+
+Still-image **3840 × 2160 PNG** and five-second, mono 16-bit **44.1 kHz WAV** exports remain under **Still image & separate audio**. Every image export, WAV export, playback, MP4 download and sharing attempt verifies the signed server session. A prepared native-share gesture is valid for at most ten seconds after verification. Logout or expiry clears the account and video previews, stops playback, revokes the video URL, aborts pending rendering and locks every export. Account headers and seed checks prevent another account's MP4 from becoming shareable. A palette change discards the previous prepared video. There is no restorable seed override in the invitation link.
 
 The X-ID fixture `1847291056384729103` always gives seed `4A6445B3` (λ-4A64). Existing graphic fixture `7F2A91C4` (λ-7F2A) remains an internal engine test, not a visitor generator.
 
@@ -39,11 +43,12 @@ node x-oauth-check.js
 node avatar-check.js
 node identity-check.js
 node studio-check.js
+node film-check.js
 node filament-check.js
 node navigation-check.js
 ```
 
-`profile-engine.js` holds the unchanged profile artwork drawing; `signature.js` owns the verified-account state and unified preview; `studio.js` consumes that same state. Hidden secondary cards are drawn only when opened. No hidden signal animation is duplicated.
+`profile-engine.js` holds the profile artwork drawing; `signature.js` owns the verified-account state and unified preview; `studio.js` and `film.js` consume that same state. `studio-engine.js` owns the static card, frame drawing and unchanged audio samples. Hidden secondary cards are drawn only when opened. No animation runs behind the closed edition panel, and MP4 playback starts only on request.
 
 ## Required X sign-in
 
@@ -64,6 +69,16 @@ Only `users.read tweet.read` are requested. No posting, follows, DMs or wallet a
 
 On the deployed site: **Connect with X** → preview **PFP / Banner** → adjust **PFP overlay** → download. **Disconnect** ends the session and clears all editions. Connect with the same account in another browser to confirm the same seed and shape return.
 
+For sharing with sound: **Your signal, with sound** → **Create my signal video** → preview → **Share video** → choose X and review the video post. Mobile file handoff depends on the browser and the installed app's share support; the download-and-attach fallback remains available on desktop.
+
+### MP4 renderer
+
+`api/x/film.js` accepts a same-origin JSON POST containing only `tone`, requires the signed X session and matching account header, and derives all image and audio parameters on the server. `lib/signal-film.js` uses `@napi-rs/canvas` 0.1.100 and `@ffmpeg-installer/ffmpeg` 1.1.0. `npm install` supplies the native renderer and the platform encoder; no new environment variable is required. `vercel.json` includes the fonts and Linux binaries for this function and allows a 60-second invocation; the renderer has its own 45-second termination timer. Completed MP4s are capped at 4 MB for the function response.
+
+A bounded, private warm-instance cache keeps at most six account/handle/palette results for five minutes; it does not create a public media URL or a durable archive. Each instance allows at most two simultaneous renders and one per account. These limits are per instance, not a distributed quota. Temporary WAV/MP4 files and drawing surfaces are released on completion, cancellation or failure. The signed session is checked again before the response. Native output was inspected with two offline accounts: 1920 × 1080, 150 frames, five seconds, H.264 High / AAC-LC; decoding the soundtrack reproduces the correct account motif with correlation above 0.99999. OAuth and posting through the real mobile X app still need a connected-device check.
+
+For the native integration check, install the pinned packages with `npm ci` and have `ffprobe` and `ffmpeg` on PATH, then run `node film-render-check.js`. It exercises the packaged production encoder, checks the MP4 tracks, dimensions, duration, actual motion and soundtrack correlation for two accounts, and cleans its temporary fixture files.
+
 ## Sources
 
 | Editorial reference | Source |
@@ -78,7 +93,7 @@ The Neuralink film is an account of clinical trial participants, not a general c
 
 ## Build and hosting
 
-Static HTML, CSS and JavaScript with Vercel serverless X routes serve the complete site at https://www.apot.world/. GitHub Pages can serve an editorial-only mirror from `main` at https://enudimmud.github.io/APOT/. A pull request is not what Pages publishes. To preview a branch, check it out and run `python3 -m http.server` from the repository root. Relative paths match the `/APOT/` base. No package install or build step. `signal.js` contains the original Canvas 2D projection; `script.js` handles navigation, scroll composition, the film and the archive. Fonts are self-hosted under their existing SIL OFL licenses. No wallet connection, transaction or analytics. X OAuth is required for personal signal generation. YouTube is loaded only on request. The film uses an original typographic editorial cover, so the page does not depend on a third-party thumbnail. The fixed navigation keeps the token accessible throughout the page.
+Static HTML, CSS and JavaScript with Vercel serverless X routes serve the complete site at https://www.apot.world/. GitHub Pages can serve an editorial-only mirror from `main` at https://enudimmud.github.io/APOT/. A pull request is not what Pages publishes. To preview a branch, check it out and run `python3 -m http.server` from the repository root. Relative paths match the `/APOT/` base. The frontend has no build step; Vercel installs the dependencies for MP4 rendering. `signal.js` contains the original Canvas 2D projection; `script.js` handles navigation, scroll composition, the film and the archive. Fonts are self-hosted under their existing SIL OFL licenses. No wallet connection, transaction or analytics. X OAuth is required for personal signal generation. YouTube is loaded only on request. The film uses an original typographic editorial cover, so the page does not depend on a third-party thumbnail. The fixed navigation keeps the token accessible throughout the page.
 
 Use relative paths to preserve compatibility with the /APOT/ base path. Keep `.nojekyll` in the root. The four photographic studies are the responsive `assets/study-*.webp` files. Native generated PNG sources are preserved in `assets/masters`; actual dimensions are recorded in `assets/media-manifest.json`. The token specimen is vector artwork. Photographic sources are 1672 or 1536 pixels wide, not 4K. See `ART_DIRECTION.md` for the current visual canon and `CREATIVE_GRAMMAR.md` for the implicit cultural motifs, the new image's production spec and the next shot plans.
 

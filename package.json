@@ -1,0 +1,9 @@
+{
+  "name": "apot-world",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "1.1.0",
+    "@napi-rs/canvas": "0.1.100"
+  }
+}
