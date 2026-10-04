@@ -10,6 +10,11 @@ const avatarRoute = require('./api/x/avatar');
 const signal = require('./signature-engine');
 const profile = require('./profile-engine');
 const studio = require('./studio-engine');
+const filmRenderer = require('./lib/signal-film');
+const filmRoute = require('./api/x/film');
+const { File } = require('node:buffer');
+const originalFilmRender = filmRenderer.render;
+filmRenderer.render = async account => ({ bytes: Buffer.from('fixture MP4'), seed: signal.seedForIdentity(account.id) });
 const originalEnv = Object.fromEntries(oauth.ENV_NAMES.map(name => [name, process.env[name]]));
 Object.assign(process.env, { X_CLIENT_ID: 'fixture-client', X_CLIENT_SECRET: 'fixture-secret',
   X_REDIRECT_URI: 'https://apot.example/api/x/callback', APOT_SESSION_SECRET: 'fixture-signing-secret' });
@@ -41,8 +46,8 @@ function drawingContext() {
 }
 function harness(initial, options = {}) {
   let session = initial, clock = Date.now(), timerId = 0;
-  const timers = new Map(), nodes = new Map(), downloads = [], bitmaps = [], calls = [], encoded = [];
-  const delayed = { session: null, avatar: null, blob: null };
+  const timers = new Map(), nodes = new Map(), downloads = [], bitmaps = [], calls = [], encoded = [], shares = [];
+  const delayed = { session: null, avatar: null, blob: null, film: null };
   class Element {
     constructor(tag = 'div', attrs = '') {
       this.tagName = tag; this.hidden = /(?:^|\s)hidden(?:\s|$)/.test(attrs);
@@ -67,6 +72,7 @@ function harness(initial, options = {}) {
     }
     querySelector(selector) { if (selector === 'span') return this.span ||= new Element('span'); return null; }
     focus() {} remove() {}
+    pause() {} load() {}
     click() { if (this.download) downloads.push({ name: this.download, href: this.href }); else void this.fire('click'); }
     toBlob(done, type) {
       encoded.push({ width: this.width, height: this.height, type, surface: this });
@@ -98,24 +104,33 @@ function harness(initial, options = {}) {
     dispatchEvent(event) { (this.listeners[event.type] || []).forEach(fn => fn(event)); },
     setTimeout(fn, ms) { const id = ++timerId; timers.set(id, { fn, at: clock + ms }); return id; },
     clearTimeout(id) { timers.delete(id); } });
-  const context = vm.createContext({ window, document, Date: DateFixture, console, URLSearchParams, Blob,
+  const context = vm.createContext({ window, document, Date: DateFixture, console, URLSearchParams, Blob, File, AbortController,
     CustomEvent: class { constructor(type, options) { this.type = type; this.detail = options.detail; } },
     URL: { createObjectURL: () => 'blob:fixture', revokeObjectURL() {} },
-    navigator: { clipboard: { writeText: async () => {} } },
+    navigator: { clipboard: { writeText: async () => {} }, userActivation: { isActive: !options.noActivation },
+      canShare: () => !options.shareUnsupported, share: options.shareUnsupported ? undefined : async data => { if (options.shareCancelled) throw Object.assign(new Error('cancel'),{name:'AbortError'}); shares.push(data); } },
     sessionStorage: { getItem() { throw new Error('Legacy visitor seeds must never be read.'); } },
     createImageBitmap: async () => { const image = { width: 400, height: 400, closed: false, close() { this.closed = true; } }; bitmaps.push(image); return image; },
-    fetch: async path => {
+    fetch: async (path, request = {}) => {
       calls.push(path);
       if (path === 'api/x/session' && options.networkFailure) throw new Error('Fixture network unavailable');
       if (path === 'api/x/session') return delayed.session ? delayed.session.promise : sessionReply();
       if (path === 'api/x/avatar') return delayed.avatar ? delayed.avatar.promise : { ok: !options.avatarFailure, status: options.avatarFailure ? 502 : 200,
         headers: { get: key => key === 'X-APOT-Account' ? session?.id : null }, blob: async () => new Blob(['avatar']) };
       if (path === 'api/x/logout') { session = null; return { ok: true, status: 200 }; }
+      if (path === 'api/x/film') {
+        if (delayed.film) await delayed.film.promise;
+        const result = res();
+        await filmRoute({method:request.method,body:request.body,headers:{origin:'https://apot.example','content-type':request.headers['Content-Type'],'x-apot-account':request.headers['X-APOT-Account'],cookie:cookie(session)}}, result);
+        if (options.filmWrongAccount) result.headers['x-apot-account'] = '123';
+        return {ok:result.statusCode===200,status:result.statusCode,headers:{get:key=>result.headers[key.toLowerCase()] || null},blob:async()=>new Blob([result.body],{type:result.headers['content-type']})};
+      }
       throw new Error('Unexpected request: ' + path);
     } });
   vm.runInContext(fs.readFileSync(__dirname + '/signature.js', 'utf8'), context, { filename: 'signature.js' });
   vm.runInContext(fs.readFileSync(__dirname + '/studio.js', 'utf8'), context, { filename: 'studio.js' });
-  return { window, document, nodes, downloads, bitmaps, calls, delayed, palettes, encoded, get: key => nodes.get('#' + key),
+  vm.runInContext(fs.readFileSync(__dirname + '/film.js', 'utf8'), context, { filename: 'film.js' });
+  return { window, document, nodes, downloads, bitmaps, calls, delayed, palettes, encoded, shares, get: key => nodes.get('#' + key),
     setSession(value) { session = value; },
     async refresh() { await document.fire('visibilitychange'); await flush(); },
     advance(ms) { clock += ms; for (const [id, timer] of [...timers]) if (timer.at <= clock) { timers.delete(id); timer.fn(); } },
@@ -123,7 +138,7 @@ function harness(initial, options = {}) {
 }
 function locked(h) {
   assert.equal(h.window.ApotStage.current(), null);
-  for (const id of ['export-pfp', 'export-banner', 'export-card', 'export-sound', 'listen-signal', 'seed-copy']) assert.equal(h.get(id).disabled, true, id + ' must be locked.');
+  for (const id of ['export-pfp', 'export-banner', 'export-card', 'export-sound', 'listen-signal', 'seed-copy', 'create-film', 'share-card', 'download-film']) assert.equal(h.get(id).disabled, true, id + ' must be locked.');
   assert.equal(h.get('share-card').getAttribute('aria-disabled'), 'true');
   assert.equal(h.get('profile-ready').hidden, true);
   assert.equal(h.get('edition-tools').hidden, true);
@@ -144,7 +159,7 @@ async function run() {
   finally { oauth.fetchAvatarBytes = savedFetch; }
 
   const anonymous = harness(null); await flush(); locked(anonymous);
-  for (const id of ['export-pfp', 'export-banner', 'export-card', 'export-sound', 'listen-signal']) await anonymous.get(id).fire('click');
+  for (const id of ['export-pfp', 'export-banner', 'export-card', 'export-sound', 'listen-signal', 'create-film', 'share-card']) await anonymous.get(id).fire('click');
   assert.equal(anonymous.downloads.length, 0); assert.equal(anonymous.audio().started, 0);
   for (const options of [{ status: 503 }, { networkFailure: true }, { data: { seed: '7F2A91C4' } }, { data: { binding: 'visitor' } }, { data: { expiresAt: Date.now() - 1 } }]) {
     const invalid = harness(account(), options); await flush(); locked(invalid);
@@ -202,8 +217,40 @@ async function run() {
   assert.equal(noAvatar.get('export-pfp').disabled, true); assert.equal(noAvatar.get('export-banner').disabled, false);
   await noAvatar.get('export-banner').fire('click'); await flush(); assert.equal(noAvatar.downloads.length, 1);
 
+  const movie = harness(account()); await flush();
+  await movie.get('create-film').fire('click');
+  assert.equal(movie.get('film-preview').hidden,false); assert.equal(movie.get('share-card').disabled,false);
+  await movie.get('share-card').fire('click'); assert.equal(movie.shares.length,1);
+  const payload=movie.shares[0]; assert.equal(payload.files.length,1); assert.equal(payload.files[0].type,'video/mp4');
+  assert.ok(payload.files[0].name.includes(signal.FIXTURE_X_SEED),'Native sharing must receive this account\'s MP4, not a generic link.');
+  assert.ok(payload.text.includes(signal.FIXTURE_X_SEED));
+  await movie.get('download-film').fire('click'); assert.ok(movie.downloads[0].name.endsWith('-signal.mp4'));
+  await movie.palettes[1].fire('click'); assert.equal(movie.get('share-card').disabled,true,'A palette change discards the previous film.');
+  await movie.get('create-film').fire('click'); await movie.get('x-disconnect').fire('click'); locked(movie);
+  assert.equal(movie.get('film-preview').hidden,true);
+  const delayedFilm=harness(account()); await flush(); delayedFilm.delayed.film=deferred();
+  const making=delayedFilm.get('create-film').fire('click'); await flush();
+  await delayedFilm.get('x-disconnect').fire('click'); delayedFilm.delayed.film.resolve(); await making;
+  locked(delayedFilm); assert.equal(delayedFilm.shares.length,0);
+  const wrongFilm=harness(account(),{filmWrongAccount:true}); await flush(); await wrongFilm.get('create-film').fire('click');
+  assert.equal(wrongFilm.get('share-card').disabled,true,'A film for another account must never become shareable.');
+  const manual=harness(account(),{shareUnsupported:true}); await flush(); await manual.get('create-film').fire('click'); await manual.get('share-card').fire('click');
+  assert.equal(manual.downloads.length,1); assert.equal(manual.get('film-x-draft').hidden,false);
+  assert.ok(manual.get('film-status').textContent.includes('attach this video'),'Fallback must explain that X still needs the downloaded attachment.');
+  const activation=harness(account(),{noActivation:true}); await flush(); await activation.get('create-film').fire('click'); await activation.get('share-card').fire('click');
+  assert.equal(activation.shares.length,0); assert.equal(activation.get('share-card').textContent,'Choose X');
+  await activation.get('share-card').fire('click'); assert.equal(activation.shares.length,1,'A second gesture must send the prepared file immediately.');
+  const cancelledShare=harness(account(),{shareCancelled:true}); await flush(); await cancelledShare.get('create-film').fire('click'); await cancelledShare.get('share-card').fire('click');
+  assert.equal(cancelledShare.downloads.length,0,'Cancelling the picker must not trigger an unwanted download.');
+  const expiredFilm=harness(account()); await flush(); await expiredFilm.get('create-film').fire('click'); expiredFilm.advance(3601000); locked(expiredFilm);
+  assert.equal(expiredFilm.get('film-preview').hidden,true,'Expiry discards the prepared personal video.');
+  const switchedFilm=harness(account()); await flush(); await switchedFilm.get('create-film').fire('click'); switchedFilm.setSession(account('123456789'));
+  await switchedFilm.get('share-card').fire('click'); assert.equal(switchedFilm.shares.length,0,'A server account switch cannot share the previous account film.');
+  assert.equal(switchedFilm.window.ApotStage.current().seed,signal.seedForIdentity('123456789'));
+
   console.log('identity check ok — X required; stable ID binding; URL override blocked; all exports revalidated; logout, expiry and account races locked');
 }
 run().catch(error => { console.error(error); process.exitCode = 1; }).finally(() => {
+  filmRenderer.render = originalFilmRender;
   for (const name of oauth.ENV_NAMES) if (originalEnv[name] == null) delete process.env[name]; else process.env[name] = originalEnv[name];
 });
