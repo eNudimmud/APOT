@@ -23,7 +23,9 @@ English only. A concise scientific and creative identity, with creation as the f
 
 Personal generation requires **Connect with X**. One verified numeric X account ID always derives the same seed using `SHA-256("apot-x-user:" + id).slice(0, 8).toUpperCase()`. Changing the @handle, avatar, browser or device never assigns a new signal. The existing algorithm and fixtures are preserved. The eight-character seed is a graphic identifier, not a certificate of globally unique ownership.
 
-There is one profile space with PFP and Banner tabs. The PFP uses the connected account's avatar and fixed signature, with an adjustable 15–80% overlay (45% by default). It exports at **1440 × 1440 PNG**. The matching banner exports at **3000 × 1000 PNG**. An avatar error keeps the verified banner available and locks PFP export. There is no anonymous generator, random visitor seed, manual avatar upload or seed restoration field. URL parameters and old browser storage cannot change the account signature.
+There is one profile space with PFP and Banner tabs. The PFP uses the connected account's avatar and fixed signature, with an adjustable 15–80% overlay (45% by default). It exports a lossless **4096 × 4096 PNG**. The matching banner exports a lossless **6000 × 2000 PNG**, preserving the 3:1 layout. The drawing is created directly at the export resolution; it is not an enlarged preview. The same composition, logo, curve, network and stroke proportions are maintained across preview and master sizes. An avatar error keeps the verified banner available and locks PFP export. There is no anonymous generator, random visitor seed, manual avatar upload or seed restoration field. URL parameters and old browser storage cannot change the account signature.
+
+The authenticated avatar route first tries the original X CDN image, then the signed session's image and its normal-size fallback when needed. The allowed hosts, account header, read-only scope and signed-cookie checks are unchanged. The avatar's real source detail limits the photographic part of a PFP; increasing the output dimensions does not invent missing portrait detail. The signal and typography are redrawn in native pixels. Previews use up to 2× display density, with a 1440-square or 3000 × 1000 ceiling, and do not allocate the full master until download. The temporary PFP layer and profile export canvas are released after use, including cancellation or failure.
 
 Card and sound are optional variations under **Card & sound from your signal**. The same signature draws a native **3840 × 2160** edition card in Midnight or Paper and composes a five-second, mono 16-bit **44.1 kHz WAV**. Every image export, WAV export and playback rechecks the server's signed X session. Logout or expiry clears the account preview, stops sound and locks every export. Pending avatar or canvas requests cannot export the previous account after a logout or account switch. The share link opens a draft only; it invites others to connect with their own account and contains no restorable seed override.
 
@@ -34,6 +36,7 @@ Run offline regression checks without real secrets or network access:
 ```sh
 node signature-check.js
 node x-oauth-check.js
+node avatar-check.js
 node identity-check.js
 node studio-check.js
 node filament-check.js

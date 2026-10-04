@@ -41,7 +41,7 @@ function drawingContext() {
 }
 function harness(initial, options = {}) {
   let session = initial, clock = Date.now(), timerId = 0;
-  const timers = new Map(), nodes = new Map(), downloads = [], bitmaps = [], calls = [];
+  const timers = new Map(), nodes = new Map(), downloads = [], bitmaps = [], calls = [], encoded = [];
   const delayed = { session: null, avatar: null, blob: null };
   class Element {
     constructor(tag = 'div', attrs = '') {
@@ -68,7 +68,11 @@ function harness(initial, options = {}) {
     querySelector(selector) { if (selector === 'span') return this.span ||= new Element('span'); return null; }
     focus() {} remove() {}
     click() { if (this.download) downloads.push({ name: this.download, href: this.href }); else void this.fire('click'); }
-    toBlob(done) { if (delayed.blob) delayed.blob.promise.then(() => done(new Blob(['fixture PNG']))); else done(new Blob(['fixture PNG'])); }
+    toBlob(done, type) {
+      encoded.push({ width: this.width, height: this.height, type, surface: this });
+      if (delayed.blob) delayed.blob.promise.then(() => done(new Blob(['fixture PNG'])));
+      else done(new Blob(['fixture PNG']));
+    }
   }
   const html = fs.readFileSync(__dirname + '/index.html', 'utf8');
   for (const match of html.matchAll(/<([\w-]+)([^>]*\bid="([^"]+)"[^>]*)>/g)) nodes.set('#' + match[3], new Element(match[1], match[2]));
@@ -89,6 +93,7 @@ function harness(initial, options = {}) {
     createBufferSource() { return { connect() {}, disconnect() {}, start() { started++; }, stop() { stopped++; } }; }
   }
   Object.assign(window, { ApotSignature: signal, ApotProfile: profile, ApotStudio: studio, AudioContext: Audio,
+    devicePixelRatio: options.density || 1,
     location: { search: '?seed=7F2A91C4&tone=paper' },
     dispatchEvent(event) { (this.listeners[event.type] || []).forEach(fn => fn(event)); },
     setTimeout(fn, ms) { const id = ++timerId; timers.set(id, { fn, at: clock + ms }); return id; },
@@ -110,7 +115,7 @@ function harness(initial, options = {}) {
     } });
   vm.runInContext(fs.readFileSync(__dirname + '/signature.js', 'utf8'), context, { filename: 'signature.js' });
   vm.runInContext(fs.readFileSync(__dirname + '/studio.js', 'utf8'), context, { filename: 'studio.js' });
-  return { window, document, nodes, downloads, bitmaps, calls, delayed, palettes, get: key => nodes.get('#' + key),
+  return { window, document, nodes, downloads, bitmaps, calls, delayed, palettes, encoded, get: key => nodes.get('#' + key),
     setSession(value) { session = value; },
     async refresh() { await document.fire('visibilitychange'); await flush(); },
     advance(ms) { clock += ms; for (const [id, timer] of [...timers]) if (timer.at <= clock) { timers.delete(id); timer.fn(); } },
@@ -152,6 +157,9 @@ async function run() {
   h.get('edition-tools').open = true; await h.get('edition-tools').fire('toggle');
   for (const id of ['export-pfp', 'export-banner', 'export-card', 'export-sound']) { await h.get(id).fire('click'); await flush(); }
   assert.equal(h.downloads.length, 4); assert.ok(h.downloads.every(item => item.name.includes(fixed.seed)), 'Every edition must use the fixed account seed.');
+  assert.deepEqual(h.encoded.slice(0, 2).map(item => [item.width, item.height, item.type]),
+    [[4096, 4096, 'image/png'], [6000, 2000, 'image/png']], 'Profile downloads must encode native HD canvases.');
+  assert.ok(h.encoded.slice(0, 2).every(item => item.surface.width === 0 && item.surface.height === 0), 'Export canvases must be released after encoding.');
   assert.ok(h.calls.filter(path => path === 'api/x/session').length >= 5, 'Every export must recheck the server session.');
   assert.equal(new URL(studio.permalink(fixed)).search, '');
   await h.get('listen-signal').fire('click'); assert.equal(h.audio().started, 1);
@@ -162,6 +170,12 @@ async function run() {
   h.setSession(account()); await h.get('x-retry').fire('click'); await flush();
   assert.equal(signal.fingerprint(h.window.ApotStage.current()), signal.fingerprint(fixed), 'Reconnect must recover the exact same curve and network.');
   const otherBrowser = harness(renamed); await flush(); assert.equal(signal.fingerprint(otherBrowser.window.ApotStage.current()), signal.fingerprint(fixed));
+
+  const retina = harness(account(), { density: 3 }); await flush();
+  assert.deepEqual([retina.get('profile-preview').width, retina.get('profile-preview').height], [1440, 1440], 'High-density previews stay sharp and bounded.');
+  await retina.get('profile-tab-banner').fire('click');
+  assert.deepEqual([retina.get('profile-preview').width, retina.get('profile-preview').height], [3000, 1000]);
+  assert.equal(signal.fingerprint(retina.window.ApotStage.current()), signal.fingerprint(fixed), 'Pixel density must never change the account signal.');
 
   const expires = harness(account()); await flush(); expires.advance(3601000); locked(expires);
   const lost = harness(account()); await flush(); lost.setSession(null);
@@ -175,6 +189,7 @@ async function run() {
   await pending.get('export-banner').fire('click'); await flush();
   await pending.get('x-disconnect').fire('click'); pending.delayed.blob.resolve(); await flush();
   locked(pending); assert.equal(pending.downloads.length, 0, 'An export finishing after logout must be discarded.');
+  assert.equal(pending.encoded[0].surface.width, 0, 'A cancelled HD export must release its canvas.');
   const pendingCard = harness(account()); await flush(); pendingCard.delayed.blob = deferred();
   const cardRequest = pendingCard.get('export-card').fire('click'); await flush();
   await pendingCard.get('x-disconnect').fire('click'); pendingCard.delayed.blob.resolve(); await cardRequest;

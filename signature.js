@@ -106,19 +106,21 @@
     find('#profile-panel').setAttribute('aria-labelledby', mode === 'pfp' ? 'profile-tab-pfp' : 'profile-tab-banner');
     const ctx = preview.getContext('2d');
     if (!ctx) { exportStatus.textContent = 'Profile drawing is unavailable in this browser.'; return; }
+    const density = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
     if (mode === 'pfp') {
-      preview.width = 720; preview.height = 720;
+      const size = Math.round(720 * density);
+      preview.width = size; preview.height = size;
       preview.classList.remove('is-banner');
-      if (portrait) renderer.paintPfp(ctx, current, portrait, 720, opacity, makeCanvas);
+      if (portrait) renderer.paintPfp(ctx, current, portrait, size, opacity, makeCanvas);
       else {
-        ctx.fillStyle = '#07121d'; ctx.fillRect(0, 0, 720, 720);
-        ctx.fillStyle = '#e7e2d4'; ctx.font = '400 28px Space, Arial, sans-serif';
-        ctx.textAlign = 'center'; ctx.fillText('Loading your X avatar…', 360, 360);
+        ctx.fillStyle = '#07121d'; ctx.fillRect(0, 0, size, size);
+        ctx.fillStyle = '#e7e2d4'; ctx.font = '400 ' + 28 * density + 'px Space, Arial, sans-serif';
+        ctx.textAlign = 'center'; ctx.fillText('Loading your X avatar…', size / 2, size / 2);
       }
     } else {
-      preview.width = 1500; preview.height = 500;
+      preview.width = Math.round(1500 * density); preview.height = Math.round(500 * density);
       preview.classList.add('is-banner');
-      renderer.paintBanner(ctx, current, 1500, 500);
+      renderer.paintBanner(ctx, current, preview.width, preview.height);
     }
     preview.setAttribute('aria-label', (mode === 'pfp' ? 'PFP' : 'Banner') + ' for @' + account.username + ', fixed signal ' + current.lambdaId + '.');
   }
@@ -228,18 +230,21 @@
   async function download(kind) {
     if (exporting || (kind === 'pfp' && !portrait)) return;
     exporting = true; syncControls();
-    let permit = null;
+    let permit = null, canvas = null;
     try {
       permit = await authorize();
       if (!isCurrent(permit) || (kind === 'pfp' && !portrait)) return;
       exportStatus.textContent = 'Drawing your ' + (kind === 'pfp' ? 'PFP' : 'banner') + '…';
       await ensureFonts();
       if (!isCurrent(permit)) return;
-      const canvas = kind === 'pfp' ? makeCanvas(1440, 1440) : makeCanvas(3000, 1000);
+      if (window.requestAnimationFrame) await new Promise(resolve => window.requestAnimationFrame(resolve));
+      if (!isCurrent(permit)) return;
+      const { width, height } = renderer.exportSizes[kind];
+      canvas = makeCanvas(width, height);
       const ctx = canvas.getContext('2d');
       if (!ctx) throw new Error('canvas');
-      if (kind === 'pfp') renderer.paintPfp(ctx, permit.signature, portrait, 1440, opacity, makeCanvas);
-      else renderer.paintBanner(ctx, permit.signature, 3000, 1000);
+      if (kind === 'pfp') renderer.paintPfp(ctx, permit.signature, portrait, width, opacity, makeCanvas);
+      else renderer.paintBanner(ctx, permit.signature, width, height);
       const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
       if (!blob || !isCurrent(permit)) return;
       const url = URL.createObjectURL(blob), link = document.createElement('a');
@@ -248,7 +253,10 @@
       window.setTimeout(() => URL.revokeObjectURL(url), 30000);
       exportStatus.textContent = 'Your ' + (kind === 'pfp' ? 'PFP' : 'banner') + ' is ready. The signal stays fixed to your X account.';
     } catch (_) { if (isCurrent(permit)) exportStatus.textContent = 'The image could not be saved. Try again.'; }
-    finally { exporting = false; syncControls(); }
+    finally {
+      if (canvas) { canvas.width = 0; canvas.height = 0; }
+      exporting = false; syncControls();
+    }
   }
   connect.addEventListener('click', event => { if (connect.getAttribute('aria-disabled') === 'true') event.preventDefault(); });
   retry.addEventListener('click', () => { void loadSession(); });
