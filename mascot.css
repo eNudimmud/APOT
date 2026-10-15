@@ -1,0 +1,25 @@
+#apot-mascots{position:absolute;left:0;top:0;width:100%;height:0;z-index:15;pointer-events:none}
+.amc{position:absolute;overflow:hidden;pointer-events:none}
+.am{position:absolute;pointer-events:auto;transition:transform .7s cubic-bezier(.3,1.3,.5,1),opacity .5s}
+.am img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+.navy .am{filter:drop-shadow(0 4px 6px rgba(0,0,0,.6)) brightness(.92) saturate(.9)}
+.cream .am{filter:drop-shadow(0 3px 5px rgba(70,58,36,.35)) brightness(1.03)}
+.contact{position:absolute;height:7px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.4),transparent);pointer-events:none;opacity:0;transition:opacity .6s}
+.cream .contact{background:radial-gradient(closest-side,rgba(70,58,36,.4),transparent)}
+.show .contact{opacity:1}
+/* peer: rises from behind the edge */
+.p-peer .am{transform:translateY(105%)}.p-peer.show .am{transform:translateY(0)}.p-peer.duck .am{transform:translateY(105%)}
+/* peek: slides out from behind the left panel */
+.p-peek .am{transform:translateX(-100%)}.p-peek.show .am{transform:translateX(0)}.p-peek.duck .am{transform:translateX(-100%)}
+.p-sit .am,.p-point .am,.p-sleep .am{opacity:0}.p-sit.show .am,.p-point.show .am,.p-sleep.show .am{opacity:1}
+.p-sit.duck .am{transform:translateY(-6px)}
+.p-walk .am{opacity:0}.p-walk.show .am{opacity:1;animation:stroll var(--dur,22s) linear forwards}
+.p-walk.show .am img{animation:bob .5s ease-in-out infinite alternate}
+.p-walk.startle .am{animation-play-state:paused}.p-walk.startle .am img{animation:jump .35s ease-out}
+.p-sleep.show .am img{animation:breathe 3.8s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes stroll{from{transform:translateX(0)}to{transform:translateX(var(--dist))}}
+@keyframes bob{from{transform:translateY(0) rotate(-1.2deg)}to{transform:translateY(-3px) rotate(1.2deg)}}
+@keyframes jump{40%{transform:translateY(-14px)}}
+@keyframes breathe{50%{transform:scale(1.015,1.04)}}
+@media (prefers-reduced-motion:reduce){.am,.am img{animation:none!important;transition:opacity .3s!important}.p-peer .am,.p-peek .am{transform:none}.p-walk .am{transform:translateX(calc(var(--dist)/2))}}
+.p-sleep .am{filter:drop-shadow(0 2px 2px rgba(0,0,0,.45))!important}
