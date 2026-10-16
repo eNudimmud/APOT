@@ -33,7 +33,7 @@
     status.textContent = idle(); controls();
   }
   function caption() {
-    if (circuit) return 'FIRST SIGNAL / ' + ready.seed + '\n\nThe alien said every human carries a signal.\nThis is mine. Sound on. 👁\n\n@APOTsignal https://www.apot.world/#signature';
+    if (circuit) return '📡 FIRST SIGNAL / ' + ready.seed + '\n\nThe alien said every human carries a signal.\nThis is mine. Sound on 👽\n\n@APOTsignal\nAPOT.world';
     return 'This is my signal. Turn sound on.\n\n' + ready.seed + ' · Made at λP⊙T\nYour account. Your signal. Your sound.\n\nhttps://www.apot.world/#signature';
   }
   function save() {
