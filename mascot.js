@@ -32,15 +32,16 @@ function place(){S.forEach(x=>{x.io&&x.io.disconnect();x.stop&&x.stop()});L.inne
  if(ci){const b=box(ci),h=132,w=h*R.sit,seat=h*.74;
   make('sit',{clip:{x:b.x+b.w-w-34,y:b.y-seat,w,h},img:{width:w+'px',left:0,top:0},trigger:ci,
    contact:{left:w*.12+'px',width:w*.76+'px',top:seat-5+'px'}})}
- // 04 RECORD: strolls along the inner floor of the film frame toward the filament, with a real step cycle
- const fp=up(byText('h3,h2,p,div,span','^\\s*Creating art'),500);
- if(fp){const b0=box(fp),h=72,w=h*280/320,x0=b0.x+190,x1=b0.x+b0.w-250,b={x:x0,y:b0.y+b0.h-h-26,w:x1-x0};
-  const st=make('walk',{clip:{x:b.x,y:b.y-6,w:b.w,h:h+14},img:{width:w+'px',left:'0px',top:'6px'},trigger:fp,onShow:s=>walk(s,b.w-w-6,h)});st.m.querySelector('img').src=P+'walk-1.webp';
+}
+ // 04 RECORD DIVIDER: strolls along the top rule of the "04 / Public record" section (a real drawn line, empty band above it)
+ const rule=document.querySelector('#record .section-top');
+ if(rule){const r0=box(rule),h=mob?56:72,w=h*280/320,pad=mob?12:24,b={x:r0.x+pad,y:r0.y-h,w:r0.w-2*pad};
+  const st=make('walk',{clip:{x:b.x,y:b.y-6,w:b.w,h:h+6+1},img:{width:w+'px',left:'0px',top:'6px'},trigger:rule,onShow:s=>walk(s,b.w-w,h)});st.m.querySelector('img').src=P+'walk-1.webp';
   const foot=document.createElement('div');foot.className='foot';foot.style.cssText=`left:${w*.2}px;width:${w*.6}px;top:${h-3}px`;st.m.appendChild(foot);
   const startle=()=>{st.c.classList.add('startle');st.pause&&st.pause(900)};
   document.addEventListener('play',startle,true);
   document.querySelectorAll('a[href="#play"],button').forEach(x=>/Watch the film/.test(x.textContent)&&x.addEventListener('click',startle))}
- // 05 LINEAGE: peeks from behind the "Still you" mirror photo, into the gap toward "Your move"
+ if(!mob){ // 05 LINEAGE: peeks from behind the "Still you" mirror photo, into the gap toward "Your move"
  const li=[...document.querySelectorAll('#lineage img')].filter(i=>i.offsetWidth>400&&i.offsetWidth<900);
  if(li.length>1){const a=box(li[0]),b=box(li[1]),h=150,w=h*R.peek;
   make('peek',{clip:{x:a.x+a.w,y:b.y+b.h*.30,w:w,h},img:{width:w+'px',left:0,top:0},trigger:li[0]})}
@@ -71,7 +72,7 @@ function walk(st,dist,h){const img=st.m.querySelector('img'),still=P+'walk-5.web
   if(hold>0){hold-=dt;if(hold<=0){st.m.classList.remove('looking');st.m.classList.add('stepping');setF(f)}}
   else{acc+=dt;look-=dt;while(acc>=FD){acc-=FD;x+=ADV*dir;f=(f+1)%NF;setF(f)}
    const stop=()=>{st.m.classList.remove('stepping','contact');st.m.classList.add('looking');img.src=still};
-   if(x>=dist||x<=0){x=Math.max(0,Math.min(dist,x));dir*=-1;hold=900;stop()}
+   if((dir>0&&x>=dist)||(dir<0&&x<=0)){x=Math.max(0,Math.min(dist,x));dir*=-1;hold=900;stop()}
    else if(look<=0&&(f===4||f===12)){look=nextLook();hold=1100+Math.random()*700;stop()}}
   st.m.style.transform=`translateX(${x}px) scaleX(${dir})`;raf=requestAnimationFrame(tick)};
  raf=requestAnimationFrame(tick);st.stop=()=>cancelAnimationFrame(raf)}
