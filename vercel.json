@@ -3,14 +3,31 @@
     "api/x/film.js": {
       "maxDuration": 60,
       "includeFiles": "{assets/fonts/space-grotesk-*.ttf,node_modules/@ffmpeg-installer/linux-x64/**,node_modules/@napi-rs/canvas-linux-x64-gnu/**}"
+    },
+    "api/s/card.js": {
+      "maxDuration": 10,
+      "includeFiles": "{assets/fonts/space-grotesk-*.ttf,node_modules/@napi-rs/canvas-linux-x64-gnu/**}"
     }
   },
   "headers": [
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "private, no-store" }
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
+        }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/s/:id.png",
+      "destination": "/api/s/card?id=:id"
+    },
+    {
+      "source": "/s/:id",
+      "destination": "/api/s/page?id=:id"
     }
   ]
 }
