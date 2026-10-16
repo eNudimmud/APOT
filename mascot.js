@@ -9,11 +9,13 @@ const S=[],seen=new Set();let mobG=false;
 // clip: {x,y,w,h} page box in which the mascot is visible (outside = hidden behind the element)
 function make(pose,{clip,img,tone='navy',contact,trigger,onShow,key=pose}){
  const c=document.createElement('div');c.className=`amc p-${pose} ${tone}`;c.style.cssText=`left:${clip.x}px;top:${clip.y}px;width:${clip.w}px;height:${clip.h}px`;
- const m=document.createElement('div');m.className='am';m.innerHTML=`<img src="${P+pose}.webp" alt="">`;Object.assign(m.style,img);c.appendChild(m);
+ const m=document.createElement('div');m.className='am';if(pose!=='walk')m.innerHTML=`<img src="${P+pose}.webp" alt="">`;Object.assign(m.style,img);c.appendChild(m);
  if(contact){const s=document.createElement('div');s.className='contact';Object.assign(s.style,contact);c.appendChild(s)}
  L.appendChild(c);const st={c,m,pose,trigger,on:false,show(){if(st.on)return;st.on=true;seen.add(key);c.classList.add('show');onShow&&onShow(st)}};S.push(st);
- if(dbg)st.show();else if(seen.has(key)){c.classList.add('instant');st.show();requestAnimationFrame(()=>requestAnimationFrame(()=>c.classList.remove('instant')))}
- else if(trigger){const io=new IntersectionObserver(es=>es.forEach(e=>{const r=e.boundingClientRect;if(e.isIntersecting&&(e.intersectionRatio>.3||(r.top<innerHeight*.65&&r.bottom>innerHeight*.35))){st.show();io.disconnect()}}),{threshold:[0,.15,.3,.5]});io.observe(trigger);st.io=io}
+ const arm=()=>{if(dbg)st.show();else if(seen.has(key)){c.classList.add('instant');st.show();requestAnimationFrame(()=>requestAnimationFrame(()=>c.classList.remove('instant')))}
+  else if(trigger){const io=new IntersectionObserver(es=>es.forEach(e=>{const r=e.boundingClientRect;if(e.isIntersecting&&(e.intersectionRatio>.3||(r.top<innerHeight*.65&&r.bottom>innerHeight*.35))){st.show();io.disconnect()}}),{threshold:[0,.15,.3,.5]});io.observe(trigger);st.io=io}};
+ // Walk frames are stacked by the caller after make(); arm on the next turn so the cycle sees all 16.
+ pose==='walk'?queueMicrotask(arm):arm();
  return st}
 function place(){S.forEach(x=>{x.io&&x.io.disconnect();x.stop&&x.stop()});L.innerHTML='';S.length=0;const mob=innerWidth<=720;mobG=mob;
  if(!mob){ // 01 HERO: peers over the top edge of the oscilloscope photograph, toward the CRT
@@ -35,10 +37,14 @@ function place(){S.forEach(x=>{x.io&&x.io.disconnect();x.stop&&x.stop()});L.inne
 }
  // 04 RECORD DIVIDER: strolls along the top rule of the "04 / Public record" section (a real drawn line, empty band above it)
  const rule=document.querySelector('#record .section-top');
- if(rule){const r0=box(rule),h=mob?56:72,w=h*280/320,pad=mob?12:24,b={x:r0.x+pad,y:r0.y-h,w:r0.w-2*pad};
-  const st=make('walk',{clip:{x:b.x,y:b.y-6,w:b.w,h:h+6+1},img:{width:w+'px',left:'0px',top:'6px'},trigger:rule,onShow:s=>walk(s,b.w-w,h)});st.m.querySelector('img').src=P+'walk-1.webp';
+ if(rule){const r0=box(rule),h=mob?56:72,w=h*280/320,edge=4,W=document.documentElement.clientWidth,b={x:0,y:r0.y-h,w:W};
+  // rail spans the full viewport width at the divider height; the clip box hides any overflow (no horizontal scroll)
+  const st=make('walk',{clip:{x:b.x,y:b.y-6,w:b.w,h:h+6+1},img:{width:w+'px',left:edge+'px',top:'6px'},trigger:rule,onShow:s=>walk(s,W-w-2*edge,h)});
+  // all 16 frames stacked as decoded <img>s; frames are switched by visibility (no src swap -> no decode flash)
+  const am=st.m;am.innerHTML='';am.style.height=h+'px';
+  WF.forEach((u,i)=>{const im=new Image();im.src=u;im.alt='';im.decoding='sync';im.style.cssText=`position:absolute;left:0;top:0;width:100%;visibility:${i?'hidden':'visible'}`;am.appendChild(im)});
   const foot=document.createElement('div');foot.className='foot';foot.style.cssText=`left:${w*.2}px;width:${w*.6}px;top:${h-3}px`;st.m.appendChild(foot);
-  const startle=()=>{st.c.classList.add('startle');st.pause&&st.pause(900)};
+  const startle=()=>{st.c.classList.add('startle');setTimeout(()=>st.c.classList.remove('startle'),400)};
   document.addEventListener('play',startle,true);
   document.querySelectorAll('a[href="#play"],button').forEach(x=>/Watch the film/.test(x.textContent)&&x.addEventListener('click',startle))}
  if(!mob){ // 05 LINEAGE: peeks from behind the "Still you" mirror photo, into the gap toward "Your move"
@@ -63,19 +69,19 @@ function footer(mob){const f=document.querySelector('footer');if(!f)return;const
 // walk cycle: 16 frames from a 2D cutout rig (contact/down/passing/up per side), sway, bob and arm swing baked in.
 // Body advances a constant stride/16 per frame (= planted-foot speed), so the planted foot stays fixed on the floor.
 const NF=16,WF=Array.from({length:NF},(_,i)=>P+'walk-'+(i+1)+'.webp');WF.forEach(u=>{const i=new Image();i.src=u});
-function walk(st,dist,h){const img=st.m.querySelector('img'),still=P+'walk-5.webp';
- if(rm){img.src=still;st.m.style.transform=`translateX(${dist/2}px)`;return}
- const FD=62,ADV=18.404*h/640;let x=0,last=performance.now(),acc=0,f=0,hold=0,dir=1,raf;
- st.pause=ms=>{hold=Math.max(hold,ms)};const nextLook=()=>2200+Math.random()*3000;let look=nextLook();
- const setF=n=>{img.src=WF[n];st.m.classList.toggle('contact',n===0||n===8)};setF(0);st.m.classList.add('stepping');
- const tick=t=>{const dt=Math.min(50,t-last);last=t;
-  if(hold>0){hold-=dt;if(hold<=0){st.m.classList.remove('looking');st.m.classList.add('stepping');setF(f)}}
-  else{acc+=dt;look-=dt;while(acc>=FD){acc-=FD;x+=ADV*dir;f=(f+1)%NF;setF(f)}
-   const stop=()=>{st.m.classList.remove('stepping','contact');st.m.classList.add('looking');img.src=still};
-   if((dir>0&&x>=dist)||(dir<0&&x<=0)){x=Math.max(0,Math.min(dist,x));dir*=-1;hold=900;stop()}
-   else if(look<=0&&(f===4||f===12)){look=nextLook();hold=1100+Math.random()*700;stop()}}
+function walk(st,dist,h){const ims=[...st.m.querySelectorAll('img')];
+ // continuous back-and-forth across the viewport: instant mid-stride turn at each edge (mirror), no pause, no fade.
+ const show=f=>ims.forEach((im,i)=>im.style.visibility=i===f?'visible':'hidden');
+ if(rm){show(4);st.m.style.transform=`translateX(${dist/2}px)`;st.m.style.opacity=1;return}
+ const ADV=18.404*h/640,SPD=ADV/62;let x=0,dir=1,d=0,last=performance.now(),raf,cur=0;
+ st.m.style.opacity=1;
+ const tick=t=>{const dt=Math.max(0,Math.min(50,t-last));last=t;const s=SPD*dt;x+=s*dir;d+=s;
+  if(x>=dist){x=2*dist-x;dir=-1}else if(x<=0){x=-x;dir=1}
+  const f=((Math.floor(d/ADV)%NF)+NF)%NF;     // frame from total distance -> cycle continues through the turn
+  if(f!==cur&&ims[f]&&ims[cur]){ims[f].style.visibility='visible';ims[cur].style.visibility='hidden';cur=f;st.m.classList.toggle('planted',f===0||f===8)}
   st.m.style.transform=`translateX(${x}px) scaleX(${dir})`;raf=requestAnimationFrame(tick)};
- raf=requestAnimationFrame(tick);st.stop=()=>cancelAnimationFrame(raf)}
+ raf=requestAnimationFrame(tick);st.stop=()=>cancelAnimationFrame(raf);
+ document.addEventListener('visibilitychange',()=>{last=performance.now()})}
 // cursor proximity: peer/peek duck, sit leans back
 setInterval(()=>S.forEach(s=>{if(!s.on||!/peer|peek|sit/.test(s.pose))return;const r=s.c.getBoundingClientRect(),cx=r.left+scrollX+r.width/2,cy=r.top+scrollY+r.height/2;
  s.c.classList.toggle('duck',Math.hypot(mx-cx,my-cy)<Math.max(r.width,r.height)*.9)}),120);
