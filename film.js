@@ -63,7 +63,7 @@
       } else fallback();
     }
   }
-  create.addEventListener('click', async () => {
+  async function compose() {
     if (!connected() || busy) return;
     clear();
     const operation = epoch, palette = tone;
@@ -97,7 +97,8 @@
       if (request === controller) request = null;
       setBusy(false);
     }
-  });
+  }
+  create.addEventListener('click', compose);
   download.addEventListener('click', async () => {
     if (!valid() || busy) return;
     setBusy(true);
@@ -124,8 +125,23 @@
     finally { setBusy(false); }
   });
   // 06 / Open circuit: once a film exists, share that film instead of the blank template.
-  contribute?.addEventListener('click', event => {
-    if (!valid() || busy) return;
+  contribute?.addEventListener('click', async event => {
+    if (busy) return;
+    if (!valid()) {
+      // Connected but no film yet: compose it with the existing route, then share it.
+      if (!connected()) return;
+      event.preventDefault();
+      const files = navigator.canShare?.({ files: [new File([''], 'probe.mp4', { type: 'video/mp4' })] });
+      const tab = files ? null : window.open('', '_blank');
+      await compose();
+      if (!valid()) { tab?.close(); return; }
+      if (files) { circuit = true; await handoff(); return; }
+      circuit = true; const text = caption(); circuit = false;
+      save();
+      if (tab) tab.location.href = 'https://x.com/intent/tweet?text=' + encodeURIComponent(text);
+      else contribute.href = 'https://x.com/intent/tweet?text=' + encodeURIComponent(text);
+      return;
+    }
     if (navigator.share && navigator.canShare?.({ files: [ready.file] })) {
       event.preventDefault(); fromCircuit = true; share.click(); return;
     }
