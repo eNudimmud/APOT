@@ -125,7 +125,15 @@
   });
   // 06 / Open circuit: once a film exists, share that film instead of the blank template.
   contribute?.addEventListener('click', event => {
-    if (!valid() || busy) return;
+    if (busy) return;
+    if (!valid()) {
+      // Nothing to share yet: lead to where the signal and its film are made.
+      event.preventDefault();
+      const target = connected() ? find('#edition-tools') : find('#signature');
+      if (connected()) target.open = true;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
     if (navigator.share && navigator.canShare?.({ files: [ready.file] })) {
       event.preventDefault(); fromCircuit = true; share.click(); return;
     }
