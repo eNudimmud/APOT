@@ -17,10 +17,10 @@
 .p-walk .am{opacity:0;transition:opacity .5s!important;will-change:transform}.p-walk.show .am{opacity:1}
 .p-walk .am img{transform-origin:50% 100%}
 /* one stride = 430ms: two contacts (squash) and two passing positions (lift + alternating tilt), forward lean */
-.p-walk .am.stepping img{animation:stride .86s linear infinite}
+
 .p-walk .am.looking img{animation:lookaround 1.1s ease-in-out}
 .p-walk .foot{position:absolute;height:6px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.6),transparent)}
-.p-walk .am.stepping .foot{animation:footfall .43s linear infinite}
+.p-walk .foot{opacity:.55;transition:opacity .1s,transform .1s}.p-walk .am.contact .foot{opacity:.95;transform:scaleX(1.12)}
 .p-walk.startle .am img{animation:jump .4s ease-out!important}
 @keyframes stride{
  0%{transform:rotate(3deg) translateY(0) scale(1.03,.96)}
