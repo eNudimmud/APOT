@@ -8,7 +8,8 @@
   const status = find('#film-status'), actions = find('#film-actions');
   const draft = find('#film-x-draft'), card = find('#card-preview');
   const stage = () => window.ApotStage;
-  let tone = 'midnight', ready = null, request = null, busy = false, epoch = 0, shareTicket = null;
+  const contribute = find('#contribute'), template = contribute?.href;
+  let tone = 'midnight', ready = null, request = null, busy = false, epoch = 0, shareTicket = null, circuit = false, fromCircuit = false;
   const connected = () => Boolean(stage()?.current() && stage()?.account()?.expiresAt > Date.now());
   const valid = () => Boolean(ready && stage()?.isCurrent(ready.permit));
   const idle = () => connected() ? 'Your fixed signal and its own sound, together in one video.' : 'Connect with X to create your personal signal video.';
@@ -27,10 +28,12 @@
     epoch++; request?.abort(); request = null; shareTicket = null;
     player.pause(); player.removeAttribute('src'); player.load(); player.hidden = true; card.hidden = false;
     if (ready) URL.revokeObjectURL(ready.url);
+    if (contribute) contribute.href = template;
     ready = null; draft.hidden = true; share.textContent = 'Share video';
     status.textContent = idle(); controls();
   }
   function caption() {
+    if (circuit) return 'FIRST SIGNAL / ' + ready.seed + '\n\nThe alien said every human carries a signal.\nThis is mine. Sound on. 👁\n\n@APOTsignal https://www.apot.world/#signature';
     return 'This is my signal. Turn sound on.\n\n' + ready.seed + ' · Made at λP⊙T\nYour account. Your signal. Your sound.\n\nhttps://www.apot.world/#signature';
   }
   function save() {
@@ -104,6 +107,8 @@
   });
   share.addEventListener('click', async () => {
     if (!valid() || busy) return;
+    if (!(shareTicket && shareTicket.until > Date.now())) circuit = fromCircuit;
+    fromCircuit = false;
     if (shareTicket && shareTicket.until > Date.now() && stage().isCurrent(shareTicket.permit)) {
       setBusy(true); try { await handoff(); } finally { setBusy(false); } return;
     }
@@ -117,6 +122,15 @@
       } else await handoff();
     } catch (_) { if (valid()) status.textContent = 'Reconnect with X before sharing.'; }
     finally { setBusy(false); }
+  });
+  // 06 / Open circuit: once a film exists, share that film instead of the blank template.
+  contribute?.addEventListener('click', event => {
+    if (!valid() || busy) return;
+    if (navigator.share && navigator.canShare?.({ files: [ready.file] })) {
+      event.preventDefault(); fromCircuit = true; share.click(); return;
+    }
+    circuit = true; contribute.href = 'https://x.com/intent/tweet?text=' + encodeURIComponent(caption()); circuit = false;
+    save();
   });
   draft.addEventListener('click', event => { if (!valid() || busy) event.preventDefault(); });
   window.addEventListener('apot:signature', clear);
