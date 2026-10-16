@@ -34,9 +34,9 @@ function place(){S.forEach(x=>{x.io&&x.io.disconnect();x.stop&&x.stop()});L.inne
    contact:{left:w*.12+'px',width:w*.76+'px',top:seat-5+'px'}})}
  // 04 RECORD: strolls along the inner floor of the film frame toward the filament, with a real step cycle
  const fp=up(byText('h3,h2,p,div,span','^\\s*Creating art'),500);
- if(fp){const b0=box(fp),h=60,w=h*R.walk,x0=b0.x+190,x1=b0.x+b0.w-250,b={x:x0,y:b0.y+b0.h-h-26,w:x1-x0};
-  const st=make('walk',{clip:{x:b.x,y:b.y-6,w:b.w,h:h+14},img:{width:w+'px',left:'0px',top:'6px'},trigger:fp,onShow:s=>walk(s,b.w-w-6,h)});
-  const foot=document.createElement('div');foot.className='foot';foot.style.cssText=`left:${w*.15}px;width:${w*.7}px;top:${h+2}px`;st.m.appendChild(foot);
+ if(fp){const b0=box(fp),h=72,w=h*280/320,x0=b0.x+190,x1=b0.x+b0.w-250,b={x:x0,y:b0.y+b0.h-h-26,w:x1-x0};
+  const st=make('walk',{clip:{x:b.x,y:b.y-6,w:b.w,h:h+14},img:{width:w+'px',left:'0px',top:'6px'},trigger:fp,onShow:s=>walk(s,b.w-w-6,h)});st.m.querySelector('img').src=P+'walk-1.webp';
+  const foot=document.createElement('div');foot.className='foot';foot.style.cssText=`left:${w*.2}px;width:${w*.6}px;top:${h-3}px`;st.m.appendChild(foot);
   const startle=()=>{st.c.classList.add('startle');st.pause&&st.pause(900)};
   document.addEventListener('play',startle,true);
   document.querySelectorAll('a[href="#play"],button').forEach(x=>/Watch the film/.test(x.textContent)&&x.addEventListener('click',startle))}
@@ -59,16 +59,20 @@ function footer(mob){const f=document.querySelector('footer');if(!f)return;const
  const chk=()=>{if(st.on||!document.body.contains(st.c)){removeEventListener('scroll',chk);return}
   if(near()){clearTimeout(t);t=setTimeout(()=>{near()&&st.show()},mob?700:1100)}};
  addEventListener('scroll',chk,{passive:true});chk()}
-// step cycle: one stride per STEP ms, travel speed matched to stride length; occasional stop-and-look-around
-function walk(st,dist,h){if(rm){st.m.style.transform=`translateX(${dist/2}px)`;return}
- const STEP=430,stride=h*.30,v=stride/STEP;let x=0,last=performance.now(),hold=0,dir=1,raf;st.m.classList.add('stepping');
- st.pause=ms=>{hold=Math.max(hold,ms)};
- const nextLook=()=>1600+Math.random()*2600;let look=nextLook();
+// walk cycle: 16 frames from a 2D cutout rig (contact/down/passing/up per side), sway, bob and arm swing baked in.
+// Body advances a constant stride/16 per frame (= planted-foot speed), so the planted foot stays fixed on the floor.
+const NF=16,WF=Array.from({length:NF},(_,i)=>P+'walk-'+(i+1)+'.webp');WF.forEach(u=>{const i=new Image();i.src=u});
+function walk(st,dist,h){const img=st.m.querySelector('img'),still=P+'walk-5.webp';
+ if(rm){img.src=still;st.m.style.transform=`translateX(${dist/2}px)`;return}
+ const FD=62,ADV=18.404*h/640;let x=0,last=performance.now(),acc=0,f=0,hold=0,dir=1,raf;
+ st.pause=ms=>{hold=Math.max(hold,ms)};const nextLook=()=>2200+Math.random()*3000;let look=nextLook();
+ const setF=n=>{img.src=WF[n];st.m.classList.toggle('contact',n===0||n===8)};setF(0);st.m.classList.add('stepping');
  const tick=t=>{const dt=Math.min(50,t-last);last=t;
-  if(hold>0){hold-=dt;if(hold<=0)st.m.classList.remove('looking');st.m.classList.toggle('stepping',hold<=0)}
-  else{x+=v*dt*dir;look-=dt;
-   if(x>=dist||x<=0){x=Math.max(0,Math.min(dist,x));dir*=-1;hold=900;st.m.classList.add('looking')}
-   else if(look<=0){look=nextLook();hold=1100+Math.random()*700;st.m.classList.add('looking')}}
+  if(hold>0){hold-=dt;if(hold<=0){st.m.classList.remove('looking');st.m.classList.add('stepping');setF(f)}}
+  else{acc+=dt;look-=dt;while(acc>=FD){acc-=FD;x+=ADV*dir;f=(f+1)%NF;setF(f)}
+   const stop=()=>{st.m.classList.remove('stepping','contact');st.m.classList.add('looking');img.src=still};
+   if(x>=dist||x<=0){x=Math.max(0,Math.min(dist,x));dir*=-1;hold=900;stop()}
+   else if(look<=0&&(f===4||f===12)){look=nextLook();hold=1100+Math.random()*700;stop()}}
   st.m.style.transform=`translateX(${x}px) scaleX(${dir})`;raf=requestAnimationFrame(tick)};
  raf=requestAnimationFrame(tick);st.stop=()=>cancelAnimationFrame(raf)}
 // cursor proximity: peer/peek duck, sit leans back
