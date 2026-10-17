@@ -1,17 +1,13 @@
 /* PREVIEW only — reuses the existing tokens (ink, navy, ivory, gold, line) */
-.today-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr);gap:clamp(24px,4vw,64px);align-items:stretch}
+.today-witness h2,.today-note{max-width:1100px}
 .today-witness{border-top:1px solid var(--line);padding-top:24px;display:flex;flex-direction:column;gap:18px}
 .today-witness>.eyebrow{color:var(--gold)}
-.today-witness h2{font-size:clamp(34px,4vw,60px);line-height:1.05;font-weight:400;margin:0}
+.today-witness h2{font-size:clamp(40px,5vw,72px);line-height:1.05;font-weight:400;margin:0}
 .today-witness h2 em{font-style:normal;color:var(--gold)}
 .today-note{color:var(--muted);font-size:13px;max-width:52ch}
-.today-useme{border:1px solid var(--line);background:var(--navy);padding:20px;display:flex;flex-direction:column;gap:10px}
-.today-useme img{width:100%;height:auto;aspect-ratio:1;object-fit:contain;max-height:280px;background:radial-gradient(circle at 50% 40%,#1a2f42,var(--navy) 70%)}
-.today-useme .eyebrow{color:var(--gold)}.today-useme strong{font-weight:400;font-size:20px}
-.today-useme:hover strong{color:var(--gold)}
 .onchain{margin-top:32px;border-top:1px solid var(--line);padding-top:20px}
 .onchain>.eyebrow{color:var(--gold)}
 .onchain ul{list-style:none;margin:14px 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .onchain li{border:1px solid var(--line);padding:14px;display:grid;gap:6px;font-size:12px;color:var(--muted)}
 .onchain strong{font-weight:400;color:var(--ivory);font-size:16px}.onchain small{color:var(--muted);font-size:10px}
-@media(max-width:760px){.today-layout{grid-template-columns:1fr}.today-witness h2{font-size:clamp(30px,8vw,40px)}.onchain ul{grid-template-columns:1fr}}
+@media(max-width:760px){.today-witness h2{font-size:clamp(30px,8vw,40px)}.onchain ul{grid-template-columns:1fr}}
