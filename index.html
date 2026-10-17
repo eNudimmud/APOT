@@ -29,7 +29,8 @@
   <script src="studio.js?v=signal-film-1" defer></script>
   <script src="film.js?v=signal-film-3" defer></script>
 <link rel="stylesheet" href="mascot.css">
-<link rel="stylesheet" href="site-aimant-preview.css?v=1">
+<link rel="stylesheet" href="site-aimant.css?v=1">
+<script src="site-aimant.js?v=1" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#study-title">Skip to content</a>
@@ -86,17 +87,14 @@
   </section>
 
 
-  <!-- PREVIEW (site aimant) — do not merge without JD go -->
-  <section class="today section-pad" id="today" aria-labelledby="today-title">
-    <div class="section-top"><span class="eyebrow">TODAY / THE WITNESS</span><span class="eyebrow">PREVIEW · EXAMPLE TEXT</span></div>
-    <div class="today-layout">
-      <article class="today-witness">
-        <p class="eyebrow">WITNESS #003 · EXAMPLE, NOT YET PUBLISHED</p>
-        <h2 id="today-title">Your species just made cars fly.<br><em>Speed was never the bottleneck. Direction was.</em></h2>
-        <p class="today-note">One verdict a day, from @APOTsignal. Replace this example with the latest published WITNESS.</p>
-        <a class="text-link" href="https://x.com/APOTsignal" target="_blank" rel="noopener noreferrer">Read the record on X <svg aria-hidden="true"><use href="#out"/></svg><span class="sr-only"> (new tab)</span></a>
-      </article>
-    </div>
+  <section class="today section-pad" id="today" aria-labelledby="today-title" hidden>
+    <div class="section-top"><span class="eyebrow">TODAY / THE WITNESS</span><span class="eyebrow" id="witness-date"></span></div>
+    <article class="today-witness">
+      <p class="eyebrow" id="witness-number">WITNESS</p>
+      <h2 id="today-title"></h2>
+      <p class="today-note">One verdict a day, from @APOTsignal.</p>
+      <a class="text-link" id="witness-link" href="https://x.com/APOTsignal" target="_blank" rel="noopener noreferrer">Read it on X <svg aria-hidden="true"><use href="#out"/></svg><span class="sr-only"> (new tab)</span></a>
+    </article>
   </section>
 
   <section class="signature section-pad" id="signature" aria-labelledby="signature-title" data-signature-check="pending" data-account-state="loading">
@@ -296,15 +294,15 @@
       </figure>
     </div>
 
-    <!-- PREVIEW (site aimant) — verifiable on-chain facts only -->
-    <div class="onchain" aria-labelledby="onchain-title">
+    <div class="onchain" aria-labelledby="onchain-title" data-onchain="loading">
       <p class="eyebrow" id="onchain-title">ON-CHAIN / CHECK IT YOURSELF</p>
-      <ul>
-        <li><span>Mint authority</span><strong>Disabled</strong></li>
-        <li><span>Freeze authority</span><strong>Disabled</strong></li>
-        <li><span>Creator wallet</span><strong>≈0.65% of supply <small>(Jupiter, 17 Oct 2026)</small></strong></li>
+      <ul class="onchain-live" aria-live="polite">
+        <li><span>Mint authority</span><strong data-fact="mint">…</strong></li>
+        <li><span>Freeze authority</span><strong data-fact="freeze">…</strong></li>
+        <li><span>Creator wallet</span><strong data-fact="creator">…</strong></li>
+        <li><span>Wallets holding $APOT</span><strong data-fact="holders">…</strong></li>
       </ul>
-      <a class="subtle-link" href="https://solscan.io/token/GsUXfGLgAvfMKxiCUVoe8iNaMR4dqP5xBbXcD8BbAP4o" target="_blank" rel="noopener noreferrer">Verify on Solscan ↗<span class="sr-only"> (new tab)</span></a>
+      <p class="onchain-status"><span data-fact="status">Reading Solana…</span> <a class="subtle-link" href="https://solscan.io/token/GsUXfGLgAvfMKxiCUVoe8iNaMR4dqP5xBbXcD8BbAP4o" target="_blank" rel="noopener noreferrer">Verify on Solscan ↗<span class="sr-only"> (new tab)</span></a></p>
     </div>
     <details class="token-details">
       <summary>Pair and launch notes <span aria-hidden="true">+</span></summary>
