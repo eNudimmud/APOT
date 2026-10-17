@@ -127,3 +127,5 @@ La taxe de transfert de 1 % est distincte des frais de trading de 1,25 %. Leur p
 ## Token configuration updates
 
 The creator confirmed the mint `GsUXfGLgAvfMKxiCUVoe8iNaMR4dqP5xBbXcD8BbAP4o` (Action Potential / $APOT). The access section shows that address, links to [Jupiter](https://jup.ag/tokens/GsUXfGLgAvfMKxiCUVoe8iNaMR4dqP5xBbXcD8BbAP4o) for the swap, and links to the related [Solscan account](https://solscan.io/account/EV9iJQTEK3rwoKGvG5N4qh4CMwi727SJAjiKz1H9vZH4). StonkFun’s public token index returned no pool for this mint (`GET /api/public/v1/tokens/{mint}` → not found; the Open Graph card says “Token not found”), so the generic StonkFun homepage is no longer the buy link. The NEURALINK Prestock pair stays on the page as the creator’s quote pair; it does not announce a partnership. Supply, tax, and fee figures remain the pre-launch notes in the table above.
+
+- WITNESS block and live on-chain facts: see `docs/WITNESS.md`.
