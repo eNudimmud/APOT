@@ -1,5 +1,4 @@
-.um{max-width:1600px;margin:auto}
-.um-back{margin-left:auto}
+.site-header nav a[aria-current=page]{color:var(--ivory)}
 .um-heading{align-items:flex-start;flex-wrap:wrap}
 .um-intro{max-width:44ch;display:grid;gap:12px;color:var(--muted);font-size:15px;line-height:1.65}
 .um-intro a:not(.solid-link){color:var(--gold)}
